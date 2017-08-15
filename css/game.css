@@ -1,0 +1,35 @@
+/* RESET */
+* {
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 62.5%;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+a, a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* GAME */
+.world {
+  display: flex;
+  flex-direction: column;
+  /* Usable area on an iPhone 4 is 320x372 pixels */
+  width: 32rem;
+  min-height: 37.2rem;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #ccc;
+}
