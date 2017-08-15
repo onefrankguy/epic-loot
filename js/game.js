@@ -82,21 +82,45 @@ gems.spend = function (suit) {
   switch (suit) {
     case 'moons':
       moons -= 1
+      if (moons < 0) {
+        moons = 0
+      }
+      dirty |= 1
       break;
     case 'suns':
       suns -= 1
+      if (suns < 0) {
+        suns = 0
+      }
+      dirty |= 1
       break;
     case 'waves':
       waves -= 1
+      if (waves < 0) {
+        waves = 0
+      }
+      dirty |= 1
       break;
     case 'leaves':
       leaves -= 1
+      if (leaves < 0) {
+        leaves = 0
+      }
+      dirty |= 1
       break;
     case 'wyrms':
       wyrms -= 1
+      if (wyrms < 0) {
+        wyrms = 0
+      }
+      dirty |= 1
       break;
     case 'knots':
       knots -= 1
+      if (knots < 0) {
+        knots = 0
+      }
+      dirty |= 1
       break;
     default:
       break;
@@ -105,6 +129,30 @@ gems.spend = function (suit) {
 
 return gems
 }())
+
+function offMoons () {
+  Gems.spend('moons')
+}
+
+function offSuns () {
+  Gems.spend('suns')
+}
+
+function offWaves () {
+  Gems.spend('waves')
+}
+
+function offLeaves () {
+  Gems.spend('leaves')
+}
+
+function offWyrms () {
+  Gems.spend('wyrms')
+}
+
+function offKnots () {
+  Gems.spend('knots')
+}
 
 function render () {
   requestAnimationFrame(render)
@@ -118,12 +166,18 @@ function startGame (callback) {
 }
 
 Game.play = function () {
-  Spells.cast()
-  Spells.cast()
+  var $ = window.jQuery
+
+  $('#moons-gem').touch(undefined, offMoons)
+  $('#suns-gem').touch(undefined, offSuns)
+  $('#waves-gem').touch(undefined, offWaves)
+  $('#leaves-gem').touch(undefined, offLeaves)
+  $('#wyrms-gem').touch(undefined, offWyrms)
+  $('#knots-gem').touch(undefined, offKnots)
 
   startGame(render)
 }
 
-})(window.Game = window.Game || {})
+}(window.Game = window.Game || {}))
 
 Game.play()

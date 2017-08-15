@@ -29,6 +29,48 @@ Fn.prototype.html = function (value) {
   return this
 }
 
+Fn.prototype.touch = function (start, end) {
+  var self = this
+
+  if (this.element) {
+    if ('ontouchstart' in document.documentElement === false) {
+      this.element.onmousedown = function (e) {
+        if (start) {
+          start(self, e)
+        }
+        document.onmousemove = function (e) {
+          e.preventDefault()
+        }
+        document.onmouseup = function (e) {
+          if (end) {
+            end(self, e)
+          }
+          document.onmousemove = undefined
+          document.onmouseup = undefined
+        }
+      }
+    } else {
+      this.element.ontouchstart = function (e) {
+        if (start) {
+          start(self, e)
+        }
+        document.ontouchmove = function (e) {
+          e.preventDefault()
+        }
+        document.ontouchend = function (e) {
+          if (end) {
+            end(self, e)
+          }
+          document.ontouchmove = undefined
+          document.ontouchend = undefined
+        }
+      }
+    }
+  }
+
+  return this
+}
+
 function root (selector) {
   return new Fn(selector)
 }
