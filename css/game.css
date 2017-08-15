@@ -9,11 +9,12 @@
 html {
   font-family: Helvetica,Arial,sans-serif;
   font-size: 62.5%;
+  font-size: 100%;
 }
 
 body {
-  background: #000;
-  color: #fff;
+  background: #ccc;
+  color: #000;
   font-size: 1.6rem;
 }
 
@@ -31,7 +32,33 @@ a, a:visited {
   min-height: 37.2rem;
   overflow: hidden;
   margin: 0 auto;
-  background: #ccc;
+  background: #fff;
+}
+
+
+/* SPELLS */
+.spell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 2rem;
+  border-bottom: 1px solid rgba(0,0,0,.3);
+}
+
+.spell .gem {
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+}
+
+.spell .gem.suns {
+  background: yellow;
+}
+
+.spell .gem.moons {
+  background: silver;
 }
 
 #deck {
