@@ -41,10 +41,76 @@ spells.cast = function () {
 return spells
 }())
 
+var Gems = (function () {
+'use strict';
+
+var $ = window.jQuery
+  , dirty = 1
+  , moons = 6
+  , suns = 6
+  , waves = 6
+  , leaves = 6
+  , wyrms = 6
+  , knots = 6
+  , gems = {}
+
+gems.reset = function () {
+  moons = 6
+  suns = 6
+  waves = 6
+  leaves = 6
+  wyrms = 6
+  knots = 6
+
+  dirty |= 1
+}
+
+gems.render = function () {
+  if (dirty & 1) {
+    $('#moons-gem').html(moons)
+    $('#suns-gem').html(suns)
+    $('#waves-gem').html(waves)
+    $('#leaves-gem').html(leaves)
+    $('#wyrms-gem').html(wyrms)
+    $('#knots-gem').html(knots)
+  }
+
+  dirty = 0
+}
+
+gems.spend = function (suit) {
+  switch (suit) {
+    case 'moons':
+      moons -= 1
+      break;
+    case 'suns':
+      suns -= 1
+      break;
+    case 'waves':
+      waves -= 1
+      break;
+    case 'leaves':
+      leaves -= 1
+      break;
+    case 'wyrms':
+      wyrms -= 1
+      break;
+    case 'knots':
+      knots -= 1
+      break;
+    default:
+      break;
+  }
+}
+
+return gems
+}())
+
 function render () {
   requestAnimationFrame(render)
 
   Spells.render()
+  Gems.render()
 }
 
 function startGame (callback) {

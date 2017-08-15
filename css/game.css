@@ -27,6 +27,7 @@ a, a:visited {
 #world {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
   min-height: 37.2rem;
@@ -53,19 +54,43 @@ a, a:visited {
   border-radius: 50%;
 }
 
-.spell .gem.suns {
-  background: yellow;
-}
-
-.spell .gem.moons {
-  background: silver;
-}
-
-#deck {
+/* GEMS */
+#gems {
   display: flex;
-  flex-direction: column;
-  width: 22rem;
-  min-height: 10rem;
-  margin: 0 auto;
-  background: #fff;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#gems .gem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+}
+
+/* SUITS */
+.moons {
+  background-color: silver;
+}
+
+.suns {
+  background-color: orange;
+}
+
+.waves {
+  background-color: blue;
+}
+
+.leaves {
+  background-color: brown;
+}
+
+.wyrms {
+  background-color: green;
+}
+
+.knots {
+  background-color: yellow;
 }
