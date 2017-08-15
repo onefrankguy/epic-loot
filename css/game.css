@@ -23,7 +23,7 @@ a, a:visited {
 }
 
 /* GAME */
-.world {
+#world {
   display: flex;
   flex-direction: column;
   /* Usable area on an iPhone 4 is 320x372 pixels */
@@ -32,4 +32,13 @@ a, a:visited {
   overflow: hidden;
   margin: 0 auto;
   background: #ccc;
+}
+
+#deck {
+  display: flex;
+  flex-direction: column;
+  width: 22rem;
+  min-height: 10rem;
+  margin: 0 auto;
+  background: #fff;
 }

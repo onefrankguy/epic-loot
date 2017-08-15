@@ -3,7 +3,6 @@
 
 function render () {
   requestAnimationFrame(render)
-  console.log('render()')
 }
 
 function startGame (callback) {
@@ -11,6 +10,11 @@ function startGame (callback) {
 }
 
 Game.play = function () {
+  var $ = window.jQuery
+    , html = '<div id="deck"></div>'
+
+  $('#world').html(html)
+
   startGame(render)
 }
 
