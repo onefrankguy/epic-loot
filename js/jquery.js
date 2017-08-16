@@ -71,6 +71,10 @@ Fn.prototype.touch = function (start, end) {
   return this
 }
 
+Fn.prototype.unwrap = function () {
+  return this.element
+}
+
 function root (selector) {
   return new Fn(selector)
 }

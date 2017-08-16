@@ -4,7 +4,7 @@
 var Deck = (function () {
 'use strict';
 
-function makeStartingDeck () {
+function makeStartingHand () {
   return [{
     name: 'the Excuse',
     value: 0
@@ -26,32 +26,61 @@ function makeStartingDeck () {
   }]
 }
 
-var cards = makeStartingDeck()
-  , position = -1
+function makeAces () {
+  return [{
+    name: 'Moons',
+    value: 1,
+    suit1: 'moons'
+  },{
+    name: 'Suns',
+    value: 1,
+    suit1: 'suns'
+  },{
+    name: 'Waves',
+    value: 1,
+    suit1: 'waves'
+  },{
+    name: 'Leaves',
+    value: 1,
+    suit1: 'leaves'
+  },{
+    name: 'Wyrms',
+    value: 1,
+    suit1: 'wyrms'
+  },{
+    name: 'Knots',
+    value: 1,
+    suit1: 'knots'
+  }]
+}
+
+var hand = makeStartingHand()
+  , aces = makeAces()
+  , position = 0
   , deck = {}
 
 deck.reset = function () {
-  cards = makeStartingDeck()
-  position = -1
+  hand = makeStartingHand()
+  aces = makeAces()
+  position = 0
 }
 
 deck.render = function () {
 }
 
 deck.deal = function () {
-  position += 1
-  if (position > cards.length) {
-    position = cards.length
-  }
-  if (position < 0) {
-    position = 0
+  if (position > -1 && position < hand.length) {
+    position += 1
+    return hand[position - 1]
   }
 
-  if (position < cards.length) {
-    return cards[position]
+  var ace = aces.pop()
+  if (ace) {
+    hand.push(ace)
   }
 
-  return undefined
+  position = 1
+  return hand[position - 1]
 }
 
 return deck
@@ -97,8 +126,10 @@ spells.render = function () {
 }
 
 spells.cast = function (spell) {
-  casted.push(spell)
-  dirty |= 1
+  if (spell) {
+    casted.push(spell)
+    dirty |= 1
+  }
 }
 
 return spells
@@ -130,114 +161,78 @@ gems.reset = function () {
 
 gems.render = function () {
   if (dirty & 1) {
-    $('#moons-gem').html(moons)
-    $('#suns-gem').html(suns)
-    $('#waves-gem').html(waves)
-    $('#leaves-gem').html(leaves)
-    $('#wyrms-gem').html(wyrms)
-    $('#knots-gem').html(knots)
+    $('#moons').html(moons)
+    $('#suns').html(suns)
+    $('#waves').html(waves)
+    $('#leaves').html(leaves)
+    $('#wyrms').html(wyrms)
+    $('#knots').html(knots)
   }
 
   dirty = 0
 }
 
 gems.spend = function (suit) {
+  var spent = false
+
   switch (suit) {
     case 'moons':
-      moons -= 1
-      if (moons < 0) {
-        moons = 0
+      if (moons > 0) {
+        spent = true
+        moons -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     case 'suns':
-      suns -= 1
-      if (suns < 0) {
-        suns = 0
+      if (suns > 0) {
+        spent = true
+        suns -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     case 'waves':
-      waves -= 1
-      if (waves < 0) {
-        waves = 0
+      if (waves > 0) {
+        spent = true
+        waves -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     case 'leaves':
-      leaves -= 1
-      if (leaves < 0) {
-        leaves = 0
+      if (leaves > 0) {
+        spent = true
+        leaves -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     case 'wyrms':
-      wyrms -= 1
-      if (wyrms < 0) {
-        wyrms = 0
+      if (wyrms > 0) {
+        spent = true
+        wyrms -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     case 'knots':
-      knots -= 1
-      if (knots < 0) {
-        knots = 0
+      if (knots > 0) {
+        spent = true
+        knots -= 1
+        dirty |= 1
       }
-      dirty |= 1
       break;
     default:
       break;
   }
+
+  return spent
 }
 
 return gems
 }())
 
-function offMoons () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('moons')
-    Spells.cast(spell)
-  }
-}
+function offGem (element) {
+  var type = element.unwrap().id
 
-function offSuns () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('suns')
-    Spells.cast(spell)
-  }
-}
-
-function offWaves () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('waves')
-    Spells.cast(spell)
-  }
-}
-
-function offLeaves () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('leaves')
-    Spells.cast(spell)
-  }
-}
-
-function offWyrms () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('wyrms')
-    Spells.cast(spell)
-  }
-}
-
-function offKnots () {
-  var spell = Deck.deal()
-  if (spell) {
-    Gems.spend('knots')
-    Spells.cast(spell)
+  if (Gems.spend(type)) {
+    Spells.cast(Deck.deal())
   }
 }
 
@@ -256,12 +251,12 @@ function startGame (callback) {
 Game.play = function () {
   var $ = window.jQuery
 
-  $('#moons-gem').touch(undefined, offMoons)
-  $('#suns-gem').touch(undefined, offSuns)
-  $('#waves-gem').touch(undefined, offWaves)
-  $('#leaves-gem').touch(undefined, offLeaves)
-  $('#wyrms-gem').touch(undefined, offWyrms)
-  $('#knots-gem').touch(undefined, offKnots)
+  $('#moons').touch(undefined, offGem)
+  $('#suns').touch(undefined, offGem)
+  $('#waves').touch(undefined, offGem)
+  $('#leaves').touch(undefined, offGem)
+  $('#wyrms').touch(undefined, offGem)
+  $('#knots').touch(undefined, offGem)
 
   startGame(render)
 }
