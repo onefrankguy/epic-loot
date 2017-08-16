@@ -102,8 +102,9 @@ spells.reset = function () {
 spells.render = function () {
   if (dirty & 1) {
     var html = ''
+      , visible = casted.slice(-15)
 
-    for (var spell of casted) {
+    for (var spell of visible) {
       html += '<p class="spell">'
       html += '<span class="name">'+spell.name+'</span>'
       html += '<span class="power">'+spell.value+'</span>'
