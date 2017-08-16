@@ -1,11 +1,56 @@
+var PRNG = (function () {
+'use strict';
+
+var rng = {}
+  , max = Math.pow(2, 32)
+  , state = undefined
+
+rng.seed = function (value) {
+  if (value !== undefined) {
+    state = parseInt(value, 10)
+  }
+
+  if (isNaN(state)) {
+    state = Math.floor(Math.random() * max)
+  }
+
+  return state
+}
+
+rng.random = function () {
+  state += (state * state) | 5
+  return (state >>> 32) / max
+}
+
+rng.shuffle = function (array) {
+  var i = 0
+    , j = 0
+    , temp = undefined
+
+  if (state === undefined) {
+    this.seed()
+  }
+
+  for (i = array.length - 1; i > 0; i -= 1) {
+    j = Math.floor(this.random() * (i + 1))
+    temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+}
+
+return rng
+}())
+
 ;(function (Game) {
 'use strict';
+
 
 var Deck = (function () {
 'use strict';
 
 function makeStartingHand () {
-  return [{
+  var cards = [{
     name: 'the Excuse',
     value: 0
   },{
@@ -24,10 +69,13 @@ function makeStartingHand () {
     suit1: 'suns',
     suit2: 'moons'
   }]
+
+  PRNG.shuffle(cards)
+  return cards
 }
 
 function makeAces () {
-  return [{
+  var cards = [{
     name: 'Moons',
     value: 1,
     suit1: 'moons'
@@ -52,6 +100,9 @@ function makeAces () {
     value: 1,
     suit1: 'knots'
   }]
+
+  PRNG.shuffle(cards)
+  return cards
 }
 
 var hand = makeStartingHand()
@@ -78,6 +129,7 @@ deck.deal = function () {
   if (ace) {
     hand.push(ace)
   }
+  PRNG.shuffle(hand)
 
   position = 1
   return hand[position - 1]
