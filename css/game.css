@@ -78,8 +78,8 @@ a, a:visited {
   padding-right: 1rem;
 }
 
-.sign + .sign {
-  margin-top: 1rem;
+.sign {
+  margin-bottom: 2rem;
 }
 
 .sign > * {
