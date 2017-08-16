@@ -62,6 +62,36 @@ a, a:visited {
   border-radius: 50%;
 }
 
+/* SIGNS */
+#signpost {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sign {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 4rem;
+  border: 1px solid rgba(0,0,0,.3);
+  padding-right: 1rem;
+}
+
+.sign + .sign {
+  margin-top: 1rem;
+}
+
+.sign > * {
+  margin-left: 1rem;
+}
+
+.sign .gem {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+}
+
 /* GEMS */
 #gems {
   display: flex;
