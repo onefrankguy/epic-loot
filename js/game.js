@@ -1,6 +1,62 @@
 ;(function (Game) {
 'use strict';
 
+var Deck = (function () {
+'use strict';
+
+function makeStartingDeck () {
+  return [{
+    name: 'the Excuse',
+    value: 0
+  },{
+    name: 'the Sailor',
+    value: 4,
+    suit1: 'waves',
+    suit2: 'leaves'
+  },{
+    name: 'the Soldier',
+    value: 5,
+    suit1: 'wyrms',
+    suit2: 'knots'
+  },{
+    name: 'the Diplomat',
+    value: 5,
+    suit1: 'suns',
+    suit2: 'moons'
+  }]
+}
+
+var cards = makeStartingDeck()
+  , position = -1
+  , deck = {}
+
+deck.reset = function () {
+  cards = makeStartingDeck()
+  position = -1
+}
+
+deck.render = function () {
+}
+
+deck.deal = function () {
+  position += 1
+  if (position > cards.length) {
+    position = cards.length
+  }
+  if (position < 0) {
+    position = 0
+  }
+
+  if (position < cards.length) {
+    return cards[position]
+  }
+
+  return undefined
+}
+
+return deck
+}())
+
 var Spells = (function () {
 'use strict';
 
@@ -22,8 +78,15 @@ spells.render = function () {
       html += '<p class="spell">'
       html += '<span class="name">'+spell.name+'</span>'
       html += '<span class="power">'+spell.value+'</span>'
-      html += '<span class="gem '+spell.suit1+'"></span>'
-      html += '<span class="gem '+spell.suit2+'"></span>'
+      if (spell.suit1) {
+        html += '<span class="gem '+spell.suit1+'"></span>'
+      }
+      if (spell.suit2) {
+        html += '<span class="gem '+spell.suit2+'"></span>'
+      }
+      if (spell.suit3) {
+        html += '<span class="gem '+spell.suit3+'"></span>'
+      }
       html += '</p>'
     }
 
@@ -33,8 +96,8 @@ spells.render = function () {
   dirty = 0
 }
 
-spells.cast = function () {
-  casted.push({name: 'Magic Missile', value: 3, suit1: 'suns', suit2: 'moons'})
+spells.cast = function (spell) {
+  casted.push(spell)
   dirty |= 1
 }
 
@@ -131,32 +194,57 @@ return gems
 }())
 
 function offMoons () {
-  Gems.spend('moons')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('moons')
+    Spells.cast(spell)
+  }
 }
 
 function offSuns () {
-  Gems.spend('suns')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('suns')
+    Spells.cast(spell)
+  }
 }
 
 function offWaves () {
-  Gems.spend('waves')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('waves')
+    Spells.cast(spell)
+  }
 }
 
 function offLeaves () {
-  Gems.spend('leaves')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('leaves')
+    Spells.cast(spell)
+  }
 }
 
 function offWyrms () {
-  Gems.spend('wyrms')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('wyrms')
+    Spells.cast(spell)
+  }
 }
 
 function offKnots () {
-  Gems.spend('knots')
+  var spell = Deck.deal()
+  if (spell) {
+    Gems.spend('knots')
+    Spells.cast(spell)
+  }
 }
 
 function render () {
   requestAnimationFrame(render)
 
+  Deck.render()
   Spells.render()
   Gems.render()
 }
