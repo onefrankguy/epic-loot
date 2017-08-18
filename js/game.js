@@ -128,7 +128,7 @@ deck.deal = function () {
   PRNG.shuffle(hand)
 
   position = 1
-  return hand[position - 1]
+  return Object.assign({}, hand[position - 1], {shuffled: true})
 }
 
 return deck
@@ -512,6 +512,9 @@ spells.render = function () {
 spells.cast = function (spell) {
   if (spell) {
     Signpost.cast(spell)
+    if (spell.shuffled) {
+      casted = []
+    }
     casted.push(spell)
     dirty |= 1
   }
