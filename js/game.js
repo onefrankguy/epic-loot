@@ -360,6 +360,7 @@ var $ = window.jQuery
   , locations = makeLocations()
   , locations_index = 0
   , selected = undefined
+  , selected_sign = undefined
   , stage = 1
   , signpost = {}
 
@@ -371,6 +372,7 @@ signpost.reset = function () {
   locations = makeLocations()
   locations_index = 0
   selected = undefined
+  selected_sign = undefined
   stage = 1
   dirty = 1
 }
@@ -411,19 +413,57 @@ signpost.select = function (sign) {
 }
 
 signpost.active = function () {
-  var sign = undefined
+  selected_sign = undefined
 
-  if (selected === 'sign1') {
-    if (stage === 1) {
-      sign = personalities[personalities_index]
-    } else if (stage === 2) {
-      sign = events[events_index]
+  if (stage === 1) {
+    if (selected === 'sign1') {
+      selected_sign = personalities[personalities_index]
     }
-  } else if (selected === 'sign2') {
-    sign = locations[locations_index]
+
+    if (selected === 'sign2') {
+      selected_sign = events[events_index]
+    }
   }
 
-  return sign
+  if (stage === 2) {
+    selected_sign = locations[locations_index]
+  }
+
+  return selected_sign
+}
+
+signpost.cast = function (spell) {
+  if (spell && this.active() && selected_sign.value > 0) {
+    var suits = [selected_sign.suit1, selected_sign.suit2, selected_sign.suit3]
+
+    if (spell.suit1 && suits.indexOf(spell.suit1) > -1) {
+      selected_sign.value -= spell.value
+    }
+
+    if (spell.suit2 && suits.indexOf(spell.suit2) > -1) {
+      selected_sign.value -= spell.value
+    }
+
+    if (spell.suit3 && suits.indexOf(spell.suit3) > -1) {
+      selected_sign.value -= spell.value
+    }
+  }
+
+  if (this.active() && selected_sign.value <= 0) {
+    selected = undefined
+    selected_sign = undefined
+
+    if (stage === 1) {
+      personalities_index += 1
+      events_index += 1
+    }
+
+    if (stage === 2) {
+      locations_index += 1
+    }
+
+    dirty |= 1
+  }
 }
 
 return signpost
@@ -471,6 +511,7 @@ spells.render = function () {
 
 spells.cast = function (spell) {
   if (spell) {
+    Signpost.cast(spell)
     casted.push(spell)
     dirty |= 1
   }
@@ -570,6 +611,10 @@ gems.spend = function (suit) {
       break;
   }
 
+  if (spent) {
+    Signpost.cast({value: 1, suit1: suit})
+  }
+
   return spent
 }
 
@@ -592,6 +637,7 @@ function offGem (element) {
 function offSign (element) {
   var type = element.unwrap().id
   Signpost.select(type)
+  Spells.cast(Deck.deal())
 }
 
 function render () {
