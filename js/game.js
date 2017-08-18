@@ -42,10 +42,6 @@ rng.shuffle = function (array) {
 return rng
 }())
 
-;(function (Game) {
-'use strict';
-
-
 var Deck = (function () {
 'use strict';
 
@@ -560,6 +556,11 @@ gems.spend = function (suit) {
 return gems
 }())
 
+;(function (Game) {
+'use strict';
+
+var color = undefined
+
 function offGem (element) {
   var type = element.unwrap().id
 
@@ -582,7 +583,57 @@ function render () {
   Gems.render()
 }
 
+function newColor () {
+  var hash = color
+
+  do {
+    hash = Math.floor(Math.random() * 16777216)
+    hash = ('000000' + hash.toString(16)).substr(-6)
+  } while (hash === color)
+
+  color = hash
+}
+
+function resetGame () {
+  Deck.reset()
+  Signpost.reset()
+  Spells.reset()
+  Gems.reset()
+}
+
+function onHashChange () {
+  var hash = window.location.hash.substring(1)
+
+  if (/^[0-9A-F]{6}$/i.test(hash)) {
+    color = hash
+    PRNG.seed(parseInt(color, 16))
+  }
+
+  resetGame()
+}
+
 function startGame (callback) {
+  var hash = window.location.hash.substring(1)
+    , reloaded = true
+
+  if (/^[0-9A-F]{6}$/i.test(hash)) {
+    if (color === hash) {
+      reloaded = true
+    } else {
+      color = hash
+      PRNG.seed(parseInt(color, 16))
+    }
+  } else {
+    newColor()
+    PRNG.seed(parseInt(color, 16))
+  }
+
+  if (window.location.hash.substring(1) !== color) {
+    window.location.hash = color
+  } else if (reloaded) {
+    resetGame()
+  }
+
   requestAnimationFrame(callback)
 }
 
@@ -598,6 +649,8 @@ Game.play = function () {
 
   $('#sign1').touch(undefined, offSign)
   $('#sign2').touch(undefined, offSign)
+
+  $(window).on('hashchange', onHashChange)
 
   startGame(render)
 }

@@ -29,6 +29,14 @@ Fn.prototype.html = function (value) {
   return this
 }
 
+Fn.prototype.on = function (message, callback) {
+  if (this.element) {
+    this.element.addEventListener(message, callback, false)
+  }
+
+  return this
+}
+
 Fn.prototype.touch = function (start, end) {
   var self = this
 
