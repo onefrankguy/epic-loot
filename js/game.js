@@ -410,6 +410,22 @@ signpost.select = function (sign) {
   dirty |= 2
 }
 
+signpost.active = function () {
+  var sign = undefined
+
+  if (selected === 'sign1') {
+    if (stage === 1) {
+      sign = personalities[personalities_index]
+    } else if (stage === 2) {
+      sign = events[events_index]
+    }
+  } else if (selected === 'sign2') {
+    sign = locations[locations_index]
+  }
+
+  return sign
+}
+
 return signpost
 }())
 
@@ -502,6 +518,10 @@ gems.render = function () {
 
 gems.spend = function (suit) {
   var spent = false
+
+  if (!Signpost.active()) {
+    return spent
+  }
 
   switch (suit) {
     case 'moons':
