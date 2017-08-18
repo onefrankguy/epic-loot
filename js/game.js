@@ -131,6 +131,19 @@ deck.deal = function () {
   return Object.assign({}, hand[position - 1], {shuffled: true})
 }
 
+deck.add = function (spell) {
+  if (spell) {
+    hand.unshift({
+      name: spell.name,
+      value: spell.value,
+      suit1: spell.suit1,
+      suit2: spell.suit2,
+      suit3: spell.suit3
+    })
+    position += 1
+  }
+}
+
 return deck
 }())
 
@@ -413,43 +426,53 @@ signpost.select = function (sign) {
 }
 
 signpost.active = function () {
-  selected_sign = undefined
+  if (selected_sign) {
+    return selected_sign
+  }
+
+  var sign = undefined
 
   if (stage === 1) {
     if (selected === 'sign1') {
-      selected_sign = personalities[personalities_index]
+      sign = personalities[personalities_index]
     }
 
     if (selected === 'sign2') {
-      selected_sign = events[events_index]
+      sign = events[events_index]
     }
   }
 
   if (stage === 2) {
-    selected_sign = locations[locations_index]
+    sign = locations[locations_index]
+  }
+
+  if (sign) {
+    selected_sign = Object.assign({}, sign, {points: sign.value})
   }
 
   return selected_sign
 }
 
 signpost.cast = function (spell) {
-  if (spell && this.active() && selected_sign.value > 0) {
+  if (spell && this.active() && selected_sign.points > 0) {
     var suits = [selected_sign.suit1, selected_sign.suit2, selected_sign.suit3]
 
     if (spell.suit1 && suits.indexOf(spell.suit1) > -1) {
-      selected_sign.value -= spell.value
+      selected_sign.points -= spell.value
     }
 
     if (spell.suit2 && suits.indexOf(spell.suit2) > -1) {
-      selected_sign.value -= spell.value
+      selected_sign.points -= spell.value
     }
 
     if (spell.suit3 && suits.indexOf(spell.suit3) > -1) {
-      selected_sign.value -= spell.value
+      selected_sign.points -= spell.value
     }
   }
 
-  if (this.active() && selected_sign.value <= 0) {
+  if (this.active() && selected_sign.points <= 0) {
+    Deck.add(selected_sign)
+
     selected = undefined
     selected_sign = undefined
 
