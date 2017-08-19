@@ -488,27 +488,31 @@ const Game = (function game() {
   }
 
   function onSign(element) {
-    let type = element.unwrap().id;
-
-    if (type === 'sign1') {
-      type = Obstacles.get()[0].name;
-    }
-
-    if (type === 'sign2') {
-      type = Obstacles.get()[1].name;
-    }
-
-    Obstacles.pick(type);
-
     if (Obstacles.defeated()) {
       if (Deck.size() < 22) {
         Deck.add(Obstacles.get()[0].name);
       }
       Obstacles.deal();
       played = [];
+      dirty = true;
+      return;
     }
 
-    dirty = true;
+    if (Obstacles.get().length >= 2) {
+      let type = element.unwrap().id;
+      if (type === 'sign1') {
+        type = Obstacles.get()[0].name;
+      }
+      if (type === 'sign2') {
+        type = Obstacles.get()[1].name;
+      }
+      Obstacles.pick(type);
+
+      const card = Deck.deal();
+      Obstacles.use(card);
+      played.push(card);
+      dirty = true;
+    }
   }
 
   function renderCard(card) {
