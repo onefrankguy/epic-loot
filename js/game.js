@@ -560,11 +560,11 @@ const Game = (function game() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
 
+    let title = '';
     let id0 = '#sign1'
     let id1 = '#sign2'
     if (obstacles.length < 2) {
-      $('#flavor-title').html(obstacles[0].name);
-
+      title = obstacles[0].name;
       if (picked === 'sign2') {
         id0 = '#sign2'
         id1 = '#sign1'
@@ -573,6 +573,7 @@ const Game = (function game() {
 
     $(id0).html(renderCard(obstacles[0], true));
     $(id1).html(renderCard(obstacles[1], true));
+    $('#flavor-title').html(title);
   }
 
   function renderTokens() {
