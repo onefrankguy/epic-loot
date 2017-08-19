@@ -3,7 +3,7 @@
 //
 // [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki) "Tinker, Sailor, Soldier, Spy"
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
-window.Decktet = (function Decktet() {
+const Decktet = (function Decktet() {
   const cards = {};
 
   function get(name) {
@@ -164,6 +164,84 @@ const PRNG = (function prng() {
     seed,
     random,
     shuffle,
+  };
+}());
+
+const Personalities = (function personalities() {
+  let cards = [];
+  let discards = [];
+
+  function deal() {
+    const card = cards.pop();
+
+    if (card) {
+      discards.push(card);
+    }
+
+    return card;
+  }
+
+  function reset() {
+    cards = Decktet.personalities();
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  return {
+    deal,
+    reset,
+  };
+}());
+
+const Events = (function events() {
+  let cards = [];
+  let discards = [];
+
+  function deal() {
+    const card = cards.pop();
+
+    if (card) {
+      discards.push(card);
+    }
+
+    return card;
+  }
+
+  function reset() {
+    cards = Decktet.events();
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  return {
+    deal,
+    reset,
+  };
+}());
+
+const Locations = (function locations() {
+  let cards = [];
+  let discards = [];
+
+  function deal() {
+    const card = cards.pop();
+
+    if (card) {
+      discards.push(card);
+    }
+
+    return card;
+  }
+
+  function reset() {
+    cards = Decktet.locations();
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  return {
+    deal,
+    reset,
   };
 }());
 
