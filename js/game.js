@@ -250,6 +250,29 @@ const Locations = (function locations() {
   };
 }());
 
+const Blighted = (function blighted() {
+  let cards = [];
+
+  function deal() {
+    return cards.pop();
+  }
+
+  function add(card) {
+    cards.push(card);
+    PRNG.shuffle(cards);
+  }
+
+  function reset() {
+    cards = [];
+  }
+
+  return {
+    deal,
+    add,
+    reset,
+  };
+}());
+
 const Obstacles = (function obstacles() {
   let phase = 1;
   let active = [];
@@ -279,16 +302,23 @@ const Obstacles = (function obstacles() {
 
     if (phase === 2) {
       const loc = Locations.deal();
-      if (loc) {
-        active = [loc];
-        challenger = Decktet.get(loc);
+      const blt = Blighted.deal();
+      if (loc && blt) {
+        active = [loc, blt];
       }
     }
   }
 
   function pick(name) {
-    if (!challenger && active.indexOf(name) > -1) {
-      active = [name];
+    if (challenger) {
+      return;
+    }
+
+    const index = active.indexOf(name);
+    if (index  > -1) {
+      const selected = active.splice(index, 1);
+      active.forEach(name => Blighted.add(name));
+      active = selected;
       challenger = Decktet.get(name);
     }
   }
@@ -326,6 +356,7 @@ const Obstacles = (function obstacles() {
     Personalities.reset();
     Events.reset();
     Locations.reset();
+    Blighted.reset();
 
     phase = 1;
     deal();
