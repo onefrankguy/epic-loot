@@ -8,36 +8,37 @@ const Decktet = (function Decktet() {
   const cards = {};
 
   function get(name) {
-    if (has(cards, name)) {
-      return Object.assign({}, cards[name]);
+    if (has.call(cards, name)) {
+      return Object.assign({ name }, cards[name]);
     }
+
     return undefined;
   }
 
   // **GAME** is a RPG at heart.
   function attributes() {
     return [
-      'strength', 'body', 'quickness', 'intelligence', 'willpower', 'charisma',
+      'suns', 'leaves', 'waves', 'knots', 'moons', 'wyrms',
     ];
   }
 
   // The suit of Suns (ᛒ) is strength.
-  cards.strength = { value: 1, suits: ['suns'] };
+  cards.suns = { value: 1, suits: ['suns'] };
 
   // The suit of Leaves (ᚦ) is body.
-  cards.body = { value: 1, suits: ['leaves'] };
+  cards.leaves = { value: 1, suits: ['leaves'] };
 
   // The suit of Waves (ᚲ) is quickness.
-  cards.quickness = { value: 1, suits: ['waves'] };
+  cards.waves = { value: 1, suits: ['waves'] };
 
   // The suit of Knots (ᚠ) is intelligence.
-  cards.intelligence = { value: 1, suits: ['knots'] };
+  cards.knots = { value: 1, suits: ['knots'] };
 
   // The suit of Moons (ᚷ) is willpower.
-  cards.willpower = { value: 1, suits: ['moons'] };
+  cards.moons = { value: 1, suits: ['moons'] };
 
   // The suit of Wyrms (ᛆ) is charisma.
-  cards.charisma = { value: 1, suits: ['wyrms'] };
+  cards.wyrms = { value: 1, suits: ['wyrms'] };
 
   // You start the game with four personalities, the Excuse, the Sailor,
   // the Soldier, and the Diplomat. This gives you one of each suit.
@@ -255,7 +256,11 @@ const Obstacles = (function obstacles() {
   let challenger;
 
   function get() {
-    return active;
+    if (challenger) {
+      return [challenger];
+    }
+
+    return active.map(name => Decktet.get(name));
   }
 
   function deal() {
@@ -276,12 +281,13 @@ const Obstacles = (function obstacles() {
       const loc = Locations.deal();
       if (loc) {
         active = [loc];
+        challenger = Decktet.get(loc);
       }
     }
   }
 
   function pick(name) {
-    if (active.indexOf(name) > -1) {
+    if (!challenger && active.indexOf(name) > -1) {
       active = [name];
       challenger = Decktet.get(name);
     }
@@ -306,6 +312,9 @@ const Obstacles = (function obstacles() {
 
     if (match) {
       challenger.value -= card.value;
+      if (challenger.value < 0) {
+        challenger.value = 0;
+      }
     }
   }
 
@@ -314,13 +323,12 @@ const Obstacles = (function obstacles() {
   }
 
   function reset() {
-    phase = 1;
-    active = [];
-    challenger = undefined;
-
     Personalities.reset();
     Events.reset();
     Locations.reset();
+
+    phase = 1;
+    deal();
   }
 
   return {
@@ -364,6 +372,10 @@ const Deck = (function deck() {
     }
   }
 
+  function size() {
+    return cards.length + discards.length;
+  }
+
   function reset() {
     cards = ['excuse', 'sailor', 'soldier', 'diplomat'];
     discards = [];
@@ -374,6 +386,7 @@ const Deck = (function deck() {
     shuffle,
     deal,
     add,
+    size,
     reset,
   };
 }());
@@ -382,12 +395,22 @@ const Tokens = (function tokens() {
   const has = Object.prototype.hasOwnProperty;
   let counts = {};
 
+  function get() {
+    return counts;
+  }
+
   function count(name) {
     if (has.call(counts, name)) {
       return counts[name];
     }
 
     return 0;
+  }
+
+  function spend(name) {
+    if (has.call(counts, name) && counts[name] > 0) {
+      counts[name] -= 1;
+    }
   }
 
   function reset() {
@@ -399,638 +422,116 @@ const Tokens = (function tokens() {
   }
 
   return {
+    get,
     count,
+    spend,
     reset,
   };
 }());
 
-const TDeck = (function () { // eslint-disable-line func-names
-  function makeStartingHand() {
-    const cards = [{
-      name: 'the Excuse',
-      value: 0,
-    }, {
-      name: 'the Sailor',
-      value: 4,
-      suit1: 'waves',
-      suit2: 'leaves',
-    }, {
-      name: 'the Soldier',
-      value: 5,
-      suit1: 'wyrms',
-      suit2: 'knots',
-    }, {
-      name: 'the Diplomat',
-      value: 5,
-      suit1: 'suns',
-      suit2: 'moons',
-    }];
+const Game = (function game() {
+  const $ = window.jQuery;
+  let color;
+  let played = [];
+  let dirty = true;
 
-    PRNG.shuffle(cards);
-    return cards;
-  }
-
-  function makeAces() {
-    const cards = [{
-      name: 'Moons',
-      value: 1,
-      suit1: 'moons',
-    }, {
-      name: 'Suns',
-      value: 1,
-      suit1: 'suns',
-    }, {
-      name: 'Waves',
-      value: 1,
-      suit1: 'waves',
-    }, {
-      name: 'Leaves',
-      value: 1,
-      suit1: 'leaves',
-    }, {
-      name: 'Wyrms',
-      value: 1,
-      suit1: 'wyrms',
-    }, {
-      name: 'Knots',
-      value: 1,
-      suit1: 'knots',
-    }];
-
-    PRNG.shuffle(cards);
-    return cards;
-  }
-
-  let hand = makeStartingHand();
-  let aces = makeAces();
-  let position = 0;
-  const deck = {};
-
-  deck.reset = function reset() {
-    hand = makeStartingHand();
-    aces = makeAces();
-    position = 0;
-  };
-
-  deck.render = function render() {
-  };
-
-  deck.deal = function deal() {
-    if (position > -1 && position < hand.length) {
-      position += 1;
-      return hand[position - 1];
+  function onToken(element) {
+    if (Obstacles.defeated()) {
+      return;
     }
 
-    const ace = aces.pop();
-    if (ace) {
-      hand.push(ace);
+    const type = element.unwrap().id;
+
+    if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
+      Tokens.spend(type);
+      Obstacles.use(type);
+
+      if (!Obstacles.defeated()) {
+        const card = Deck.deal();
+        Obstacles.use(card);
+        played.push(card);
+      }
+
+      dirty = true;
     }
-    PRNG.shuffle(hand);
+  }
 
-    position = 1;
-    return Object.assign({}, hand[position - 1], { shuffled: true });
-  };
+  function onSign(element) {
+    let type = element.unwrap().id;
 
-  deck.add = function add(spell) {
-    if (spell) {
-      hand.unshift({
-        name: spell.name,
-        value: spell.value,
-        suit1: spell.suit1,
-        suit2: spell.suit2,
-        suit3: spell.suit3,
-      });
-      position += 1;
+    if (type === 'sign1') {
+      type = Obstacles.get()[0].name;
     }
-  };
 
-  return deck;
-}());
+    if (type === 'sign2') {
+      type = Obstacles.get()[1].name;
+    }
 
-const Signpost = (function () { // eslint-disable-line func-names
-  function makePersonalities() {
-    const cards = [{
-      name: 'the Author',
-      value: 2,
-      suit1: 'moons',
-      suit2: 'knots',
-    }, {
-      name: 'the Painter',
-      value: 3,
-      suit1: 'suns',
-      suit2: 'knots',
-    }, {
-      name: 'the Savage',
-      value: 3,
-      suit1: 'leaves',
-      suit2: 'wyrms',
-    }, {
-      name: 'the Lunatic',
-      value: 6,
-      suit1: 'moons',
-      suit2: 'waves',
-    }, {
-      name: 'the Penitent',
-      value: 6,
-      suit1: 'suns',
-      suit2: 'wyrms',
-    }, {
-      name: 'the Merchant',
-      value: 9,
-      suit1: 'leaves',
-      suit2: 'knots',
-    }, {
-      name: 'the Watchman',
-      value: 11,
-      suit1: 'moons',
-      suit2: 'wyrms',
-      suit3: 'knots',
-    }, {
-      name: 'the Light Keeper',
-      value: 11,
-      suit1: 'suns',
-      suit2: 'waves',
-      suit3: 'knots',
-    }, {
-      name: 'the Consul',
-      value: 12,
-      suit1: 'moons',
-      suit2: 'waves',
-      suit3: 'knots',
-    }, {
-      name: 'the Bard',
-      value: 10,
-      suit1: 'suns',
-    }, {
-      name: 'the Huntress',
-      value: 10,
-      suit1: 'moons',
-    }];
+    Obstacles.pick(type);
 
-    PRNG.shuffle(cards);
-    return cards;
+    if (Obstacles.defeated()) {
+      if (Deck.size() < 22) {
+        Deck.add(Obstacles.get()[0].name);
+      }
+      Obstacles.deal();
+      played = [];
+    }
+
+    dirty = true;
   }
 
-  function makeEvents() {
-    const cards = [{
-      name: 'the Journey',
-      value: 3,
-      suit1: 'moons',
-      suit2: 'waves',
-    }, {
-      name: 'Battle',
-      value: 4,
-      suit1: 'wyrms',
-      suit2: 'knots',
-    }, {
-      name: 'Discovery',
-      value: 5,
-      suit1: 'suns',
-      suit2: 'waves',
-    }, {
-      name: 'the Market',
-      value: 6,
-      suit1: 'leaves',
-      suit2: 'knots',
-    }, {
-      name: 'the Chance Meeting',
-      value: 7,
-      suit1: 'moons',
-      suit2: 'leaves',
-    }, {
-      name: 'Betrayal',
-      value: 8,
-      suit1: 'wyrms',
-      suit2: 'knots',
-    }, {
-      name: 'the Pact',
-      value: 9,
-      suit1: 'moons',
-      suit2: 'suns',
-    }, {
-      name: 'the Harvest',
-      value: 11,
-      suit1: 'moons',
-      suit2: 'suns',
-      suit3: 'leaves',
-    }, {
-      name: 'the Rite',
-      value: 12,
-      suit1: 'moons',
-      suit2: 'leaves',
-      suit3: 'wyrms',
-    }, {
-      name: 'Calamity',
-      value: 10,
-      suit1: 'wyrms',
-    }, {
-      name: 'Windfall',
-      value: 10,
-      suit1: 'knots',
-    }];
-
-    PRNG.shuffle(cards);
-    return cards;
-  }
-
-  function makeLocations() {
-    const cards = [{
-      name: 'the Desert',
-      value: 2,
-      suit1: 'suns',
-      suit2: 'wyrms',
-    }, {
-      name: 'the Mountain',
-      value: 4,
-      suit1: 'moons',
-      suit2: 'suns',
-    }, {
-      name: 'the Forest',
-      value: 5,
-      suit1: 'moons',
-      suit2: 'leaves',
-    }, {
-      name: 'the Castle',
-      value: 7,
-      suit1: 'suns',
-      suit2: 'knots',
-    }, {
-      name: 'the Cave',
-      value: 7,
-      suit1: 'waves',
-      suit2: 'wyrms',
-    }, {
-      name: 'the Mill',
-      value: 8,
-      suit1: 'waves',
-      suit2: 'leaves',
-    }, {
-      name: 'the Darkness',
-      value: 9,
-      suit1: 'waves',
-      suit2: 'wyrms',
-    }, {
-      name: 'the Borderland',
-      value: 11,
-      suit1: 'waves',
-      suit2: 'leaves',
-      suit3: 'wyrms',
-    }, {
-      name: 'the Island',
-      value: 12,
-      suit1: 'suns',
-      suit2: 'waves',
-      suit3: 'wyrms',
-    }, {
-      name: 'the Window',
-      value: 12,
-      suit1: 'suns',
-      suit2: 'leaves',
-      suit3: 'knots',
-    }, {
-      name: 'the Sea',
-      value: 10,
-      suit1: 'waves',
-    }];
-
-    PRNG.shuffle(cards);
-
-    return [].concat([{
-      name: 'the Origin',
-      value: 2,
-      suit1: 'waves',
-      suit2: 'leaves',
-    }], cards, [{
-      name: 'the End',
-      value: 10,
-      suit1: 'knots',
-    }]);
-  }
-
-  function makeSignHTML(sign) {
+  function renderCard(card) {
     let html = '';
 
-    html += `<span class="name">${sign.name}</span>`;
-    html += `<span class="value">${sign.value}</span>`;
-
-    if (sign.suit1) {
-      html += `<span class="gem ${sign.suit1}"></span>`;
-    }
-
-    if (sign.suit2) {
-      html += `<span class="gem ${sign.suit2}"></span>`;
-    }
-
-    if (sign.suit3) {
-      html += `<span class="gem ${sign.suit3}"></span>`;
+    if (card) {
+      html += `<span>${card.name}</span>`;
+      html += `<span>${card.value}</span>`;
+      card.suits.forEach((suit) => {
+        html += `<span class="${suit} gem"></span>`;
+      });
     }
 
     return html;
   }
 
-  const $ = window.jQuery;
-  let dirty = 1;
-  let personalities = makePersonalities();
-  let personalitiesIndex = 0;
-  let events = makeEvents();
-  let eventsIndex = 0;
-  let locations = makeLocations();
-  let locationsIndex = 0;
-  let selected;
-  let selectedSign;
-  let stage = 1;
-  const signpost = {};
+  function renderDeck() {
+    let html = '';
 
-  signpost.reset = function reset() {
-    personalities = makePersonalities();
-    personalitiesIndex = 0;
-    events = makeEvents();
-    eventsIndex = 0;
-    locations = makeLocations();
-    locationsIndex = 0;
-    selected = undefined;
-    selectedSign = undefined;
-    stage = 1;
-    dirty = 1;
-  };
-
-  signpost.render = function render() {
-    if (dirty & 1) {
-      let sign1 = { name: '', value: '' };
-      let sign2 = { name: '', value: '' };
-
-      if (stage === 1) {
-        sign1 = personalities[personalitiesIndex];
-        sign2 = events[eventsIndex];
-      }
-
-      if (stage === 2) {
-        sign1 = locations[locationsIndex];
-      }
-
-      $('#sign1').html(makeSignHTML(sign1));
-      $('#sign2').html(makeSignHTML(sign2));
-    }
-
-    if (dirty & 2) {
-      if (selected === 'sign1') {
-        $('#sign2').html('');
-      }
-      if (selected === 'sign2') {
-        $('#sign1').html('');
-      }
-    }
-
-    dirty = 0;
-  };
-
-  signpost.select = function select(sign) {
-    selected = sign;
-    dirty |= 2;
-  };
-
-  signpost.active = function active() {
-    if (selectedSign) {
-      return selectedSign;
-    }
-
-    let sign;
-
-    if (stage === 1) {
-      if (selected === 'sign1') {
-        sign = personalities[personalitiesIndex];
-      }
-
-      if (selected === 'sign2') {
-        sign = events[eventsIndex];
-      }
-    }
-
-    if (stage === 2) {
-      sign = locations[locationsIndex];
-    }
-
-    if (sign) {
-      selectedSign = Object.assign({}, sign, { points: sign.value });
-    }
-
-    return selectedSign;
-  };
-
-  signpost.cast = function cast(spell) {
-    if (spell && this.active() && selectedSign.points > 0) {
-      const suits = [selectedSign.suit1, selectedSign.suit2, selectedSign.suit3];
-
-      if (spell.suit1 && suits.indexOf(spell.suit1) > -1) {
-        selectedSign.points -= spell.value;
-      }
-
-      if (spell.suit2 && suits.indexOf(spell.suit2) > -1) {
-        selectedSign.points -= spell.value;
-      }
-
-      if (spell.suit3 && suits.indexOf(spell.suit3) > -1) {
-        selectedSign.points -= spell.value;
-      }
-    }
-
-    if (this.active() && selectedSign.points <= 0) {
-      TDeck.add(selectedSign);
-
-      selected = undefined;
-      selectedSign = undefined;
-
-      if (stage === 1) {
-        personalitiesIndex += 1;
-        eventsIndex += 1;
-      }
-
-      if (stage === 2) {
-        locationsIndex += 1;
-      }
-
-      dirty |= 1;
-    }
-  };
-
-  return signpost;
-}());
-
-const Spells = (function () { // eslint-disable-line func-names
-  const $ = window.jQuery;
-  let dirty = 0;
-  let casted = [];
-  const spells = {};
-
-  spells.reset = function reset() {
-    casted = [];
-    dirty |= 1;
-  };
-
-  spells.render = function render() {
-    if (dirty & 1) {
-      let html = '';
-      const visible = casted.slice(-10);
-
-      for (const spell of visible) { // eslint-disable-line no-restricted-syntax
+    played.forEach((name) => {
+      const card = Decktet.get(name);
+      if (card) {
         html += '<p class="spell">';
-        html += `<span class="name">${spell.name}</span>`;
-        html += `<span class="power">${spell.value}</span>`;
-        if (spell.suit1) {
-          html += `<span class="gem ${spell.suit1}"></span>`;
-        }
-        if (spell.suit2) {
-          html += `<span class="gem ${spell.suit2}"></span>`;
-        }
-        if (spell.suit3) {
-          html += `<span class="gem ${spell.suit3}"></span>`;
-        }
+        html += renderCard(card);
         html += '</p>';
       }
+    });
 
-      $('#spells').html(html);
-    }
-
-    dirty = 0;
-  };
-
-  spells.cast = function cast(spell) {
-    if (spell) {
-      Signpost.cast(spell);
-      if (spell.shuffled) {
-        casted = [];
-      }
-      casted.push(spell);
-      dirty |= 1;
-    }
-  };
-
-  return spells;
-}());
-
-const Gems = (function () { // eslint-disable-line func-names
-  const $ = window.jQuery;
-  let dirty = 1;
-  let moons = 6;
-  let suns = 6;
-  let waves = 6;
-  let leaves = 6;
-  let wyrms = 6;
-  let knots = 6;
-  const gems = {};
-
-  gems.reset = function reset() {
-    moons = 6;
-    suns = 6;
-    waves = 6;
-    leaves = 6;
-    wyrms = 6;
-    knots = 6;
-
-    dirty |= 1;
-  };
-
-  gems.render = function render() {
-    if (dirty & 1) {
-      $('#moons').html(moons);
-      $('#suns').html(suns);
-      $('#waves').html(waves);
-      $('#leaves').html(leaves);
-      $('#wyrms').html(wyrms);
-      $('#knots').html(knots);
-    }
-
-    dirty = 0;
-  };
-
-  gems.spend = function spend(suit) {
-    let spent = false;
-
-    if (!Signpost.active()) {
-      return spent;
-    }
-
-    switch (suit) {
-      case 'moons':
-        if (moons > 0) {
-          spent = true;
-          moons -= 1;
-          dirty |= 1;
-        }
-        break;
-      case 'suns':
-        if (suns > 0) {
-          spent = true;
-          suns -= 1;
-          dirty |= 1;
-        }
-        break;
-      case 'waves':
-        if (waves > 0) {
-          spent = true;
-          waves -= 1;
-          dirty |= 1;
-        }
-        break;
-      case 'leaves':
-        if (leaves > 0) {
-          spent = true;
-          leaves -= 1;
-          dirty |= 1;
-        }
-        break;
-      case 'wyrms':
-        if (wyrms > 0) {
-          spent = true;
-          wyrms -= 1;
-          dirty |= 1;
-        }
-        break;
-      case 'knots':
-        if (knots > 0) {
-          spent = true;
-          knots -= 1;
-          dirty |= 1;
-        }
-        break;
-      default:
-        break;
-    }
-
-    if (spent) {
-      Signpost.cast({ value: 1, suit1: suit });
-    }
-
-    return spent;
-  };
-
-  return gems;
-}());
-
-(function (TGame) { // eslint-disable-line func-names
-  let color;
-
-  function offGem(element) {
-    const type = element.unwrap().id;
-
-    if (Gems.spend(type)) {
-      Spells.cast(TDeck.deal());
-    }
+    $('#spells').html(html);
   }
 
-  function offSign(element) {
-    const type = element.unwrap().id;
-    Signpost.select(type);
-    Spells.cast(TDeck.deal());
+  function renderObstacles() {
+    const obstacles = Obstacles.get();
+    $('#sign1').html(renderCard(obstacles[0]));
+    $('#sign2').html(renderCard(obstacles[1]));
+  }
+
+  function renderTokens() {
+    const tokens = Tokens.get();
+
+    Object.keys(tokens).forEach((type) => {
+      $(`#${type}`).html(tokens[type]);
+    });
   }
 
   function render() {
-    requestAnimationFrame(render);
+    if (dirty) {
+      renderDeck();
+      renderObstacles();
+      renderTokens();
+      dirty = false;
+    }
 
-    TDeck.render();
-    Signpost.render();
-    Spells.render();
-    Gems.render();
+    requestAnimationFrame(render);
   }
 
   function newColor() {
@@ -1045,10 +546,9 @@ const Gems = (function () { // eslint-disable-line func-names
   }
 
   function resetGame() {
-    TDeck.reset();
-    Signpost.reset();
-    Spells.reset();
-    Gems.reset();
+    Obstacles.reset();
+    Deck.reset();
+    Tokens.reset();
   }
 
   function onHashChange() {
@@ -1087,23 +587,25 @@ const Gems = (function () { // eslint-disable-line func-names
     requestAnimationFrame(callback);
   }
 
-  TGame.play = function play() { // eslint-disable-line no-param-reassign
-    const $ = window.jQuery;
+  function play() {
+    $('#moons').touch(undefined, onToken);
+    $('#suns').touch(undefined, onToken);
+    $('#waves').touch(undefined, onToken);
+    $('#leaves').touch(undefined, onToken);
+    $('#wyrms').touch(undefined, onToken);
+    $('#knots').touch(undefined, onToken);
 
-    $('#moons').touch(undefined, offGem);
-    $('#suns').touch(undefined, offGem);
-    $('#waves').touch(undefined, offGem);
-    $('#leaves').touch(undefined, offGem);
-    $('#wyrms').touch(undefined, offGem);
-    $('#knots').touch(undefined, offGem);
-
-    $('#sign1').touch(undefined, offSign);
-    $('#sign2').touch(undefined, offSign);
+    $('#sign1').touch(undefined, onSign);
+    $('#sign2').touch(undefined, onSign);
 
     $(window).on('hashchange', onHashChange);
 
     startGame(render);
-  };
-}(window.TGame = window.TGame || {}));
+  }
 
-window.TGame.play();
+  return {
+    play,
+  };
+}());
+
+Game.play();
