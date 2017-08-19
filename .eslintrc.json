@@ -2,5 +2,8 @@
   "env": {
     "browser": true
   },
+  "rules": {
+    "no-bitwise": "off"
+  },
   "extends": "airbnb-base"
 }
