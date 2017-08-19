@@ -307,6 +307,8 @@ const Obstacles = (function obstacles() {
         active = [loc, blt];
       }
     }
+
+    PRNG.shuffle(active);
   }
 
   function pick(name) {
