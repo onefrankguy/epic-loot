@@ -4,10 +4,14 @@
 // [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki) "Tinker, Sailor, Soldier, Spy"
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
 const Decktet = (function Decktet() {
+  const has = Object.prototype.hasOwnProperty;
   const cards = {};
 
   function get(name) {
-    return cards[name];
+    if (has(cards, name)) {
+      return Object.assign({}, cards[name]);
+    }
+    return undefined;
   }
 
   // **GAME** is a RPG at heart.
@@ -241,6 +245,90 @@ const Locations = (function locations() {
 
   return {
     deal,
+    reset,
+  };
+}());
+
+const Obstacles = (function obstacles() {
+  let phase = 1;
+  let active = [];
+  let challenger;
+
+  function get() {
+    return active;
+  }
+
+  function deal() {
+    active = [];
+    challenger = undefined;
+
+    if (phase === 1) {
+      const per = Personalities.deal();
+      const evt = Events.deal();
+      if (per && evt) {
+        active = [per, evt];
+      } else {
+        phase = 2;
+      }
+    }
+
+    if (phase === 2) {
+      const loc = Locations.deal();
+      if (loc) {
+        active = [loc];
+      }
+    }
+  }
+
+  function pick(name) {
+    if (active.indexOf(name) > -1) {
+      active = [name];
+      challenger = Decktet.get(name);
+    }
+  }
+
+  function use(name) {
+    if (!challenger) {
+      return;
+    }
+
+    const card = Decktet.get(name);
+    if (!card) {
+      return;
+    }
+
+    let match = false;
+    card.suits.forEach((suit) => {
+      if (challenger.suits.indexOf(suit) > -1) {
+        match = true;
+      }
+    });
+
+    if (match) {
+      challenger.value -= card.value;
+    }
+  }
+
+  function defeated() {
+    return challenger && challenger.value <= 0;
+  }
+
+  function reset() {
+    phase = 1;
+    active = [];
+    challenger = undefined;
+
+    Personalities.reset();
+    Events.reset();
+    Locations.reset();
+  }
+
+  return {
+    get,
+    deal,
+    pick,
+    use,
+    defeated,
     reset,
   };
 }());
