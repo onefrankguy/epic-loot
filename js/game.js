@@ -317,9 +317,9 @@ const Obstacles = (function obstacles() {
     }
 
     const index = active.indexOf(name);
-    if (index  > -1) {
+    if (index > -1) {
       const selected = active.splice(index, 1);
-      active.forEach(name => Blighted.add(name));
+      active.forEach(card => Blighted.add(card));
       active = selected;
       challenger = Decktet.get(name);
     }
