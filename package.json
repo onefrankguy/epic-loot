@@ -4,7 +4,7 @@
   "repository": "https://github.com/onefrankguy/js13k2017",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint js",
+    "lint": "eslint js/jquery.js",
     "docs": "docco -l linear js/*.js"
   },
   "devDependencies": {
