@@ -445,6 +445,7 @@ const Game = (function game() {
     if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
       Tokens.spend(type);
       Obstacles.use(type);
+      played.push(type);
 
       if (!Obstacles.defeated()) {
         const card = Deck.deal();
