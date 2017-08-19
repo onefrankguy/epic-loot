@@ -122,12 +122,11 @@ window.Decktet = (function Decktet() {
   };
 }());
 
-const PRNG = (function () { // eslint-disable-line func-names
-  const rng = {};
+const PRNG = (function prng() {
   const max = 2 ** 32;
   let state;
 
-  rng.seed = function seed(value) {
+  function seed(value) {
     if (value !== undefined) {
       state = parseInt(value, 10);
     }
@@ -137,31 +136,35 @@ const PRNG = (function () { // eslint-disable-line func-names
     }
 
     return state;
-  };
+  }
 
-  rng.random = function random() {
+  function random() {
     state += (state * state) | 5;
     return (state >>> 32) / max;
-  };
+  }
 
-  rng.shuffle = function shuffle(array) {
-    let i = 0;
-    let j = 0;
+  function shuffle(array) {
+    let i;
+    let j;
     let temp;
 
     if (state === undefined) {
-      this.seed();
+      seed();
     }
 
     for (i = array.length - 1; i > 0; i -= 1) {
-      j = Math.floor(this.random() * (i + 1));
+      j = Math.floor(random() * (i + 1));
       temp = array[i];
       array[i] = array[j]; // eslint-disable-line no-param-reassign
       array[j] = temp; // eslint-disable-line no-param-reassign
     }
-  };
+  }
 
-  return rng;
+  return {
+    seed,
+    random,
+    shuffle,
+  };
 }());
 
 const Deck = (function () { // eslint-disable-line func-names
