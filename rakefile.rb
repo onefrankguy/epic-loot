@@ -17,6 +17,11 @@ task :test do
   fail 'zip file too big!' if size > MAX_SIZE
 end
 
+desc 'Publish to the website'
+task :publish do
+  sh 'rsync -avz --delete --files-from=manifest.txt ./ frankmitchell.org:/home/public/js13k2017/'
+end
+
 def percent size
   (size.to_f / MAX_SIZE.to_f * 100).to_i
 end
