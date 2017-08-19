@@ -1,0 +1,12 @@
+{
+  "name": "js13k2017",
+  "version": "1.0.0",
+  "repository": "https://github.com/onefrankguy/js13k2017",
+  "license": "MIT",
+  "scripts": {
+    "docs": "docco -l linear js/*.js"
+  },
+  "devDependencies": {
+    "docco": "0.7.0"
+  }
+}
