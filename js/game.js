@@ -290,6 +290,32 @@ const Deck = (function deck() {
   };
 }());
 
+const Tokens = (function tokens() {
+  const has = Object.prototype.hasOwnProperty;
+  let counts = {};
+
+  function count(name) {
+    if (has.call(counts, name)) {
+      return counts[name];
+    }
+
+    return 0;
+  }
+
+  function reset() {
+    counts = {};
+
+    Decktet.attributes().forEach((attribute) => {
+      counts[attribute] = 6;
+    });
+  }
+
+  return {
+    count,
+    reset,
+  };
+}());
+
 const TDeck = (function () { // eslint-disable-line func-names
   function makeStartingHand() {
     const cards = [{
@@ -893,7 +919,7 @@ const Gems = (function () { // eslint-disable-line func-names
   return gems;
 }());
 
-(function (Game) { // eslint-disable-line func-names
+(function (TGame) { // eslint-disable-line func-names
   let color;
 
   function offGem(element) {
@@ -973,7 +999,7 @@ const Gems = (function () { // eslint-disable-line func-names
     requestAnimationFrame(callback);
   }
 
-  Game.play = function play() { // eslint-disable-line no-param-reassign
+  TGame.play = function play() { // eslint-disable-line no-param-reassign
     const $ = window.jQuery;
 
     $('#moons').touch(undefined, offGem);
@@ -990,6 +1016,6 @@ const Gems = (function () { // eslint-disable-line func-names
 
     startGame(render);
   };
-}(window.Game = window.Game || {}));
+}(window.TGame = window.TGame || {}));
 
-window.Game.play();
+window.TGame.play();
