@@ -167,7 +167,52 @@ const PRNG = (function prng() {
   };
 }());
 
-const Deck = (function () { // eslint-disable-line func-names
+const Deck = (function deck() {
+  let cards = [];
+  let discards = [];
+
+  function shuffle() {
+    cards = cards.concat(discards);
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  function deal() {
+    let card = cards.pop();
+
+    if (!card) {
+      shuffle();
+      card = cards.pop();
+    }
+
+    if (card) {
+      discards.push(card);
+    }
+
+    return card;
+  }
+
+  function add(card) {
+    if (card) {
+      discards.push(card);
+    }
+  }
+
+  function reset() {
+    cards = ['excuse', 'sailor', 'soldier', 'diplomat'];
+    discards = [];
+    shuffle();
+  }
+
+  return {
+    shuffle,
+    deal,
+    add,
+    reset,
+  };
+}());
+
+const TDeck = (function () { // eslint-disable-line func-names
   function makeStartingHand() {
     const cards = [{
       name: 'the Excuse',
@@ -598,7 +643,7 @@ const Signpost = (function () { // eslint-disable-line func-names
     }
 
     if (this.active() && selectedSign.points <= 0) {
-      Deck.add(selectedSign);
+      TDeck.add(selectedSign);
 
       selected = undefined;
       selectedSign = undefined;
@@ -777,20 +822,20 @@ const Gems = (function () { // eslint-disable-line func-names
     const type = element.unwrap().id;
 
     if (Gems.spend(type)) {
-      Spells.cast(Deck.deal());
+      Spells.cast(TDeck.deal());
     }
   }
 
   function offSign(element) {
     const type = element.unwrap().id;
     Signpost.select(type);
-    Spells.cast(Deck.deal());
+    Spells.cast(TDeck.deal());
   }
 
   function render() {
     requestAnimationFrame(render);
 
-    Deck.render();
+    TDeck.render();
     Signpost.render();
     Spells.render();
     Gems.render();
@@ -808,7 +853,7 @@ const Gems = (function () { // eslint-disable-line func-names
   }
 
   function resetGame() {
-    Deck.reset();
+    TDeck.reset();
     Signpost.reset();
     Spells.reset();
     Gems.reset();
