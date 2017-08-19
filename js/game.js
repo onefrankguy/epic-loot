@@ -464,6 +464,7 @@ const Tokens = (function tokens() {
 
 const Game = (function game() {
   let color;
+  let picked;
   let played = [];
   let dirty = true;
 
@@ -490,7 +491,9 @@ const Game = (function game() {
   }
 
   function onSign(element) {
-    if (Obstacles.defeated()) {
+    const sign = element.unwrap().id;
+
+    if (Obstacles.defeated() && sign === picked) {
       if (Deck.size() < 22) {
         Deck.add(Obstacles.get()[0].name);
       }
@@ -501,7 +504,7 @@ const Game = (function game() {
     }
 
     if (Obstacles.get().length >= 2) {
-      let type = element.unwrap().id;
+      let type = picked = sign;
       if (type === 'sign1') {
         type = Obstacles.get()[0].name;
       }
@@ -517,15 +520,21 @@ const Game = (function game() {
     }
   }
 
-  function renderCard(card) {
+  function renderCard(card, gem) {
     let html = '';
 
     if (card) {
-      html += `<span>${card.name}</span>`;
-      html += `<span>${card.value}</span>`;
+      html += `<span class="name">${card.name}</span>`;
+      html += `<span class="value">${card.value}</span>`;
+      if (gem) {
+        html += '<div class="gems">';
+      }
       card.suits.forEach((suit) => {
         html += `<span class="${suit} gem"></span>`;
       });
+      if (gem) {
+        html += '</div>';
+      }
     }
 
     return html;
@@ -550,8 +559,20 @@ const Game = (function game() {
   function renderObstacles() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
-    $('#sign1').html(renderCard(obstacles[0]));
-    $('#sign2').html(renderCard(obstacles[1]));
+
+    let id0 = '#sign1'
+    let id1 = '#sign2'
+    if (obstacles.length < 2) {
+      $('#flavor-title').html(obstacles[0].name);
+
+      if (picked === 'sign2') {
+        id0 = '#sign2'
+        id1 = '#sign1'
+      }
+    }
+
+    $(id0).html(renderCard(obstacles[0], true));
+    $(id1).html(renderCard(obstacles[1], true));
   }
 
   function renderTokens() {

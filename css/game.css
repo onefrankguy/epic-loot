@@ -61,33 +61,52 @@ a, a:visited {
   border-radius: 50%;
 }
 
+/* FLAVOR */
+.flavor.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: serif;
+  font-variant: small-caps;
+  text-transform: capitalize;
+}
+
+.flavor.text {
+  font-family: serif;
+}
+
 /* SIGNS */
 #signpost {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 4rem;
 }
 
 .sign {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  height: 4rem;
-  border: 1px solid rgba(0,0,0,.3);
-  padding-right: 1rem;
+  min-height: 4rem;
+  min-width: 6rem;
 }
 
-.sign {
-  margin-bottom: 2rem;
+.sign .name {
+  display: none;
 }
 
-.sign > * {
-  margin-left: 1rem;
+.sign .gems {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .sign .gem {
   width: 1.6rem;
   height: 1.6rem;
+  border: 1px solid black;
   border-radius: 50%;
 }
 
@@ -95,7 +114,7 @@ a, a:visited {
 #gems {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-around;
 }
 
 #gems .gem {
@@ -104,6 +123,7 @@ a, a:visited {
   align-items: center;
   width: 4rem;
   height: 4rem;
+  border: 1px solid black;
   border-radius: 50%;
 }
 
