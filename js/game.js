@@ -1,3 +1,127 @@
+// **GAME** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], a deck-building
+// game by Mike Richey for the [Decktet][].
+//
+// [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki) "Tinker, Sailor, Soldier, Spy"
+// [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
+window.Decktet = (function Decktet() {
+  const cards = {};
+
+  function get(name) {
+    return cards[name];
+  }
+
+  // **GAME** is a RPG at heart.
+  function attributes() {
+    return [
+      'strength', 'body', 'quickness', 'intelligence', 'willpower', 'charisma',
+    ];
+  }
+
+  // The suit of Suns (ᛒ) is strength.
+  cards.strength = { value: 1, suits: ['suns'] };
+
+  // The suit of Leaves (ᚦ) is body.
+  cards.body = { value: 1, suits: ['leaves'] };
+
+  // The suit of Waves (ᚲ) is quickness.
+  cards.quickness = { value: 1, suits: ['waves'] };
+
+  // The suit of Knots (ᚠ) is intelligence.
+  cards.intelligence = { value: 1, suits: ['knots'] };
+
+  // The suit of Moons (ᚷ) is willpower.
+  cards.willpower = { value: 1, suits: ['moons'] };
+
+  // The suit of Wyrms (ᛆ) is charisma.
+  cards.charisma = { value: 1, suits: ['wyrms'] };
+
+  // You start the game with four personalities, the Excuse, the Sailor,
+  // the Soldier, and the Diplomat. This gives you one of each suit.
+  cards.excuse = { value: 0, suits: [] };
+  cards.sailor = { value: 4, suits: ['waves', 'leaves'] };
+  cards.soldier = { value: 5, suits: ['wyrms', 'knots'] };
+  cards.diplomat = { value: 8, suits: ['moons', 'suns'] };
+
+  // You encounter the remaining eleven personalities during your journey.
+  // Successfully persuading a personality to join your quest adds it to your
+  // hand.
+  function personalities() {
+    return [
+      'author', 'painter', 'savage', 'lunatic', 'penitent', 'merchant',
+      'watchman', 'light keeper', 'consul', 'bard', 'huntress',
+    ];
+  }
+
+  cards.author = { value: 2, suits: ['moons', 'knots'] };
+  cards.painter = { value: 3, suits: ['suns', 'knots'] };
+  cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
+  cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
+  cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
+  cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
+  cards.watchman = { value: 11, suits: ['moons', 'wyrms', 'knots'] };
+  cards['light keeper'] = { value: 11, suits: ['suns', 'waves', 'knots'] };
+  cards.consul = { value: 12, suits: ['moons', 'waves', 'knots'] };
+  cards.bard = { value: 10, suits: ['suns'] };
+  cards.huntress = { value: 10, suits: ['moons'] };
+
+  // If you don't persuade the personality you encouter...
+  function events() {
+    return [
+      'journey', 'battle', 'discovery', 'market', 'chance meeting', 'betrayal',
+      'pact', 'harvest', 'rite', 'calamity', 'windfall',
+    ];
+  }
+
+  cards.journey = { value: 3, suits: ['moons', 'waves'] };
+  cards.battle = { value: 4, suits: ['wyrms', 'knots'] };
+  cards.discovery = { value: 5, suits: ['suns', 'waves'] };
+  cards.market = { value: 6, suits: ['leaves', 'knots'] };
+  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'] };
+  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'] };
+  cards.pact = { value: 9, suits: ['moons', 'suns'] };
+  cards.harvest = { value: 11, suits: ['moons', 'suns', 'leaves'] };
+  cards.rite = { value: 12, suits: ['moons', 'leaves', 'wyrms'] };
+  cards.calamity = { value: 10, suits: ['wyrms'] };
+  cards.windfall = { value: 10, suits: ['knots'] };
+
+  // Any personality you choose not to persuade or event you choose not to
+  // assist is consumed by the ???. It mixes with the locations to become an
+  // obstacle you must face in the second half of the game.
+  function locations() {
+    return [
+      'desert', 'mountain', 'forest', 'castle', 'cave', 'mill', 'darkness',
+      'borderland', 'island', 'window', 'sea',
+    ];
+  }
+
+  cards.desert = { value: 2, suits: ['suns', 'wyrms'] };
+  cards.mountain = { value: 4, suits: ['moons', 'suns'] };
+  cards.forest = { value: 5, suits: ['moons', 'leaves'] };
+  cards.castle = { value: 7, suits: ['suns', 'knots'] };
+  cards.cave = { value: 7, suits: ['waves', 'wyrms'] };
+  cards.mill = { value: 8, suits: ['waves', 'leaves'] };
+  cards.darkness = { value: 9, suits: ['waves', 'wyrms'] };
+  cards.borderland = { value: 11, suits: ['waves', 'leaves', 'wyrms'] };
+  cards.island = { value: 12, suits: ['suns', 'waves', 'wyrms'] };
+  cards.window = { value: 12, suits: ['suns', 'leaves', 'knots'] };
+  cards.sea = { value: 10, suits: ['waves'] };
+
+  // The Origin marks the transition from the first half of the game to the
+  // second.
+  cards.origin = { value: 2, suits: ['waves', 'leaves'] };
+
+  // The End marks the end of the game.
+  cards.end = { value: 10, suits: ['leaves'] };
+
+  return {
+    attributes,
+    personalities,
+    events,
+    locations,
+    get,
+  };
+}());
+
 const PRNG = (function () { // eslint-disable-line func-names
   const rng = {};
   const max = 2 ** 32;
