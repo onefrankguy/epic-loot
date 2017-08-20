@@ -14,6 +14,7 @@
     "scss": "node-sass --output-style compressed --omit-source-map-url -o public/css scss",
     "watch:js": "onchange 'js/*.js' -- npm run build:js",
     "build:js": "mkdir -p public/js && cp js/*.js public/js/.",
+    "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/js13k2017/",
     "lint": "eslint js",
     "docs": "docco -l linear js/*.js"
   },
