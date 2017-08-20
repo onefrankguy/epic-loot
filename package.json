@@ -4,10 +4,16 @@
   "repository": "https://github.com/onefrankguy/js13k2017",
   "license": "MIT",
   "scripts": {
+    "watch": "npm-run-all --parallel watch:*",
+    "prebuild": "rm -f game.zip && npm run build:css && npm run build:js",
+    "build": "cd public && zip -r ../game.zip . -i@../manifest.txt",
+    "postbuild": "bytes=$(wc -c < game.zip | tr -d '[:space:]'); percent=$(bc -l <<< \"$bytes * 100 / (13 * 1024)\"); percent=$(echo \"($percent+0.5)/1\" | bc); echo \"$bytes bytes (used $percent%)\"",
     "watch:css": "onchange 'scss/*.scss' -- npm run build:css",
     "build:css": "npm run scss && npm run autoprefixer",
     "autoprefixer": "postcss -u autoprefixer -r public/css/*",
     "scss": "node-sass --output-style compressed -o public/css scss",
+    "watch:js": "onchange 'js/*.js' -- npm run build:js",
+    "build:js": "mkdir -p public/js && cp js/*.js public/js/.",
     "lint": "eslint js",
     "docs": "docco -l linear js/*.js"
   },
@@ -18,6 +24,7 @@
     "eslint-config-airbnb-base": "11.3.1",
     "eslint-plugin-import": "2.7.0",
     "node-sass": "4.5.3",
+    "npm-run-all": "4.0.2",
     "onchange": "3.2.1",
     "postcss-cli": "4.1.0"
   }
