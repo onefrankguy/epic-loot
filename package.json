@@ -7,7 +7,7 @@
     "watch": "npm-run-all --parallel watch:*",
     "prebuild": "rm -f game.zip && npm run build:css && npm run build:js",
     "build": "cd public && zip -r ../game.zip . -i@../manifest.txt",
-    "postbuild": "bytes=$(wc -c < game.zip | tr -d '[:space:]'); percent=$(bc -l <<< \"$bytes * 100 / (13 * 1024)\"); percent=$(echo \"($percent+0.5)/1\" | bc); echo \"$bytes bytes (used $percent%)\"",
+    "postbuild": "node test.js",
     "watch:css": "onchange 'scss/*.scss' -- npm run build:css",
     "build:css": "npm run scss && npm run autoprefixer",
     "autoprefixer": "postcss -u autoprefixer -r public/css/*",
