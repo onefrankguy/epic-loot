@@ -1,8 +1,6 @@
 // **Darcy's Dungeon** is a role-playing game at heart. Like every good RPG,
 // it's all about you. So before we even get to the dungeon crawling, let's talk
 // about you. Who are you, and why are you wondering through this forest?
-//
-// [art]: https://opengameart.org/content/16x18-rpg-characters-hair-clothing-pack
 const Character = (function character() {
   const has = Object.prototype.hasOwnProperty;
   const roles = {};
@@ -93,10 +91,16 @@ const Character = (function character() {
   };
 }());
 
-// **GAME** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], a deck-building
-// game by Mike Richey for the [Decktet][].
+// Are we dungeon crawling yet? No! Because before you can crawl into a dungeon,
+// you have to find a dungeon to crawl into, and findng a dungeon is not an easy
+// thing. After all, if it was easy, they wouldn't need a hero to do it.
 //
-// [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki) "Tinker, Sailor, Soldier, Spy"
+// **Darcey's Dungeon** is a game about finding a dungeon, and the way you do
+// that is through deck-building. The deck you use is a [Decktet][], which is
+// usually described as
+//
+// > It is the kind of tarot deck they use in the alternate universe where Charlemange was a badger, if you can imagine such a thing.
+//
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
 const Decktet = (function decktet() {
   const has = Object.prototype.hasOwnProperty;
@@ -931,3 +935,10 @@ const Game = (function game() {
 }());
 
 Game.play();
+
+// Design & dev by Frank Mitchell for [Js13kGames 2017][js13k].
+// **Darcy's Dungeon** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], by
+// Mike Richey.
+//
+// [js13k]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
+// [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki): Tinker, Sailor, Soldier, Spy"
