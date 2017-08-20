@@ -594,11 +594,9 @@ const Game = (function game() {
       Obstacles.use(type);
       played.push(type);
 
-      if (!Obstacles.defeated()) {
-        const card = Deck.deal();
-        Obstacles.use(card);
-        played.push(card);
-      }
+      const card = Deck.deal();
+      Obstacles.use(card);
+      played.push(card);
 
       dirty = true;
     }
@@ -726,7 +724,7 @@ const Game = (function game() {
     const $ = window.jQuery;
     let html = '';
 
-    played.forEach((name) => {
+    played.slice(-11).forEach((name) => {
       const card = Decktet.get(name);
       if (card) {
         html += '<p class="spell">';
