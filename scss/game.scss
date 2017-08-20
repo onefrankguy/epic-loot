@@ -117,7 +117,7 @@ a, a:visited {
   height: 2rem;
   border-left: .5rem solid $metal-color;
   border-top: .5rem solid $metal-color;
-  transform: rotate(-45deg);
+  transform: translateX(.4rem) rotate(-45deg);
 }
 
 .right.arrow {
@@ -126,7 +126,7 @@ a, a:visited {
   height: 2rem;
   border-right: .5rem solid $metal-color;
   border-top: .5rem solid $metal-color;
-  transform: rotate(45deg);
+  transform: translateX(-.4rem) rotate(45deg);
 }
 
 .stats {
@@ -257,12 +257,45 @@ a, a:visited {
   padding: .5rem;
 }
 
-#gems .gem {
+#gems > * {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-flow: row wrap;
   width: 4.8rem;
   height: 4.8rem;
+}
+
+#gems .box {
+  position: relative;
+  display: inline-block;
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+/* https://paulund.co.uk/create-polaroid-image-with-css */
+#gems .box:nth-child(2n) {
+  top: .04rem;
+  left: .04rem;
+}
+
+#gems .box:nth-child(3n) {
+  top: -.24rem;
+  left: -.24rem;
+}
+
+#gems .box:nth-child(4n) {
+  top: .14rem;
+  left: .14rem;
+}
+
+#gems .box:nth-child(5n) {
+  top: -.18rem;
+  left: -.18rem;
+}
+
+#gems .gem {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* SUITS */

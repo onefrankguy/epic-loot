@@ -731,7 +731,25 @@ const Game = (function game() {
     const tokens = Tokens.get();
 
     Object.keys(tokens).forEach((type) => {
-      $(`#${type}`).html(tokens[type]);
+      let html = '';
+      for (let i = 0; i < 9; i += 1) {
+        html += '<span class="box">';
+        let gem = false;
+        gem = gem || (i === 0 && tokens[type] >= 7);
+        gem = gem || (i === 1 && tokens[type] >= 6);
+        gem = gem || (i === 2 && tokens[type] >= 5);
+        gem = gem || (i === 3 && tokens[type] >= 8);
+        gem = gem || (i === 4 && tokens[type] >= 1);
+        gem = gem || (i === 5 && tokens[type] >= 4);
+        gem = gem || (i === 6 && tokens[type] >= 9);
+        gem = gem || (i === 7 && tokens[type] >= 2);
+        gem = gem || (i === 8 && tokens[type] >= 3);
+        if (gem) {
+          html += `<span class="${type} gem"></span>`;
+        }
+        html += '</span>';
+      }
+      $(`#${type}`).html(html.trim());
     });
   }
 
