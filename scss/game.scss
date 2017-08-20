@@ -152,37 +152,39 @@ a, a:visited {
   align-items: center;
 }
 
-.stats .stat:after {
-  content: '';
+.gem {
   display: inline-block;
-  width: 1rem;
-  height: 1rem;
+  height: 1.5rem;
+  width: 1.5rem;
   border: 1px solid $ink-color;
   border-radius: 50%;
+}
+
+.stats .gem {
   margin-left: 1rem;
 }
 
-.stats .stat.str:after {
+.stats .gem.str {
   background: $suns-color;
 }
 
-.stats .stat.bdy:after {
+.stats .gem.bdy {
   background: $leaves-color;
 }
 
-.stats .stat.dex:after {
+.stats .gem.dex {
   background: $waves-color;
 }
 
-.stats .stat.int:after {
+.stats .gem.int {
   background: $knots-color;
 }
 
-.stats .stat.wil:after {
+.stats .gem.wil {
   background: $moons-color;
 }
 
-.stats .stat.chr:after {
+.stats .gem.chr {
   background: $wyrms-color;
 }
 
@@ -208,13 +210,6 @@ a, a:visited {
   align-items: center;
   height: 2rem;
   border-bottom: 1px solid $metal-color;
-}
-
-.spell .gem {
-  display: inline-block;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 50%;
 }
 
 /* FLAVOR */
@@ -254,13 +249,6 @@ a, a:visited {
   width: 100%;
 }
 
-.sign .gem {
-  width: 1.6rem;
-  height: 1.6rem;
-  border: 1px solid $ink-color;
-  border-radius: 50%;
-}
-
 /* GEMS */
 #gems {
   display: flex;
@@ -275,8 +263,6 @@ a, a:visited {
   align-items: center;
   width: 4.8rem;
   height: 4.8rem;
-  border: 1px solid $ink-color;
-  border-radius: 50%;
 }
 
 /* SUITS */
