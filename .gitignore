@@ -2,5 +2,6 @@
 *.zip
 *.log
 public/css/
+public/js/
 docs/
 node_modules/
