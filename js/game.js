@@ -1,9 +1,8 @@
 // [art]: https://opengameart.org/content/16x18-rpg-characters-hair-clothing-pack
-const Characters = (function characters() {
+const Character = (function character() {
   const has = Object.prototype.hasOwnProperty;
   const roles = {};
-  let alice = 'soldier';
-  let carol = 'soldier';
+  let hero = 'soldier';
 
   // The Penitent is a cleric / healer.
   roles.penitent = { str: 2, bdy: 2, dex: 3, int: 4, wil: 4, chr: 3 };
@@ -28,74 +27,47 @@ const Characters = (function characters() {
   // The Merchant is a sorcerer / dark knight.
   roles.merchant = { str: 2, bdy: 1, dex: 3, int: 5, wil: 4, chr: 3 };
 
-  function get(name) {
-    if (has.call(roles, name)) {
-      return Object.assign({ role: name }, roles[name]);
+  function get() {
+    if (has.call(roles, hero)) {
+      return Object.assign({ role: hero}, roles[hero]);
     }
 
-    return name;
+    return hero;
   }
 
-  function getAlice() {
-    return get(alice);
-  }
-
-  function getCarol() {
-    return get(carol);
-  }
-
-  function next(name) {
+  function next() {
     const keys = Object.keys(roles);
-    let index = keys.indexOf(name);
+    let index = keys.indexOf(hero);
     if (index > -1) {
       index = (index + 1) % keys.length;
-      return keys[index];
+      hero = keys[index];
+    } else {
+      hero = 'soldier';
     }
-
-    return 'soldier';
   }
 
-  function nextAlice() {
-    alice = next(alice);
-  }
-
-  function nextCarol() {
-    carol = next(carol);
-  }
-
-  function prev(name) {
+  function prev() {
     const keys = Object.keys(roles);
-    let index = keys.indexOf(name);
+    let index = keys.indexOf(hero);
     if (index > -1) {
       if (index - 1 < 0) {
         index = keys.length;
       }
-      return keys[index - 1];
+      hero = keys[index - 1];
+    } else {
+      hero = 'soldier';
     }
-
-    return 'soldier';
   }
 
-  function prevAlice() {
-    alice = prev(alice);
-  }
-
-  function prevCarol() {
-    carol = prev(carol);
-  }
 
   function reset() {
-    alice = 'soldier';
-    carol = 'soldier';
+    hero = 'soldier';
   }
 
   return {
-    getAlice,
-    getCarol,
-    nextAlice,
-    nextCarol,
-    prevAlice,
-    prevCarol,
+    get,
+    next,
+    prev,
     reset,
   };
 }());
@@ -633,71 +605,43 @@ const Game = (function game() {
     }
   }
 
-  function onAliceRolePrev() {
-    Characters.prevAlice();
+  function onRolePrev() {
+    Character.prev();
     dirty = true;
   }
 
-  function onAliceRoleNext() {
-    Characters.nextAlice();
-    dirty = true;
-  }
-
-  function onCarolRolePrev() {
-    Characters.prevCarol();
-    dirty = true;
-  }
-
-  function onCarolRoleNext() {
-    Characters.nextCarol();
+  function onRoleNext() {
+    Character.next();
     dirty = true;
   }
 
   function onStart() {
     const $ = window.jQuery;
-    $('#characters').add('hidden');
+    $('#character').add('hidden');
     $('#world').remove('hidden');
 
-    const alice = Characters.getAlice();
-    const carol = Characters.getCarol();
+    const hero = Character.get();
 
     Tokens.set({
-      suns: alice.str + carol.str,
-      leaves: alice.bdy + carol.bdy,
-      waves: alice.dex + carol.dex,
-      knots: alice.int + carol.int,
-      moons: alice.wil + carol.wil,
-      wyrms: alice.chr + carol.chr,
+      suns: hero.str,
+      leaves: hero.bdy,
+      waves: hero.dex,
+      knots: hero.int,
+      moons: hero.wil,
+      wyrms: hero.chr,
     });
 
     dirty = true;
   }
 
-  function renderAliceRole() {
+  function renderRole() {
     const $ = window.jQuery;
-    const alice = Characters.getAlice();
-    $('#alice-role').html(alice.role);
+    const hero = Character.get();
+    $('#role').html(hero.role);
 
     ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
-      let html = '';
-      for (let i = 0; i < alice[attr]; i += 1) {
-        html += '&#9678; ';
-      }
-      $(`#alice-${attr}`).html(html.trim());
-    });
-  }
-
-  function renderCarolRole() {
-    const $ = window.jQuery;
-    const carol = Characters.getCarol();
-    $('#carol-role').html(carol.role);
-
-    ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
-      let html = '';
-      for (let i = 0; i < carol[attr]; i += 1) {
-        html += '&#9678; ';
-      }
-      $(`#carol-${attr}`).html(html.trim());
+      const html = `<span class="${attr} stat">${hero[attr]}</span>`;
+      $(`#${attr}`).html(html.trim());
     });
   }
 
@@ -768,8 +712,7 @@ const Game = (function game() {
 
   function render() {
     if (dirty) {
-      renderAliceRole();
-      renderCarolRole();
+      renderRole();
       renderDeck();
       renderObstacles();
       renderTokens();
@@ -847,10 +790,8 @@ const Game = (function game() {
 
     $('#start').touch(undefined, onStart);
 
-    $('#alice-role-prev').touch(undefined, onAliceRolePrev);
-    $('#alice-role-next').touch(undefined, onAliceRoleNext);
-    $('#carol-role-prev').touch(undefined, onCarolRolePrev);
-    $('#carol-role-next').touch(undefined, onCarolRoleNext);
+    $('#role-prev').touch(undefined, onRolePrev);
+    $('#role-next').touch(undefined, onRoleNext);
 
     $(window).on('hashchange', onHashChange);
 
