@@ -1,9 +1,82 @@
+// [art]: https://opengameart.org/content/16x18-rpg-characters-hair-clothing-pack
+const Characters = (function characters() {
+  const has = Object.prototype.hasOwnProperty;
+  const roles = {};
+  let alice = 'soldier';
+
+  // The Penitent is a cleric / healer.
+  roles.penitent = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Soldier is a figher / warrior.
+  roles.soldier = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Sailor is a rogue / ninja.
+  roles.sailor = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Painter is a wizard / magician.
+  roles.painter = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Savage is a barbarian / berserker.
+  roles.savage = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Bard is a bard.
+  roles.bard = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // THe Lunatic is a druid / cultist.
+  roles.lunatic = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Author is a monk.
+  roles.author = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Watchman is a paladin.
+  roles.watchman = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Hunter is a ranger.
+  roles.hunter = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  // The Merchant is a sorcerer / dark knight.
+  roles.merchant = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+
+  function getAlice() {
+    if (has.call(roles, alice)) {
+      return Object.assign({ role: alice }, roles[alice]);
+    }
+
+    return alice;
+  }
+
+  function nextAlice() {
+    const keys = Object.keys(roles);
+    let index = keys.indexOf(alice);
+    if (index > -1) {
+      index = (index + 1) % keys.length;
+      alice = keys[index];
+    } else {
+      alice = 'soldier';
+    }
+  }
+
+  function prevAlice() {
+    const keys = Object.keys(roles);
+    let index = keys.indexOf(alice);
+    if (index > -1) {
+      if (index - 1 < 0) {
+        index = keys.length;
+      }
+      alice = keys[index - 1];
+    } else {
+      alice = 'soldier';
+    }
+  }
+
+  function reset() {
+    alice = 'soldier';
+  }
+
+  return {
+    getAlice,
+    nextAlice,
+    prevAlice,
+    reset,
+  };
+}());
+
 // **GAME** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], a deck-building
 // game by Mike Richey for the [Decktet][].
 //
 // [tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki) "Tinker, Sailor, Soldier, Spy"
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
-const Decktet = (function Decktet() {
+const Decktet = (function decktet() {
   const has = Object.prototype.hasOwnProperty;
   const cards = {};
 
@@ -520,6 +593,12 @@ const Game = (function game() {
     }
   }
 
+  function onStart() {
+    const $ = window.jQuery;
+    $('#characters').add('hidden');
+    $('#world').remove('hidden');
+  }
+
   function renderCard(card, gem) {
     let html = '';
 
@@ -662,6 +741,8 @@ const Game = (function game() {
     $('#sign1').touch(undefined, onSign);
     $('#sign2').touch(undefined, onSign);
 
+    $('#start').touch(undefined, onStart);
+
     $(window).on('hashchange', onHashChange);
 
     startGame(render);
@@ -708,6 +789,22 @@ const Game = (function game() {
 
     return this;
   };
+
+  Fn.prototype.add = function add(klass) {
+    if (this.element) {
+      this.element.classList.add(klass);
+    }
+
+    return this;
+  }
+
+  Fn.prototype.remove = function remove(klass) {
+    if (this.element) {
+      this.element.classList.remove(klass);
+    }
+
+    return this;
+  }
 
   Fn.prototype.touch = function touch(start, end) {
     const self = this;

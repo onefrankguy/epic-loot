@@ -30,6 +30,89 @@ a, a:visited {
   -webkit-touch-callout: none;
 }
 
+/* CHARACTERS */
+#characters {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* Usable area on an iPhone 4 is 320x372 pixels */
+  width: 32rem;
+  min-height: 37.2rem;
+  overflow: hidden;
+  margin: 0 auto;
+  background: #fff;
+}
+
+.characters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.character {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.arrows {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portrait {
+  display: flex;
+  width: 4rem;
+  align-self: stretch;
+  border: 1px solid black;
+}
+
+.arrow + .arrow {
+  margin-top: 2rem;
+}
+
+.left.arrow {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border-left: .5rem solid rgba(0,0,0,.3);
+  border-top: .5rem solid rgba(0,0,0,.3);
+  transform: rotate(-45deg);
+  margin-right: 1rem;
+}
+
+.right.arrow {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  border-right: .5rem solid rgba(0,0,0,.3);
+  border-top: .5rem solid rgba(0,0,0,.3);
+  transform: rotate(45deg);
+  margin-left: 1rem;
+}
+
+.stats {
+  font-size: 1rem;
+}
+
+.stats .role {
+  font-size: 1.6rem;
+  text-align: center;
+}
+
 /* GAME */
 #world {
   display: flex;
@@ -150,4 +233,8 @@ a, a:visited {
 
 .knots {
   background-color: yellow;
+}
+
+.hidden {
+  display: none !important;
 }

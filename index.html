@@ -11,25 +11,82 @@
   <link rel="stylesheet" media="only screen and (min-width:40em)" href="css/screen.css" />
 </head>
 <body>
-<div id="world">
-<div id="spells"></div>
-<div>
-<div id="flavor-title" class="flavor title">Game</div>
-<div id="flavor-text" class="flavor text"></div>
-<div id="signpost">
-  <div id="sign1" class="sign"></div>
-  <div id="sign2" class="sign"></div>
+<div id="characters">
+  <h1 class="title">Game</h1>
+  <div class="characters">
+    <div class="character">
+      <div class="picker">
+        <div class="arrows">
+          <div class="left arrow"></div>
+          <div class="left arrow"></div>
+          <div class="left arrow"></div>
+        </div>
+        <div id="alice-portrait" class="portrait"></div>
+        <div class="arrows">
+          <div class="right arrow"></div>
+          <div class="right arrow"></div>
+          <div class="right arrow"></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="role">Soldier</div>
+        <div>Str: &#9678; &#9678; &#9678;</div>
+        <div>Bdy: &#9678; &#9678; &#9678;</div>
+        <div>Dex: &#9678; &#9678;</div>
+        <div>Int:</div>
+        <div>Wil:</div>
+        <div>Chr:</div>
+      </div>
+    </div>
+    <div class="character">
+      <div class="picker">
+        <div class="arrows">
+          <div class="left arrow"></div>
+          <div class="left arrow"></div>
+          <div class="left arrow"></div>
+        </div>
+        <div id="carol-portrait" class="portrait"></div>
+        <div class="arrows">
+          <div class="right arrow"></div>
+          <div class="right arrow"></div>
+          <div class="right arrow"></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="role">Bard</div>
+        <div>Str:</div>
+        <div>Bdy:</div>
+        <div>Dex:</div>
+        <div>Int:</div>
+        <div>Wil:</div>
+        <div>Chr: &#9678; &#9678; &#9678; &#9678;</div>
+      </div>
+    </div>
+  </div>
+  <div id="difficulty">Normal</div>
+  <div id="start" class="button">Start</div>
 </div>
-<div id="gems">
-  <div id="moons" class="unselectable moons gem"></div>
-  <div id="suns" class="unselectable suns gem"></div>
-  <div id="waves" class="unselectable waves gem"></div>
-  <div id="leaves" class="unselectable leaves gem"></div>
-  <div id="wyrms" class="unselectable wyrms gem"></div>
-  <div id="knots" class="unselectable knots gem"></div>
+
+<div id="world" class="hidden">
+  <div id="spells"></div>
+  <div>
+    <div id="flavor-title" class="flavor title"></div>
+    <div id="flavor-text" class="flavor text"></div>
+    <div id="signpost">
+      <div id="sign1" class="sign"></div>
+      <div id="sign2" class="sign"></div>
+    </div>
+    <div id="gems">
+      <div id="moons" class="unselectable moons gem"></div>
+      <div id="suns" class="unselectable suns gem"></div>
+      <div id="waves" class="unselectable waves gem"></div>
+      <div id="leaves" class="unselectable leaves gem"></div>
+      <div id="wyrms" class="unselectable wyrms gem"></div>
+      <div id="knots" class="unselectable knots gem"></div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
+
 <script src="js/game.js"></script>
 </body>
 </html>
