@@ -1,40 +1,58 @@
+// **Darcy's Dungeon** is a role-playing game at heart. Like every good RPG,
+// it's all about you. So before we even get to the dungeon crawling, let's talk
+// about you. Who are you, and why are you wondering through this forest?
+//
 // [art]: https://opengameart.org/content/16x18-rpg-characters-hair-clothing-pack
 const Character = (function character() {
   const has = Object.prototype.hasOwnProperty;
   const roles = {};
-  let hero = 'soldier';
+  let hero = 'author';
+  // Oh, I see. You're a hero and an author. But maybe not all the time? If
+  // you where a full time author, you'd be a `const hero`, and you're not. So
+  // you must be one of these other things.
 
-  // The Penitent is a cleric / healer.
-  roles.penitent = { str: 2, bdy: 2, dex: 3, int: 4, wil: 4, chr: 3 };
-  // The Soldier is a figher / warrior.
-  roles.soldier = { str: 4, bdy: 3, dex: 2, int: 3, wil: 3, chr: 3 };
-  // The Sailor is a rogue / ninja.
-  roles.sailor = { str: 3, bdy: 4, dex: 4, int: 3, wil: 2, chr: 2 };
-  // The Painter is a wizard / magician.
-  roles.painter = { str: 3, bdy: 2, dex: 3, int: 4, wil: 4, chr: 2 };
-  // The Savage is a barbarian / berserker.
-  roles.savage = { str: 4, bdy: 4, dex: 2, int: 3, wil: 2, chr: 3 };
-  // The Bard is a bard.
-  roles.bard = { str: 2, bdy: 2, dex: 3, int: 4, wil: 3, chr: 4 };
-  // THe Lunatic is a druid / cultist.
-  roles.lunatic = { str: 2, bdy: 1, dex: 2, int: 4, wil: 4, chr: 5 };
+  // The Penitent is a cleric .
+  roles.penitent = { str: 4, bdy: 4, dex: 6, int: 8, wil: 8, chr: 6 };
+  // The Soldier is a figher .
+  roles.soldier = { str: 8, bdy: 6, dex: 4, int: 6, wil: 6, chr: 6 };
+  // The Sailor is a rogue .
+  roles.sailor = { str: 6, bdy: 8, dex: 8, int: 6, wil: 4, chr: 4 };
+  // The Painter is a wizard .
+  roles.painter = { str: 6, bdy: 4, dex: 6, int: 8, wil: 8, chr: 4 };
+  // The Savage is a barbarian .
+  roles.savage = { str: 8, bdy: 8, dex: 4, int: 6, wil: 4, chr: 6 };
+  // THe Lunatic is a druid .
+  roles.lunatic = { str: 4, bdy: 1, dex: 4, int: 9, wil: 9, chr: 9 };
   // The Author is a monk.
-  roles.author = { str: 2, bdy: 4, dex: 4, int: 2, wil: 5, chr: 1 };
+  roles.author = { str: 4, bdy: 9, dex: 8, int: 5, wil: 9, chr: 1 };
   // The Watchman is a paladin.
-  roles.watchman = { str: 3, bdy: 3, dex: 2, int: 2, wil: 4, chr: 4 };
+  roles.watchman = { str: 6, bdy: 6, dex: 4, int: 4, wil: 8, chr: 8 };
   // The Hunter is a ranger.
-  roles.hunter = { str: 3, bdy: 3, dex: 4, int: 3, wil: 3, chr: 2 };
-  // The Merchant is a sorcerer / dark knight.
-  roles.merchant = { str: 2, bdy: 1, dex: 3, int: 5, wil: 4, chr: 3 };
+  roles.hunter = { str: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
+  // The Merchant is a sorcerer.
+  roles.merchant = { str: 4, bdy: 2, dex: 5, int: 9, wil: 8, chr: 8 };
+  // The Bard is a bard.
+  roles.bard = { str: 5, bdy: 4, dex: 6, int: 8, wil: 5, chr: 8 };
 
+  // So you can be anything you want to be. Except maybe a townsperson.
+  // Townsperson does not appear to be a class in this RPG, or most any RPG for
+  // that matter.
+  //
+  // Looks like the dungeon has a way to figure out how strong and smart and
+  // clever you are. I have a sneaking suspicion you'll need to be very strong
+  // and smart and clever to defeat this dungeon.
   function get() {
     if (has.call(roles, hero)) {
-      return Object.assign({ role: hero}, roles[hero]);
+      return Object.assign({ role: hero }, roles[hero]);
     }
 
     return hero;
   }
 
+  // Here's how you change what you are. It's cyclic. If you go forward, you
+  // stop being an Author and start being a Watchman. If you go
+  // backward, you become a Lunatic. Hmm... Probably best not to go
+  // backward.
   function next() {
     const keys = Object.keys(roles);
     let index = keys.indexOf(hero);
@@ -42,7 +60,7 @@ const Character = (function character() {
       index = (index + 1) % keys.length;
       hero = keys[index];
     } else {
-      hero = 'soldier';
+      hero = 'author';
     }
   }
 
@@ -55,13 +73,16 @@ const Character = (function character() {
       }
       hero = keys[index - 1];
     } else {
-      hero = 'soldier';
+      hero = 'author';
     }
   }
 
 
+  // And if you ever get tired of what you are, you can go back to being
+  // yourself, a heroic author. Though personally, I think you aught to try
+  // being a Bard. That role was the only one that wasn't also a something else.
   function reset() {
-    hero = 'soldier';
+    hero = 'author';
   }
 
   return {
