@@ -1,3 +1,6 @@
+$map-color: rgba(222, 238, 214, 1);
+$ink-color: rgba(20, 12, 28, 1);
+
 /* RESET */
 * {
   cursor: default;
@@ -13,7 +16,7 @@ html {
 
 body {
   background: #ccc;
-  color: #000;
+  color: $ink-color;
   font-size: 1.6rem;
 }
 
@@ -41,7 +44,7 @@ a, a:visited {
   min-height: 37.2rem;
   overflow: hidden;
   margin: 0 auto;
-  background: #fff;
+  background: $map-color;
 }
 
 .characters {
@@ -77,7 +80,7 @@ a, a:visited {
   display: flex;
   width: 4rem;
   align-self: stretch;
-  border: 1px solid black;
+  border: 1px solid $ink-color;
 }
 
 .arrow + .arrow {
@@ -138,7 +141,7 @@ a, a:visited {
   min-height: 37.2rem;
   overflow: hidden;
   margin: 0 auto;
-  background: #fff;
+  background: $map-color;
 }
 
 
@@ -204,7 +207,7 @@ a, a:visited {
 .sign .gem {
   width: 1.6rem;
   height: 1.6rem;
-  border: 1px solid black;
+  border: 1px solid $ink-color;
   border-radius: 50%;
 }
 
@@ -221,7 +224,7 @@ a, a:visited {
   align-items: center;
   width: 4rem;
   height: 4rem;
-  border: 1px solid black;
+  border: 1px solid $ink-color;
   border-radius: 50%;
 }
 
