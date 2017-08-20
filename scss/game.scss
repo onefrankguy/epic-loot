@@ -26,9 +26,9 @@ $ink-color: rgb(20, 12, 28);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
 $suns-color: rgb(210, 125, 44);
-$waves-color: rgb(89, 125, 206);
-$leaves-color: rgb(133, 76, 48);
-$wyrms-color: rgb(52, 101, 36);
+$waves-color: rgb(109, 194, 202);
+$leaves-color: rgb(210, 170, 153);
+$wyrms-color: rgb(109, 170, 44);
 $knots-color: rgb(218, 212, 94);
 
 /* RESET */
@@ -245,15 +245,16 @@ a, a:visited {
 #gems {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: .5rem;
 }
 
 #gems .gem {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 4.8rem;
+  height: 4.8rem;
   border: 1px solid $ink-color;
   border-radius: 50%;
 }
