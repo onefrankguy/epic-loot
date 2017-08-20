@@ -665,7 +665,11 @@ const Game = (function game() {
     $('#role').html(hero.role);
 
     ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
-      const html = `<span class="${attr} stat">${hero[attr]}<span class="${attr} gem"></span></span>`;
+      let html = '';
+      html += `<span class="${attr} stat">`;
+      html += hero[attr];
+      html += `<span class="${attr} gem"></span>`;
+      html += '</span>';
       $(`#${attr}`).html(html.trim());
     });
   }

@@ -3,6 +3,7 @@
     "browser": true
   },
   "rules": {
+    "max-len": ["warn", { "ignoreComments": true }],
     "no-bitwise": "off"
   },
   "extends": "airbnb-base"
