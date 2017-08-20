@@ -535,6 +535,10 @@ const Tokens = (function tokens() {
     return counts;
   }
 
+  function reset() {
+    counts = Object.assign({}, defaults);
+  }
+
   function set(values) {
     defaults = {};
 
@@ -561,10 +565,6 @@ const Tokens = (function tokens() {
     if (has.call(counts, name) && counts[name] > 0) {
       counts[name] -= 1;
     }
-  }
-
-  function reset() {
-    counts = Object.assign({}, defaults);
   }
 
   return {
@@ -616,7 +616,8 @@ const Game = (function game() {
     }
 
     if (Obstacles.get().length >= 2) {
-      let type = picked = sign;
+      let type = sign;
+      picked = sign;
       if (type === 'sign1') {
         type = Obstacles.get()[0].name;
       }
@@ -677,9 +678,9 @@ const Game = (function game() {
     const alice = Characters.getAlice();
     $('#alice-role').html(alice.role);
 
-    ['str','bdy','dex','int','wil','chr'].forEach((attr) => {
+    ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
       let html = '';
-      for (i = 0; i < alice[attr]; i += 1) {
+      for (let i = 0; i < alice[attr]; i += 1) {
         html += '&#9678; ';
       }
       $(`#alice-${attr}`).html(html.trim());
@@ -691,9 +692,9 @@ const Game = (function game() {
     const carol = Characters.getCarol();
     $('#carol-role').html(carol.role);
 
-    ['str','bdy','dex','int','wil','chr'].forEach((attr) => {
+    ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
       let html = '';
-      for (i = 0; i < carol[attr]; i += 1) {
+      for (let i = 0; i < carol[attr]; i += 1) {
         html += '&#9678; ';
       }
       $(`#carol-${attr}`).html(html.trim());
@@ -741,13 +742,13 @@ const Game = (function game() {
     const obstacles = Obstacles.get();
 
     let title = '';
-    let id0 = '#sign1'
-    let id1 = '#sign2'
+    let id0 = '#sign1';
+    let id1 = '#sign2';
     if (obstacles.length < 2) {
       title = obstacles[0].name;
       if (picked === 'sign2') {
-        id0 = '#sign2'
-        id1 = '#sign1'
+        id0 = '#sign2';
+        id1 = '#sign1';
       }
     }
 
@@ -904,7 +905,7 @@ const Game = (function game() {
     }
 
     return this;
-  }
+  };
 
   Fn.prototype.remove = function remove(klass) {
     if (this.element) {
@@ -912,7 +913,7 @@ const Game = (function game() {
     }
 
     return this;
-  }
+  };
 
   Fn.prototype.touch = function touch(start, end) {
     const self = this;
