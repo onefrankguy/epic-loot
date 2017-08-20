@@ -106,11 +106,26 @@ a, a:visited {
 
 .stats {
   font-size: 1rem;
+  font-family: serif;
+  font-variant: small-caps;
+  text-transform: capitalize;
+}
+
+.stats > * {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .stats .role {
   font-size: 1.6rem;
-  text-align: center;
+  justify-content: center;
+}
+
+.stats .stat {
+  width: 2rem;
+  overflow: hidden;
 }
 
 /* GAME */

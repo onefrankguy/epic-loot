@@ -3,70 +3,99 @@ const Characters = (function characters() {
   const has = Object.prototype.hasOwnProperty;
   const roles = {};
   let alice = 'soldier';
+  let carol = 'soldier';
 
   // The Penitent is a cleric / healer.
-  roles.penitent = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.penitent = { str: 2, bdy: 2, dex: 3, int: 4, wil: 4, chr: 3 };
   // The Soldier is a figher / warrior.
-  roles.soldier = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.soldier = { str: 4, bdy: 3, dex: 2, int: 3, wil: 3, chr: 3 };
   // The Sailor is a rogue / ninja.
-  roles.sailor = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.sailor = { str: 3, bdy: 4, dex: 4, int: 3, wil: 2, chr: 2 };
   // The Painter is a wizard / magician.
-  roles.painter = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.painter = { str: 3, bdy: 2, dex: 3, int: 4, wil: 4, chr: 2 };
   // The Savage is a barbarian / berserker.
-  roles.savage = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.savage = { str: 4, bdy: 4, dex: 2, int: 3, wil: 2, chr: 3 };
   // The Bard is a bard.
-  roles.bard = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.bard = { str: 2, bdy: 2, dex: 3, int: 4, wil: 3, chr: 4 };
   // THe Lunatic is a druid / cultist.
-  roles.lunatic = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.lunatic = { str: 2, bdy: 1, dex: 2, int: 4, wil: 4, chr: 5 };
   // The Author is a monk.
-  roles.author = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.author = { str: 2, bdy: 4, dex: 4, int: 2, wil: 5, chr: 1 };
   // The Watchman is a paladin.
-  roles.watchman = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.watchman = { str: 3, bdy: 3, dex: 2, int: 2, wil: 4, chr: 4 };
   // The Hunter is a ranger.
-  roles.hunter = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.hunter = { str: 3, bdy: 3, dex: 4, int: 3, wil: 3, chr: 2 };
   // The Merchant is a sorcerer / dark knight.
-  roles.merchant = { str: 0, bdy: 0, dex: 0, int: 0, wil: 0, chr: 0 };
+  roles.merchant = { str: 2, bdy: 1, dex: 3, int: 5, wil: 4, chr: 3 };
 
-  function getAlice() {
-    if (has.call(roles, alice)) {
-      return Object.assign({ role: alice }, roles[alice]);
+  function get(name) {
+    if (has.call(roles, name)) {
+      return Object.assign({ role: name }, roles[name]);
     }
 
-    return alice;
+    return name;
+  }
+
+  function getAlice() {
+    return get(alice);
+  }
+
+  function getCarol() {
+    return get(carol);
+  }
+
+  function next(name) {
+    const keys = Object.keys(roles);
+    let index = keys.indexOf(name);
+    if (index > -1) {
+      index = (index + 1) % keys.length;
+      return keys[index];
+    }
+
+    return 'soldier';
   }
 
   function nextAlice() {
-    const keys = Object.keys(roles);
-    let index = keys.indexOf(alice);
-    if (index > -1) {
-      index = (index + 1) % keys.length;
-      alice = keys[index];
-    } else {
-      alice = 'soldier';
-    }
+    alice = next(alice);
   }
 
-  function prevAlice() {
+  function nextCarol() {
+    carol = next(carol);
+  }
+
+  function prev(name) {
     const keys = Object.keys(roles);
-    let index = keys.indexOf(alice);
+    let index = keys.indexOf(name);
     if (index > -1) {
       if (index - 1 < 0) {
         index = keys.length;
       }
-      alice = keys[index - 1];
-    } else {
-      alice = 'soldier';
+      return keys[index - 1];
     }
+
+    return 'soldier';
+  }
+
+  function prevAlice() {
+    alice = prev(alice);
+  }
+
+  function prevCarol() {
+    carol = prev(carol);
   }
 
   function reset() {
     alice = 'soldier';
+    carol = 'soldier';
   }
 
   return {
     getAlice,
+    getCarol,
     nextAlice,
+    nextCarol,
     prevAlice,
+    prevCarol,
     reset,
   };
 }());
@@ -500,9 +529,24 @@ const Deck = (function deck() {
 const Tokens = (function tokens() {
   const has = Object.prototype.hasOwnProperty;
   let counts = {};
+  let defaults = {};
 
   function get() {
     return counts;
+  }
+
+  function set(values) {
+    defaults = {};
+
+    Decktet.attributes().forEach((attribute) => {
+      if (has.call(values, attribute)) {
+        defaults[attribute] = Math.abs(parseInt(values[attribute], 10));
+      } else {
+        defaults[attribute] = 6;
+      }
+    });
+
+    reset();
   }
 
   function count(name) {
@@ -520,15 +564,12 @@ const Tokens = (function tokens() {
   }
 
   function reset() {
-    counts = {};
-
-    Decktet.attributes().forEach((attribute) => {
-      counts[attribute] = 6;
-    });
+    counts = Object.assign({}, defaults);
   }
 
   return {
     get,
+    set,
     count,
     spend,
     reset,
@@ -593,10 +634,72 @@ const Game = (function game() {
     }
   }
 
+  function onAliceRolePrev() {
+    Characters.prevAlice();
+    dirty = true;
+  }
+
+  function onAliceRoleNext() {
+    Characters.nextAlice();
+    dirty = true;
+  }
+
+  function onCarolRolePrev() {
+    Characters.prevCarol();
+    dirty = true;
+  }
+
+  function onCarolRoleNext() {
+    Characters.nextCarol();
+    dirty = true;
+  }
+
   function onStart() {
     const $ = window.jQuery;
     $('#characters').add('hidden');
     $('#world').remove('hidden');
+
+    const alice = Characters.getAlice();
+    const carol = Characters.getCarol();
+
+    Tokens.set({
+      suns: alice.str + carol.str,
+      leaves: alice.bdy + carol.bdy,
+      waves: alice.dex + carol.dex,
+      knots: alice.int + carol.int,
+      moons: alice.wil + carol.wil,
+      wyrms: alice.chr + carol.chr,
+    });
+
+    dirty = true;
+  }
+
+  function renderAliceRole() {
+    const $ = window.jQuery;
+    const alice = Characters.getAlice();
+    $('#alice-role').html(alice.role);
+
+    ['str','bdy','dex','int','wil','chr'].forEach((attr) => {
+      let html = '';
+      for (i = 0; i < alice[attr]; i += 1) {
+        html += '&#9678; ';
+      }
+      $(`#alice-${attr}`).html(html.trim());
+    });
+  }
+
+  function renderCarolRole() {
+    const $ = window.jQuery;
+    const carol = Characters.getCarol();
+    $('#carol-role').html(carol.role);
+
+    ['str','bdy','dex','int','wil','chr'].forEach((attr) => {
+      let html = '';
+      for (i = 0; i < carol[attr]; i += 1) {
+        html += '&#9678; ';
+      }
+      $(`#carol-${attr}`).html(html.trim());
+    });
   }
 
   function renderCard(card, gem) {
@@ -666,6 +769,8 @@ const Game = (function game() {
 
   function render() {
     if (dirty) {
+      renderAliceRole();
+      renderCarolRole();
       renderDeck();
       renderObstacles();
       renderTokens();
@@ -742,6 +847,11 @@ const Game = (function game() {
     $('#sign2').touch(undefined, onSign);
 
     $('#start').touch(undefined, onStart);
+
+    $('#alice-role-prev').touch(undefined, onAliceRolePrev);
+    $('#alice-role-next').touch(undefined, onAliceRoleNext);
+    $('#carol-role-prev').touch(undefined, onCarolRolePrev);
+    $('#carol-role-next').touch(undefined, onCarolRoleNext);
 
     $(window).on('hashchange', onHashChange);
 
