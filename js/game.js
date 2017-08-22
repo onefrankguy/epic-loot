@@ -578,7 +578,8 @@ const Tokens = (function tokens() {
 const Game = (function game() {
   let color;
   let picked;
-  let played = [];
+  let playedCards = [];
+  let playedTokens = [];
   let dirty = true;
 
   function onToken(element) {
@@ -591,11 +592,11 @@ const Game = (function game() {
     if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
       Tokens.spend(type);
       Obstacles.use(type);
-      played.push(type);
+      playedTokens.push(type);
 
       const card = Deck.deal();
       Obstacles.use(card);
-      played.push(card);
+      playedCards.push(card);
 
       dirty = true;
     }
@@ -605,7 +606,8 @@ const Game = (function game() {
     if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
-      played = [];
+      playedCards = [];
+      playedTokens = [];
       dirty = true;
     }
   }
@@ -626,7 +628,7 @@ const Game = (function game() {
 
       const card = Deck.deal();
       Obstacles.use(card);
-      played.push(card);
+      playedCards.push(card);
       dirty = true;
     }
   }
@@ -699,8 +701,18 @@ const Game = (function game() {
   function renderDeck() {
     const $ = window.jQuery;
     let html = '';
+    playedTokens.forEach((type) => {
+      html += '<span class="box">';
+      html += `<span class="${type} gem"></span>`;
+      html += '</span>';
+    });
+    for (let i = playedTokens.length; i < 9; i += 1) {
+      html += '<span class="box"></span>';
+    }
+    $('#used-gems').html(html);
 
-    played.slice(-6).forEach((name) => {
+    html = '';
+    playedCards.slice(-6).forEach((name) => {
       const card = Decktet.get(name);
       if (card) {
         html += '<div class="spell">';
@@ -708,7 +720,6 @@ const Game = (function game() {
         html += '</div>';
       }
     });
-
     $('#spells').html(html);
   }
 
