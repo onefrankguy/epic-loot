@@ -285,6 +285,10 @@ const Personalities = (function personalities() {
     return card;
   }
 
+  function size() {
+    return cards.length;
+  }
+
   function reset() {
     cards = Decktet.personalities();
     discards = [];
@@ -293,6 +297,7 @@ const Personalities = (function personalities() {
 
   return {
     deal,
+    size,
     reset,
   };
 }());
@@ -337,6 +342,10 @@ const Locations = (function locations() {
     return card;
   }
 
+  function size() {
+    return cards.length;
+  }
+
   function reset() {
     cards = Decktet.locations();
     discards = [];
@@ -345,6 +354,7 @@ const Locations = (function locations() {
 
   return {
     deal,
+    size,
     reset,
   };
 }());
@@ -453,6 +463,17 @@ const Obstacles = (function obstacles() {
     return challenger && challenger.value <= 0;
   }
 
+  function remaining() {
+    const last = active.length > 0 ? 1 : 0;
+    if (phase === 1) {
+      return Personalities.size() + Locations.size() + last;
+    }
+    if (phase === 2) {
+      return Locations.size() + last;
+    }
+    return last;
+  }
+
   function reset() {
     Personalities.reset();
     Events.reset();
@@ -469,6 +490,7 @@ const Obstacles = (function obstacles() {
     pick,
     use,
     defeated,
+    remaining,
     reset,
   };
 }());
@@ -737,6 +759,8 @@ const Game = (function game() {
         id1 = '#sign1';
       }
     }
+
+    title = `${Obstacles.remaining()} - ${title}`;
 
     $(id0).html(renderCard(obstacles[0]));
     $(id1).html(renderCard(obstacles[1]));
