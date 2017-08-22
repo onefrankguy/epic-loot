@@ -601,16 +601,17 @@ const Game = (function game() {
     }
   }
 
-  function onSign(element) {
-    const sign = element.unwrap().id;
-
-    if (Obstacles.defeated() && sign === picked) {
+  function onSpells() {
+    if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
       played = [];
       dirty = true;
-      return;
     }
+  }
+
+  function onSign(element) {
+    const sign = element.unwrap().id;
 
     if (Obstacles.get().length >= 2) {
       let type = sign;
@@ -698,7 +699,7 @@ const Game = (function game() {
     const $ = window.jQuery;
     let html = '';
 
-    played.slice(-11).forEach((name) => {
+    played.slice(-9).forEach((name) => {
       const card = Decktet.get(name);
       if (card) {
         html += '<p class="spell">';
@@ -832,6 +833,7 @@ const Game = (function game() {
     $('#wyrms').touch(undefined, onToken);
     $('#knots').touch(undefined, onToken);
 
+    $('#spells').touch(undefined, onSpells);
     $('#sign1').touch(undefined, onSign);
     $('#sign2').touch(undefined, onSign);
 
