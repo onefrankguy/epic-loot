@@ -675,21 +675,22 @@ const Game = (function game() {
     });
   }
 
-  function renderCard(card, gem) {
+  function renderCard(card, isDeck) {
     let html = '';
 
     if (card) {
-      html += `<span class="name">${card.name}</span>`;
       html += `<span class="value">${card.value}</span>`;
-      if (gem) {
-        html += '<div class="gems">';
+      html += `<span class="name">${card.name}</span>`;
+      html += '<div class="gems">';
+      if (isDeck) {
+        for (let i = card.suits.length; i < 3; i += 1) {
+          html += '<span class="invisible gem"></span>';
+        }
       }
       card.suits.forEach((suit) => {
         html += `<span class="${suit} gem"></span>`;
       });
-      if (gem) {
-        html += '</div>';
-      }
+      html += '</div>';
     }
 
     return html;
@@ -699,12 +700,12 @@ const Game = (function game() {
     const $ = window.jQuery;
     let html = '';
 
-    played.slice(-9).forEach((name) => {
+    played.slice(-6).forEach((name) => {
       const card = Decktet.get(name);
       if (card) {
-        html += '<p class="spell">';
-        html += renderCard(card);
-        html += '</p>';
+        html += '<div class="spell">';
+        html += renderCard(card, true);
+        html += '</div>';
       }
     });
 
@@ -726,8 +727,8 @@ const Game = (function game() {
       }
     }
 
-    $(id0).html(renderCard(obstacles[0], true));
-    $(id1).html(renderCard(obstacles[1], true));
+    $(id0).html(renderCard(obstacles[0]));
+    $(id1).html(renderCard(obstacles[1]));
     $('#flavor-title').html(title);
   }
 

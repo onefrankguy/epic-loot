@@ -206,10 +206,29 @@ a, a:visited {
 .spell {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  height: 2rem;
-  border-bottom: 1px solid $metal-color;
+  border: 1px solid $ink-color;
+  border-top: none;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+  margin: 0 .5rem;
+  padding: .5rem;
+}
+
+.spell .name {
+  align-self: stretch;
+  text-align: center;
+}
+
+.spell .gems {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.spell .gem + .gem {
+  margin-left: .5rem;
 }
 
 /* FLAVOR */
@@ -358,4 +377,7 @@ a, a:visited {
 /* UTILITY */
 .hidden {
   display: none !important;
+}
+.invisible {
+  visibility: hidden !important;
 }
