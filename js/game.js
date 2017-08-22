@@ -474,8 +474,10 @@ const Obstacles = (function obstacles() {
 }());
 
 const Deck = (function deck() {
+  const limit = 15;
   let cards = [];
   let discards = [];
+  let attributes = [];
 
   function shuffle() {
     cards = cards.concat(discards);
@@ -487,6 +489,10 @@ const Deck = (function deck() {
     let card = cards.pop();
 
     if (!card) {
+      const attribute = attributes.pop();
+      if (attribute) {
+        discards.push(attribute);
+      }
       shuffle();
       card = cards.pop();
     }
@@ -499,18 +505,15 @@ const Deck = (function deck() {
   }
 
   function add(card) {
-    if (card) {
+    if (card && discards.length + cards.length <= limit) {
       discards.push(card);
     }
-  }
-
-  function size() {
-    return cards.length + discards.length;
   }
 
   function reset() {
     cards = ['excuse', 'sailor', 'soldier', 'diplomat'];
     discards = [];
+    attributes = Decktet.attributes();
     shuffle();
   }
 
@@ -518,7 +521,6 @@ const Deck = (function deck() {
     shuffle,
     deal,
     add,
-    size,
     reset,
   };
 }());
@@ -603,9 +605,7 @@ const Game = (function game() {
     const sign = element.unwrap().id;
 
     if (Obstacles.defeated() && sign === picked) {
-      if (Deck.size() < 22) {
-        Deck.add(Obstacles.get()[0].name);
-      }
+      Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
       played = [];
       dirty = true;
