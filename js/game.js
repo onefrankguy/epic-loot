@@ -598,92 +598,11 @@ const Tokens = (function tokens() {
   };
 }());
 
-const Game = (function game() {
-  let color;
+const Renderer = (function renderer() {
   let picked;
   let playedCards = [];
   let playedTokens = [];
   let dirty = true;
-
-  function onToken(element) {
-    if (Obstacles.defeated()) {
-      return;
-    }
-
-    const type = element.unwrap().id;
-
-    if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
-      Tokens.spend(type);
-      Obstacles.use(type);
-      playedTokens.push(type);
-
-      const card = Deck.deal();
-      Obstacles.use(card);
-      playedCards.push(card);
-
-      dirty = true;
-    }
-  }
-
-  function onSpells() {
-    if (Obstacles.defeated()) {
-      Deck.add(Obstacles.get()[0].name);
-      Obstacles.deal();
-      playedCards = [];
-      playedTokens = [];
-      dirty = true;
-    }
-  }
-
-  function onSign(element) {
-    const sign = element.unwrap().id;
-
-    if (Obstacles.get().length >= 2) {
-      let type = sign;
-      picked = sign;
-      if (type === 'sign1') {
-        type = Obstacles.get()[0].name;
-      }
-      if (type === 'sign2') {
-        type = Obstacles.get()[1].name;
-      }
-      Obstacles.pick(type);
-
-      const card = Deck.deal();
-      Obstacles.use(card);
-      playedCards.push(card);
-      dirty = true;
-    }
-  }
-
-  function onRolePrev() {
-    Character.prev();
-    dirty = true;
-  }
-
-  function onRoleNext() {
-    Character.next();
-    dirty = true;
-  }
-
-  function onStart() {
-    const $ = window.jQuery;
-    $('#character').add('hidden');
-    $('#world').remove('hidden');
-
-    const hero = Character.get();
-
-    Tokens.set({
-      suns: hero.str,
-      leaves: hero.bdy,
-      waves: hero.dex,
-      knots: hero.int,
-      moons: hero.wil,
-      wyrms: hero.chr,
-    });
-
-    dirty = true;
-  }
 
   function renderRole() {
     const $ = window.jQuery;
@@ -807,6 +726,119 @@ const Game = (function game() {
     requestAnimationFrame(render);
   }
 
+  function pick(value) {
+    picked = value;
+  }
+
+  function invalidate() {
+    dirty = true;
+  }
+
+  function playCard(card) {
+    playedCards.push(card);
+    invalidate();
+  }
+
+  function playToken(type) {
+    playedTokens.push(type);
+    invalidate();
+  }
+
+  function clearPlayed() {
+    playedCards = [];
+    playedTokens = [];
+    invalidate();
+  }
+
+  return {
+    render,
+    pick,
+    invalidate,
+    playCard,
+    playToken,
+    clearPlayed,
+  };
+}());
+
+const Game = (function game() {
+  let color;
+
+  function onToken(element) {
+    if (Obstacles.defeated()) {
+      return;
+    }
+
+    const type = element.unwrap().id;
+
+    if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
+      Tokens.spend(type);
+      Obstacles.use(type);
+      Renderer.playToken(type);
+
+      const card = Deck.deal();
+      Obstacles.use(card);
+
+      Renderer.playCard(card);
+    }
+  }
+
+  function onSpells() {
+    if (Obstacles.defeated()) {
+      Deck.add(Obstacles.get()[0].name);
+      Obstacles.deal();
+      Renderer.clearPlayed();
+    }
+  }
+
+  function onSign(element) {
+    const sign = element.unwrap().id;
+
+    if (Obstacles.get().length >= 2) {
+      let type = sign;
+      Renderer.pick(sign);
+      if (type === 'sign1') {
+        type = Obstacles.get()[0].name;
+      }
+      if (type === 'sign2') {
+        type = Obstacles.get()[1].name;
+      }
+      Obstacles.pick(type);
+
+      const card = Deck.deal();
+      Obstacles.use(card);
+      Renderer.playCard(card);
+    }
+  }
+
+  function onRolePrev() {
+    Character.prev();
+    Renderer.invalidate();
+  }
+
+  function onRoleNext() {
+    Character.next();
+    Renderer.invalidate();
+  }
+
+  function onStart() {
+    const $ = window.jQuery;
+    $('#character').add('hidden');
+    $('#world').remove('hidden');
+
+    const hero = Character.get();
+
+    Tokens.set({
+      suns: hero.str,
+      leaves: hero.bdy,
+      waves: hero.dex,
+      knots: hero.int,
+      moons: hero.wil,
+      wyrms: hero.chr,
+    });
+
+    Renderer.invalidate();
+  }
+
   function newColor() {
     let hash = color;
 
@@ -835,7 +867,7 @@ const Game = (function game() {
     resetGame();
   }
 
-  function startGame(callback) {
+  function startGame() {
     const hash = window.location.hash.substring(1);
     let reloaded = true;
 
@@ -857,7 +889,7 @@ const Game = (function game() {
       resetGame();
     }
 
-    requestAnimationFrame(callback);
+    Renderer.render();
   }
 
   function play() {
@@ -881,7 +913,7 @@ const Game = (function game() {
 
     $(window).on('hashchange', onHashChange);
 
-    startGame(render);
+    startGame();
   }
 
   return {
