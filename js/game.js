@@ -350,6 +350,8 @@ const Locations = (function locations() {
     cards = Decktet.locations();
     discards = [];
     PRNG.shuffle(cards);
+    cards.push('origin');
+    cards.unshift('end');
   }
 
   return {
@@ -411,9 +413,8 @@ const Obstacles = (function obstacles() {
 
     if (phase === 2) {
       const loc = Locations.deal();
-      const blt = Blighted.deal();
-      if (loc && blt) {
-        active = [loc, blt];
+      if (loc) {
+        active = [loc, loc];
       }
     }
 
@@ -672,7 +673,7 @@ const Renderer = (function renderer() {
     let title = '';
     let id0 = '#sign1';
     let id1 = '#sign2';
-    if (obstacles.length < 2) {
+    if (obstacles.length === 1) {
       title = obstacles[0].name;
       if (picked === 'sign2') {
         id0 = '#sign2';
