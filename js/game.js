@@ -590,12 +590,17 @@ const Tokens = (function tokens() {
     }
   }
 
+  function empty() {
+    return Object.values(counts).reduce((total, num) => total + num, 0) <= 0;
+  }
+
   return {
     get,
     set,
     count,
     spend,
     reset,
+    empty,
   };
 }());
 
@@ -751,6 +756,12 @@ const Renderer = (function renderer() {
     invalidate();
   }
 
+  function reset() {
+    playedCards = [];
+    playedTokens = [];
+    dirty = true;
+  }
+
   return {
     render,
     pick,
@@ -758,11 +769,23 @@ const Renderer = (function renderer() {
     playCard,
     playToken,
     clearPlayed,
+    reset,
   };
 }());
 
 const Game = (function game() {
   let color;
+
+  function newColor() {
+    let hash = color;
+
+    do {
+      hash = Math.floor(Math.random() * 16777216);
+      hash = (`000000${hash.toString(16)}`).substr(-6);
+    } while (hash === color);
+
+    color = hash;
+  }
 
   function onToken(element) {
     if (Obstacles.defeated()) {
@@ -788,6 +811,15 @@ const Game = (function game() {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
       Renderer.clearPlayed();
+      return;
+    }
+
+    if (Tokens.empty()) {
+      const $ = window.jQuery;
+      $('#world').add('hidden');
+      $('#character').remove('hidden');
+      newColor();
+      window.location.hash = color;
     }
   }
 
@@ -840,21 +872,15 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function newColor() {
-    let hash = color;
-
-    do {
-      hash = Math.floor(Math.random() * 16777216);
-      hash = (`000000${hash.toString(16)}`).substr(-6);
-    } while (hash === color);
-
-    color = hash;
-  }
-
   function resetGame() {
+    const $ = window.jQuery;
+    $('#world').add('hidden');
+    $('#character').remove('hidden');
+
     Obstacles.reset();
     Deck.reset();
     Tokens.reset();
+    Renderer.reset();
   }
 
   function onHashChange() {
