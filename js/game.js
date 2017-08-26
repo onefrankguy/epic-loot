@@ -638,8 +638,8 @@ const Tokens = (function tokens() {
     }
   }
 
-  function empty() {
-    return Object.values(counts).reduce((total, num) => total + num, 0) <= 0;
+  function size() {
+    return Object.values(counts).reduce((total, num) => total + num, 0);
   }
 
   return {
@@ -648,7 +648,7 @@ const Tokens = (function tokens() {
     count,
     spend,
     reset,
-    empty,
+    size,
   };
 }());
 
@@ -681,7 +681,7 @@ const Renderer = (function renderer() {
     $('#xp-needed').html(xp.needed);
     $('#this-level').html(xp.level - 1);
     $('#next-level').html(xp.level);
-    $('#xp-progress').style('width', `${xp.points * 100 / xp.needed}%`);
+    $('#xp-progress').style('width', `${(xp.points * 100) / xp.needed}%`);
   }
 
   function renderCard(card, isDeck) {
@@ -874,7 +874,7 @@ const Game = (function game() {
       return;
     }
 
-    if (Tokens.empty()) {
+    if (Tokens.size() <= 0 || Locations.size() <= 0) {
       const $ = window.jQuery;
       $('#world').add('hidden');
       $('#character').remove('hidden');
@@ -936,6 +936,7 @@ const Game = (function game() {
     $('#world').add('hidden');
     $('#character').remove('hidden');
 
+    Experience.reset();
     Obstacles.reset();
     Deck.reset();
     Tokens.reset();
