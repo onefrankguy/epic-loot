@@ -162,11 +162,11 @@ const Decktet = (function decktet() {
   cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
   cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
   cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
-  cards.watchman = { value: 11, suits: ['moons', 'wyrms', 'knots'] };
-  cards['light keeper'] = { value: 11, suits: ['suns', 'waves', 'knots'] };
-  cards.consul = { value: 12, suits: ['moons', 'waves', 'knots'] };
-  cards.bard = { value: 10, suits: ['suns'] };
-  cards.huntress = { value: 10, suits: ['moons'] };
+  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
+  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
+  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'] };
+  cards.bard = { value: 12, suits: ['suns'] };
+  cards.huntress = { value: 12, suits: ['moons'] };
 
   // If you don't persuade the personality you encouter...
   function events() {
@@ -183,10 +183,10 @@ const Decktet = (function decktet() {
   cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'] };
   cards.betrayal = { value: 8, suits: ['wyrms', 'knots'] };
   cards.pact = { value: 9, suits: ['moons', 'suns'] };
-  cards.harvest = { value: 11, suits: ['moons', 'suns', 'leaves'] };
-  cards.rite = { value: 12, suits: ['moons', 'leaves', 'wyrms'] };
-  cards.calamity = { value: 10, suits: ['wyrms'] };
-  cards.windfall = { value: 10, suits: ['knots'] };
+  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'] };
+  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
+  cards.calamity = { value: 12, suits: ['wyrms'] };
+  cards.windfall = { value: 12, suits: ['knots'] };
 
   // Any personality you choose not to persuade or event you choose not to
   // assist is consumed by the ???. It mixes with the locations to become an
@@ -205,17 +205,17 @@ const Decktet = (function decktet() {
   cards.cave = { value: 7, suits: ['waves', 'wyrms'] };
   cards.mill = { value: 8, suits: ['waves', 'leaves'] };
   cards.darkness = { value: 9, suits: ['waves', 'wyrms'] };
-  cards.borderland = { value: 11, suits: ['waves', 'leaves', 'wyrms'] };
-  cards.island = { value: 12, suits: ['suns', 'waves', 'wyrms'] };
-  cards.window = { value: 12, suits: ['suns', 'leaves', 'knots'] };
-  cards.sea = { value: 10, suits: ['waves'] };
+  cards.borderland = { value: 10, suits: ['waves', 'leaves', 'wyrms'] };
+  cards.island = { value: 11, suits: ['suns', 'waves', 'wyrms'] };
+  cards.window = { value: 11, suits: ['suns', 'leaves', 'knots'] };
+  cards.sea = { value: 12, suits: ['waves'] };
 
   // The Origin marks the transition from the first half of the game to the
   // second.
   cards.origin = { value: 2, suits: ['waves', 'leaves'] };
 
   // The End marks the end of the game.
-  cards.end = { value: 10, suits: ['leaves'] };
+  cards.end = { value: 12, suits: ['leaves'] };
 
   return {
     attributes,
