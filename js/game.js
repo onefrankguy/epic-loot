@@ -497,8 +497,6 @@ const Obstacles = (function obstacles() {
 }());
 
 const Deck = (function deck() {
-  // 4 starting + 11 obstacles + 6 attributes = 22 cards
-  const limit = 22;
   let cards = [];
   let discards = [];
   let attributes = [];
@@ -529,7 +527,7 @@ const Deck = (function deck() {
   }
 
   function add(card) {
-    if (card && discards.length + cards.length <= limit) {
+    if (card && Decktet.locations().indexOf(card) < 0) {
       discards.push(card);
     }
   }
