@@ -91,6 +91,42 @@ const Character = (function character() {
   };
 }());
 
+const Experience = (function experience() {
+  let points = 0;
+  let needed = 0;
+  let level = 0;
+
+  function get() {
+    return { points, needed, level };
+  }
+
+  function set(value) {
+    points = 0;
+    needed = parseInt(value, 10);
+    level += 1;
+    if (needed < 0) {
+      needed = 0;
+    }
+  }
+
+  function tick() {
+    points += 1;
+  }
+
+  function reset() {
+    points = 0;
+    needed = 0;
+    level = 0;
+  }
+
+  return {
+    get,
+    set,
+    tick,
+    reset,
+  };
+}());
+
 // Are we dungeon crawling yet? No! Because before you can crawl into a dungeon,
 // you have to find a dungeon to crawl into, and findng a dungeon is not an easy
 // thing. After all, if it was easy, they wouldn't need a hero to do it.
@@ -517,6 +553,7 @@ const Deck = (function deck() {
     cards = cards.concat(discards);
     discards = [];
     PRNG.shuffle(cards);
+    Experience.set(cards.length);
   }
 
   function deal() {
@@ -533,6 +570,7 @@ const Deck = (function deck() {
 
     if (card) {
       discards.push(card);
+      Experience.tick();
     }
 
     return card;
@@ -635,6 +673,17 @@ const Renderer = (function renderer() {
     });
   }
 
+  function renderExperience() {
+    const $ = window.jQuery;
+    const xp = Experience.get();
+
+    $('#xp-points').html(xp.points);
+    $('#xp-needed').html(xp.needed);
+    $('#this-level').html(xp.level - 1);
+    $('#next-level').html(xp.level);
+    $('#xp-progress').style('flex-grow', xp.points / xp.needed);
+  }
+
   function renderCard(card, isDeck) {
     let html = '';
 
@@ -733,6 +782,7 @@ const Renderer = (function renderer() {
   function render() {
     if (dirty) {
       renderRole();
+      renderExperience();
       renderDeck();
       renderObstacles();
       renderTokens();
@@ -1005,6 +1055,18 @@ const Game = (function game() {
   Fn.prototype.remove = function remove(klass) {
     if (this.element) {
       this.element.classList.remove(klass);
+    }
+
+    return this;
+  };
+
+  Fn.prototype.style = function style(key, value) {
+    if (this.element) {
+      if (!value) {
+        return this.element.style[key];
+      }
+
+      this.element.style[key] = value;
     }
 
     return this;

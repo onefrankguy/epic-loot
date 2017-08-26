@@ -201,6 +201,46 @@ a, a:visited {
   background: $map-color;
 }
 
+/* EXPERIENCE */
+.experience {
+  display: flex;
+  flex-direction: column;
+  margin: .5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.experience > .points {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.experience > .points > span {
+  margin: 0 .5rem;
+}
+
+.experience > .levels {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.experience > .levels > .progress {
+  display: flex;
+  flex-grow: 1;
+  border: 1px solid $ink-color;
+  margin: 0 1rem;
+  height: .5rem;
+  border-radius: .25rem;
+}
+
+#xp-progress {
+  flex-grow: 0;
+  display: inline-block;
+  background: $metal-color;
+}
 
 /* SPELLS */
 .collection {
