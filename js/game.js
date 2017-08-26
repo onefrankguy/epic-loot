@@ -25,8 +25,8 @@ const Character = (function character() {
   roles.author = { str: 4, bdy: 9, dex: 8, int: 5, wil: 9, chr: 1 };
   // The Watchman is a paladin.
   roles.watchman = { str: 6, bdy: 6, dex: 4, int: 4, wil: 8, chr: 8 };
-  // The Hunteress is a ranger.
-  roles.hunteress = { str: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
+  // The Huntress is a ranger.
+  roles.huntress = { str: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
   // The Merchant is a sorcerer.
   roles.merchant = { str: 4, bdy: 2, dex: 5, int: 9, wil: 8, chr: 8 };
   // The Bard is a bard.
