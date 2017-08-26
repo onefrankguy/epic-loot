@@ -192,7 +192,6 @@ a, a:visited {
 #world {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
   min-height: 37.2rem;
@@ -205,9 +204,10 @@ a, a:visited {
 .experience {
   display: flex;
   flex-direction: column;
-  margin: .5rem;
+  padding: .5rem;
   font-size: 1rem;
   line-height: 1.5;
+  border-bottom: 1px solid $ink-color;
 }
 
 .experience > .points {
@@ -246,7 +246,7 @@ a, a:visited {
 .collection {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  flex-grow: 1;
 }
 
 #used-gems {
