@@ -681,7 +681,7 @@ const Renderer = (function renderer() {
     $('#xp-needed').html(xp.needed);
     $('#this-level').html(xp.level - 1);
     $('#next-level').html(xp.level);
-    $('#xp-progress').style('flex-grow', xp.points / xp.needed);
+    $('#xp-progress').style('width', `${xp.points * 100 / xp.needed}%`);
   }
 
   function renderCard(card, isDeck) {
