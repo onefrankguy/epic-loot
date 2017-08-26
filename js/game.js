@@ -230,7 +230,7 @@ const Decktet = (function decktet() {
   function locations() {
     return [
       'desert', 'mountain', 'forest', 'castle', 'cave', 'mill', 'darkness',
-      'borderland', 'island', 'window', 'sea',
+      'borderland', 'island', 'window', 'sea', 'origin', 'end',
     ];
   }
 
@@ -396,11 +396,25 @@ const Locations = (function locations() {
   }
 
   function reset() {
+    let index = -1;
+
     cards = Decktet.locations();
     discards = [];
+
+    index = cards.indexOf('origin');
+    if (index > -1) {
+      cards.splice(index, 1);
+    }
+
+    index = cards.indexOf('end');
+    if (index > -1) {
+      cards.splice(index, 1);
+    }
+
     PRNG.shuffle(cards);
     cards.push('origin');
     cards.unshift('end');
+    console.log(JSON.stringify(cards));
   }
 
   return {
