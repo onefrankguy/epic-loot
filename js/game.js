@@ -11,10 +11,10 @@ const Character = (function character() {
 
   // The Penitent is a cleric .
   roles.penitent = { str: 4, bdy: 4, dex: 6, int: 8, wil: 8, chr: 6 };
-  // The Soldier is a figher .
-  roles.soldier = { str: 8, bdy: 6, dex: 4, int: 6, wil: 6, chr: 6 };
-  // The Sailor is a rogue .
-  roles.sailor = { str: 6, bdy: 8, dex: 8, int: 6, wil: 4, chr: 4 };
+  // The Consul is a figher .
+  roles.consul = { str: 8, bdy: 6, dex: 4, int: 6, wil: 6, chr: 6 };
+  // The Light Keeper is a rogue .
+  roles['light keeper'] = { str: 6, bdy: 8, dex: 8, int: 6, wil: 4, chr: 4 };
   // The Painter is a wizard .
   roles.painter = { str: 6, bdy: 4, dex: 6, int: 8, wil: 8, chr: 4 };
   // The Savage is a barbarian .
@@ -25,8 +25,8 @@ const Character = (function character() {
   roles.author = { str: 4, bdy: 9, dex: 8, int: 5, wil: 9, chr: 1 };
   // The Watchman is a paladin.
   roles.watchman = { str: 6, bdy: 6, dex: 4, int: 4, wil: 8, chr: 8 };
-  // The Hunter is a ranger.
-  roles.hunter = { str: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
+  // The Hunteress is a ranger.
+  roles.hunteress = { str: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
   // The Merchant is a sorcerer.
   roles.merchant = { str: 4, bdy: 2, dex: 5, int: 9, wil: 8, chr: 8 };
   // The Bard is a bard.
@@ -295,10 +295,23 @@ const Personalities = (function personalities() {
     PRNG.shuffle(cards);
   }
 
+  function remove(name) {
+    let index = cards.indexOf(name);
+    if (index > -1) {
+      cards.splice(index, 1);
+    }
+
+    index = discards.indexOf(name);
+    if (index > -1) {
+      discards.splice(index, 1);
+    }
+  }
+
   return {
     deal,
     size,
     reset,
+    remove,
   };
 }());
 
@@ -482,7 +495,6 @@ const Obstacles = (function obstacles() {
     Blighted.reset();
 
     phase = 1;
-    deal();
   }
 
   return {
@@ -533,7 +545,7 @@ const Deck = (function deck() {
   }
 
   function reset() {
-    cards = ['excuse', 'sailor', 'soldier', 'diplomat'];
+    cards = ['sailor', 'soldier', 'diplomat'];
     discards = [];
     attributes = Decktet.attributes();
     shuffle();
@@ -858,14 +870,13 @@ const Game = (function game() {
 
     const hero = Character.get();
 
-    Tokens.set({
-      suns: hero.str,
-      leaves: hero.bdy,
-      waves: hero.dex,
-      knots: hero.int,
-      moons: hero.wil,
-      wyrms: hero.chr,
-    });
+    Deck.add(hero.role);
+    Deck.shuffle();
+
+    Personalities.remove(hero.role);
+    Obstacles.deal();
+
+    Tokens.set({});
 
     Renderer.invalidate();
   }
