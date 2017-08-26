@@ -414,7 +414,6 @@ const Locations = (function locations() {
     PRNG.shuffle(cards);
     cards.push('origin');
     cards.unshift('end');
-    console.log(JSON.stringify(cards));
   }
 
   return {
