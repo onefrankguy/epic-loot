@@ -679,7 +679,11 @@ const Renderer = (function renderer() {
     ['str', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
       let html = '';
       html += `<span class="${attr} stat">`;
-      html += hero[attr];
+      if (hero[attr]) {
+        html += hero[attr];
+      } else {
+        html += '0';
+      }
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
       $(`#${attr}`).html(html.trim());

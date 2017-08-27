@@ -10,7 +10,7 @@
   <link rel="stylesheet" media="screen, handheld" href="css/game.css" />
   <link rel="stylesheet" media="only screen and (min-width:40em)" href="css/screen.css" />
 </head>
-<body>
+<body class="unselectable">
 <div id="character">
   <h1 class="title">Darcy&rsquo;s Dungeon</h1>
   <p class="flavor">The Queen had not been overly specific about where the dungeon was. &ldquo;It&rsquo;s north of the castle, in Flylock Forest. You&rsquo;ll probably need some help cleaning it out.&rdquo; That was all you caught before the attendant bustled you out the door.</p>
@@ -40,6 +40,10 @@
     <div id="spells"></div>
     <div id="used-gems"></div>
   </div>
+  <div id="level-up" class="hidden">
+    <div><span>strength</span><span>body</span><span>dexterity</span></div>
+    <div><span>intellect</span><span>will</span><span>charm</span></div>
+  </div>
   <div>
     <div id="flavor-title" class="flavor title"></div>
     <div id="flavor-text" class="flavor text"></div>
@@ -48,12 +52,12 @@
       <div id="sign2" class="sign"></div>
     </div>
     <div id="gems">
-      <div id="suns" class="unselectable"></div>
-      <div id="leaves" class="unselectable"></div>
-      <div id="waves" class="unselectable"></div>
-      <div id="knots" class="unselectable"></div>
-      <div id="moons" class="unselectable"></div>
-      <div id="wyrms" class="unselectable"></div>
+      <div id="suns"></div>
+      <div id="leaves"></div>
+      <div id="waves"></div>
+      <div id="knots"></div>
+      <div id="moons"></div>
+      <div id="wyrms"></div>
     </div>
   </div>
 </div>
