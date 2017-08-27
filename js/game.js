@@ -657,9 +657,11 @@ const Renderer = (function renderer() {
 
     if (Deck.empty()) {
       $('#collection').add('hidden');
+      $('#signpost').add('hidden');
       $('#level-up').remove('hidden');
     } else {
       $('#collection').remove('hidden');
+      $('#signpost').remove('hidden');
       $('#level-up').add('hidden');
     }
   }
