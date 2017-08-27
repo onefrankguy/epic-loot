@@ -630,7 +630,7 @@ const Tokens = (function tokens() {
       if (has.call(values, attribute)) {
         defaults[attribute] = Math.abs(parseInt(values[attribute], 10));
       } else {
-        defaults[attribute] = 6;
+        defaults[attribute] = 9;
       }
     });
 
@@ -878,7 +878,6 @@ const Game = (function game() {
 
       const card = Deck.deal();
       Obstacles.use(card);
-
       Renderer.playCard(card);
     }
   }
@@ -913,10 +912,7 @@ const Game = (function game() {
         type = Obstacles.get()[1].name;
       }
       Obstacles.pick(type);
-
-      const card = Deck.deal();
-      Obstacles.use(card);
-      Renderer.playCard(card);
+      Renderer.invalidate();
     }
   }
 
