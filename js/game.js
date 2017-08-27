@@ -81,42 +81,6 @@ const Character = (function character() {
   };
 }());
 
-const Experience = (function experience() {
-  let points = 0;
-  let needed = 0;
-  let level = 0;
-
-  function get() {
-    return { points, needed, level };
-  }
-
-  function set(value) {
-    points = 0;
-    needed = parseInt(value, 10);
-    level += 1;
-    if (needed < 0) {
-      needed = 0;
-    }
-  }
-
-  function tick() {
-    points += 1;
-  }
-
-  function reset() {
-    points = 0;
-    needed = 0;
-    level = 0;
-  }
-
-  return {
-    get,
-    set,
-    tick,
-    reset,
-  };
-}());
-
 // Are we dungeon crawling yet? No! Because before you can crawl into a dungeon,
 // you have to find a dungeon to crawl into, and findng a dungeon is not an easy
 // thing. After all, if it was easy, they wouldn't need a hero to do it.
@@ -550,30 +514,42 @@ const Obstacles = (function obstacles() {
 const Deck = (function deck() {
   let cards = [];
   let discards = [];
-  let attributes = [];
+  let hand = [];
+
+  function get() {
+    let attributes = [];
+
+    cards.forEach((card) => {
+      if (Decktet.attributes().indexOf(card) > -1) {
+        attributes.push(card);
+      }
+    });
+
+    discards.forEach((card) => {
+      if (Decktet.attributes().indexOf(card) > -1) {
+        attributes.push(card);
+      }
+    });
+
+    return { cards: cards.length, discards: discards.length, attributes };
+  }
+
+  function empty() {
+    return cards.length <= 0;
+  }
 
   function shuffle() {
-    cards = cards.concat(discards);
+    cards = [].concat(cards, discards, hand);
     discards = [];
+    hand = [];
     PRNG.shuffle(cards);
-    Experience.set(cards.length);
   }
 
   function deal() {
     let card = cards.pop();
 
-    if (!card) {
-      const attribute = attributes.pop();
-      if (attribute) {
-        discards.push(attribute);
-      }
-      shuffle();
-      card = cards.pop();
-    }
-
     if (card) {
       discards.push(card);
-      Experience.tick();
     }
 
     return card;
@@ -581,18 +557,19 @@ const Deck = (function deck() {
 
   function add(card) {
     if (card && Decktet.locations().indexOf(card) < 0) {
-      discards.push(card);
+      hand.push(card);
     }
   }
 
   function reset() {
     cards = ['sailor', 'soldier', 'diplomat'];
     discards = [];
-    attributes = Decktet.attributes();
-    shuffle();
+    hand = [];
   }
 
   return {
+    get,
+    empty,
     shuffle,
     deal,
     add,
@@ -682,13 +659,25 @@ const Renderer = (function renderer() {
 
   function renderExperience() {
     const $ = window.jQuery;
-    const xp = Experience.get();
+    const deck = Deck.get();
+    const points = deck.discards;
+    const needed = deck.discards + deck.cards;
 
-    $('#xp-points').html(xp.points);
-    $('#xp-needed').html(xp.needed);
-    $('#this-level').html(xp.level - 1);
-    $('#next-level').html(xp.level);
-    $('#xp-progress').style('width', `${(xp.points * 100) / xp.needed}%`);
+    $('#xp-points').html(points);
+    $('#xp-needed').html(needed);
+    $('#this-level').html(deck.attributes.length + 1);
+    $('#next-level').html(deck.attributes.length + 2);
+    $('#xp-progress').style('width', `${(points * 100) / needed}%`);
+
+    if (Deck.empty()) {
+      $('#collection').add('hidden');
+      $('#level-up-button').remove('hidden');
+      $('#level-up').remove('hidden');
+    } else {
+      $('#collection').remove('hidden');
+      $('#level-up-button').add('hidden');
+      $('#level-up').add('hidden');
+    }
   }
 
   function renderCard(card, isDeck) {
@@ -855,6 +844,10 @@ const Game = (function game() {
   }
 
   function onToken(element) {
+    if (Deck.empty()) {
+      return;
+    }
+
     if (Obstacles.defeated()) {
       return;
     }
@@ -873,6 +866,10 @@ const Game = (function game() {
   }
 
   function onSpells() {
+    if (Deck.empty()) {
+      return;
+    }
+
     if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
@@ -890,6 +887,10 @@ const Game = (function game() {
   }
 
   function onSign(element) {
+    if (Deck.empty()) {
+      return;
+    }
+
     const sign = element.unwrap().id;
 
     if (Obstacles.get().length >= 2) {
@@ -916,6 +917,25 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
+  function onLevelUp() {
+    if (Deck.empty()) {
+      Renderer.invalidate();
+    }
+  }
+
+  function onLevelStat(element) {
+    if (Deck.empty()) {
+      const stat = element.unwrap().id;
+      Decktet.attributes().forEach((attr) => {
+        if (stat.indexOf(attr) > -1) {
+          Deck.add(attr);
+          Deck.shuffle();
+          Renderer.invalidate();
+        }
+      });
+    }
+  }
+
   function onStart() {
     const $ = window.jQuery;
     $('#character').add('hidden');
@@ -939,7 +959,6 @@ const Game = (function game() {
     $('#world').add('hidden');
     $('#character').remove('hidden');
 
-    Experience.reset();
     Obstacles.reset();
     Deck.reset();
     Tokens.reset();
@@ -1000,6 +1019,14 @@ const Game = (function game() {
 
     $('#role-prev').touch(undefined, onRolePrev);
     $('#role-next').touch(undefined, onRoleNext);
+
+    $('#level-up-button').touch(undefined, onLevelUp);
+    $('#level-up-moons').touch(undefined, onLevelStat);
+    $('#level-up-suns').touch(undefined, onLevelStat);
+    $('#level-up-waves').touch(undefined, onLevelStat);
+    $('#level-up-leaves').touch(undefined, onLevelStat);
+    $('#level-up-wyrms').touch(undefined, onLevelStat);
+    $('#level-up-knots').touch(undefined, onLevelStat);
 
     $(window).on('hashchange', onHashChange);
 

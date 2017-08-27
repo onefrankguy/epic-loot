@@ -108,7 +108,6 @@ a, a:visited {
   height: 4rem;
   align-self: center;
   border: 1px solid $ink-color;
-  margin-left: 1rem;
 }
 
 .left.arrow {
@@ -136,6 +135,7 @@ a, a:visited {
   font-variant: small-caps;
   text-transform: capitalize;
   margin-bottom: 2rem;
+  padding-left: 1rem;
 }
 
 .stats > * {
@@ -176,14 +176,19 @@ a, a:visited {
   background: $map-color;
 }
 
-/* EXPERIENCE */
+/* PLAYER */
+.player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .experience {
   display: flex;
   flex-direction: column;
-  padding: .5rem;
   font-size: 1rem;
   line-height: 1.5;
-  border-bottom: 1px solid $ink-color;
+  flex-grow: 1;
 }
 
 .experience > .points {

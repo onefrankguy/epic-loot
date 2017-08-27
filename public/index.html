@@ -32,17 +32,21 @@
 </div>
 
 <div id="world" class="hidden">
-  <div class="experience">
-    <div class="points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
-    <div class="levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
+  <div class="player">
+    <div class="portrait"></div>
+    <div id="level-up-button" class="hidden">Level up!</div>
+    <div class="experience">
+      <div class="points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
+      <div class="levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
+    </div>
   </div>
-  <div class="collection">
+  <div id="collection" class="collection">
     <div id="spells"></div>
     <div id="used-gems"></div>
   </div>
   <div id="level-up" class="hidden">
-    <div><span>strength</span><span>body</span><span>dexterity</span></div>
-    <div><span>intellect</span><span>will</span><span>charm</span></div>
+    <div><span id="level-up-suns">strength</span><span id="level-up-leaves">body</span><span id="level-up-waves">dexterity</span></div>
+    <div><span id="level-up-knots">intellect</span><span id="level-up-moons">will</span><span id="level-up-wyrms">charm</span></div>
   </div>
   <div>
     <div id="flavor-title" class="flavor title"></div>
