@@ -2,49 +2,41 @@
 // it's all about you. So before we even get to the dungeon crawling, let's talk
 // about you. Who are you, and why are you wondering through this forest?
 const Character = (function character() {
-  const has = Object.prototype.hasOwnProperty;
-  const roles = {};
   let hero = 'author';
+
   // Oh, I see. You're a hero and an author. But maybe not all the time? If
   // you where a full time author, you'd be a `const hero`, and you're not. So
   // you must be one of these other things.
-
-  // The Penitent is a cleric .
-  roles.penitent = { suns: 4, leaves: 4, waves: 6, knots: 8, moons: 8, wyrms: 6 };
-  // The Consul is a figher .
-  roles.consul = { suns: 8, leaves: 6, waves: 4, knots: 6, moons: 6, wyrms: 6 };
-  // The Light Keeper is a rogue .
-  roles['light keeper'] = { suns: 6, leaves: 8, waves: 8, knots: 6, moons: 4, wyrms: 4 };
-  // The Painter is a wizard .
-  roles.painter = { suns: 6, leaves: 4, waves: 6, knots: 8, moons: 8, wyrms: 4 };
-  // The Savage is a barbarian .
-  roles.savage = { suns: 8, leaves: 8, waves: 4, knots: 6, moons: 4, wyrms: 6 };
-  // THe Lunatic is a druid .
-  roles.lunatic = { suns: 4, leaves: 1, waves: 4, knots: 9, moons: 9, wyrms: 9 };
-  // The Author is a monk.
-  roles.author = { suns: 4, leaves: 9, waves: 8, knots: 5, moons: 9, wyrms: 1 };
-  // The Watchman is a paladin.
-  roles.watchman = { suns: 6, leaves: 6, waves: 4, knots: 4, moons: 8, wyrms: 8 };
-  // The Huntress is a ranger.
-  roles.huntress = { suns: 6, leaves: 6, waves: 8, knots: 6, moons: 6, wyrms: 4 };
-  // The Merchant is a sorcerer.
-  roles.merchant = { suns: 4, leaves: 2, waves: 5, knots: 9, moons: 8, wyrms: 8 };
-  // The Bard is a bard.
-  roles.bard = { suns: 5, leaves: 4, waves: 6, knots: 8, moons: 5, wyrms: 8 };
+  const roles = [
+    // The Penitent is a cleric .
+    'penitent',
+    // The Consul is a figher .
+    'consul',
+    // The Light Keeper is a rogue .
+    'light keeper',
+    // The Painter is a wizard .
+    'painter',
+    // The Savage is a barbarian .
+    'savage',
+    // THe Lunatic is a druid .
+    'lunatic',
+    // The Author is a monk.
+    'author',
+    // The Watchman is a paladin.
+    'watchman',
+    // The Huntress is a ranger.
+    'huntress',
+    // The Merchant is a sorcerer.
+    'merchant',
+    // The Bard is a bard.
+    'bard',
+  ];
 
   // So you can be anything you want to be. Except maybe a townsperson.
   // Townsperson does not appear to be a class in this RPG, or most any RPG for
   // that matter.
-  //
-  // Looks like the dungeon has a way to figure out how strong and smart and
-  // clever you are. I have a sneaking suspicion you'll need to be very strong
-  // and smart and clever to defeat this dungeon.
   function get() {
-    if (has.call(roles, hero)) {
-      return Object.assign({ role: hero }, roles[hero]);
-    }
-
-    return hero;
+    return { role: hero };
   }
 
   // Here's how you change what you are. It's cyclic. If you go forward, you
@@ -52,24 +44,22 @@ const Character = (function character() {
   // backward, you become a Lunatic. Hmm... Probably best not to go
   // backward.
   function next() {
-    const keys = Object.keys(roles);
-    let index = keys.indexOf(hero);
+    let index = roles.indexOf(hero);
     if (index > -1) {
-      index = (index + 1) % keys.length;
-      hero = keys[index];
+      index = (index + 1) % roles.length;
+      hero = roles[index];
     } else {
       hero = 'author';
     }
   }
 
   function prev() {
-    const keys = Object.keys(roles);
-    let index = keys.indexOf(hero);
+    let index = roles.indexOf(hero);
     if (index > -1) {
       if (index - 1 < 0) {
-        index = keys.length;
+        index = roles.length;
       }
-      hero = keys[index - 1];
+      hero = roles[index - 1];
     } else {
       hero = 'author';
     }
@@ -674,16 +664,16 @@ const Renderer = (function renderer() {
   function renderRole() {
     const $ = window.jQuery;
     const hero = Character.get();
+    const card = Decktet.get(hero.role);
     $('#role').html(hero.role);
 
     Decktet.attributes().forEach((attr) => {
       let html = '';
-      html += `<span class="stat">`;
-      if (hero[attr]) {
-        html += hero[attr];
-      } else {
-        html += '0';
+      let value = 1;
+      if (card.suits.indexOf(attr) > -1) {
+        value += 1;
       }
+      html += `<span class="stat">${value}`;
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
       $(`#starting-${attr}`).html(html.trim());
