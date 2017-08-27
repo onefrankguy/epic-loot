@@ -106,29 +106,29 @@ const Decktet = (function decktet() {
   }
 
   // The suit of Suns is strength.
-  cards.suns = { value: 1, suits: ['suns'] };
+  cards.suns = { value: 1, suits: ['suns'], title: 'str' };
 
   // The suit of Leaves is body.
-  cards.leaves = { value: 1, suits: ['leaves'] };
+  cards.leaves = { value: 1, suits: ['leaves'], title: 'bdy' };
 
   // The suit of Waves is dexterity.
-  cards.waves = { value: 1, suits: ['waves'] };
+  cards.waves = { value: 1, suits: ['waves'], title: 'dex' };
 
   // The suit of Knots is intellect.
-  cards.knots = { value: 1, suits: ['knots'] };
+  cards.knots = { value: 1, suits: ['knots'], title: 'int' };
 
   // The suit of Moons is will.
-  cards.moons = { value: 1, suits: ['moons'] };
+  cards.moons = { value: 1, suits: ['moons'], title: 'wil' };
 
   // The suit of Wyrms is charm.
-  cards.wyrms = { value: 1, suits: ['wyrms'] };
+  cards.wyrms = { value: 1, suits: ['wyrms'], title: 'chr' };
 
   // You start the game with four personalities, the Excuse, the Sailor,
   // the Soldier, and the Diplomat. This gives you one of each suit.
   cards.excuse = { value: 0, suits: [] };
-  cards.sailor = { value: 4, suits: ['waves', 'leaves'] };
-  cards.soldier = { value: 5, suits: ['wyrms', 'knots'] };
-  cards.diplomat = { value: 8, suits: ['moons', 'suns'] };
+  cards.sailor = { value: 4, suits: ['waves', 'leaves'], title: 'dex / bdy' };
+  cards.soldier = { value: 5, suits: ['wyrms', 'knots'], title: 'chr / int' };
+  cards.diplomat = { value: 8, suits: ['moons', 'suns'], title: 'wil / str' };
 
   // You encounter the remaining eleven personalities during your journey.
   // Successfully persuading a personality to join your quest adds it to your
@@ -140,17 +140,17 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.author = { value: 2, suits: ['moons', 'knots'] };
-  cards.painter = { value: 3, suits: ['suns', 'knots'] };
-  cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
-  cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
-  cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
-  cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
-  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
-  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
-  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'] };
-  cards.bard = { value: 12, suits: ['suns'] };
-  cards.huntress = { value: 12, suits: ['moons'] };
+  cards.author = { value: 2, suits: ['moons', 'knots'], title: 'rat' };
+  cards.painter = { value: 3, suits: ['suns', 'knots'], title: 'spiders' };
+  cards.savage = { value: 3, suits: ['leaves', 'wyrms'], title: 'spiders' };
+  cards.lunatic = { value: 6, suits: ['moons', 'waves'], title: 'rabbit' };
+  cards.penitent = { value: 6, suits: ['suns', 'wyrms'], title: 'rabbit' };
+  cards.merchant = { value: 9, suits: ['leaves', 'knots'], title: 'snake' };
+  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'], title: 'wolf' };
+  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'], title: 'wolf' };
+  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'], title: 'boar' };
+  cards.bard = { value: 12, suits: ['suns'], title: 'bear' };
+  cards.huntress = { value: 12, suits: ['moons'], title: 'bear' };
 
   // If you don't persuade the personality you encouter...
   function events() {
@@ -160,17 +160,17 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.journey = { value: 3, suits: ['moons', 'waves'] };
-  cards.battle = { value: 4, suits: ['wyrms', 'knots'] };
-  cards.discovery = { value: 5, suits: ['suns', 'waves'] };
-  cards.market = { value: 6, suits: ['leaves', 'knots'] };
-  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'] };
-  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'] };
-  cards.pact = { value: 9, suits: ['moons', 'suns'] };
-  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'] };
-  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
-  cards.calamity = { value: 12, suits: ['wyrms'] };
-  cards.windfall = { value: 12, suits: ['knots'] };
+  cards.journey = { value: 3, suits: ['moons', 'waves'], title: 'spiders' };
+  cards.battle = { value: 4, suits: ['wyrms', 'knots'], title: 'lizard' };
+  cards.discovery = { value: 5, suits: ['suns', 'waves'], title: 'arachnid' };
+  cards.market = { value: 6, suits: ['leaves', 'knots'], title: 'rabbit' };
+  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'], title: 'mushrooms' };
+  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'], title: 'bat' };
+  cards.pact = { value: 9, suits: ['moons', 'suns'], title: 'snake' };
+  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'], title: 'wolf' };
+  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'], title: 'boar' };
+  cards.calamity = { value: 12, suits: ['wyrms'], title: 'bear' };
+  cards.windfall = { value: 12, suits: ['knots'], title: 'bear' };
 
   // Any personality you choose not to persuade or event you choose not to
   // assist is consumed by the ???. It mixes with the locations to become an
@@ -721,7 +721,7 @@ const Renderer = (function renderer() {
       html += `<div class="${klass}">`;
       html += `<span class="value">${card.value}</span>`;
       html += '<div class="body">';
-      html += '<span class="picture"></span>';
+      html += `<span class="pixelated monster portrait ${card.title}"></span>`;
       html += '<span class="text">';
       html += `<span class="iconic title">${card.title}</span>`;
       html += card.text;

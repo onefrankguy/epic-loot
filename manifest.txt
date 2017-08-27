@@ -2,4 +2,4 @@ index.html
 js/game.js
 css/game.css
 css/screen.css
-img/characters.png
+img/sprites.png
