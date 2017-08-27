@@ -13,7 +13,7 @@
     "autoprefixer": "postcss --no-map -u autoprefixer -r public/css/*",
     "scss": "node-sass --output-style compressed --omit-source-map-url -o public/css scss",
     "watch:js": "onchange 'js/*.js' -- npm run build:js",
-    "build:js": "mkdir -p public/js && cp js/*.js public/js/.",
+    "build:js": "mkdir -p public/js && uglifyjs js/*.js -m -c -o public/js/game.js",
     "watch:gfx": "onchange 'img/*.png' -- npm run build:gfx",
     "build:gfx": "mkdir -p public/img && cp img/*.png public/img/.",
     "postbuild:js": "npm run docs",
@@ -30,6 +30,7 @@
     "node-sass": "4.5.3",
     "npm-run-all": "4.0.2",
     "onchange": "3.2.1",
-    "postcss-cli": "4.1.0"
+    "postcss-cli": "4.1.0",
+    "uglify-es": "3.0.28"
   }
 }
