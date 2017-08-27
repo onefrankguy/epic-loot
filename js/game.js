@@ -98,7 +98,7 @@ const Decktet = (function decktet() {
 
   function get(name) {
     if (has.call(cards, name)) {
-      return Object.assign({ name }, cards[name]);
+      return Object.assign({ name, title: name, text: '' }, cards[name]);
     }
 
     return undefined;
@@ -496,7 +496,7 @@ const Deck = (function deck() {
   let hand = [];
 
   function get() {
-    let attributes = [];
+    const attributes = [];
 
     cards.forEach((card) => {
       if (Decktet.attributes().indexOf(card) > -1) {
@@ -525,7 +525,7 @@ const Deck = (function deck() {
   }
 
   function deal() {
-    let card = cards.pop();
+    const card = cards.pop();
 
     if (card) {
       discards.push(card);
@@ -612,7 +612,6 @@ const Tokens = (function tokens() {
 }());
 
 const Renderer = (function renderer() {
-  let picked;
   let playedCards = [];
   let playedTokens = [];
   let dirty = true;
@@ -714,26 +713,45 @@ const Renderer = (function renderer() {
     $('#spells').html(html);
   }
 
+  function renderObstacle(card, mini) {
+    let klass = 'sign';
+    if (mini) {
+      klass += ' mini';
+    }
+
+    let html = '';
+    if (card) {
+      html += `<div class="${klass}">`;
+      html += `<span class="value">${card.value}</span>`;
+      html += '<div class="body">';
+      html += '<span class="picture"></span>';
+      html += '<span class="text">';
+      html += `<span class="iconic title">${card.title}</span>`;
+      html += card.text;
+      html += '</span>';
+      html += '</div>';
+      html += '<div class="gems">';
+      card.suits.forEach((suit) => {
+        html += `<span class="${suit} gem"></span>`;
+      });
+      html += '</div>';
+      html += '</div>';
+    }
+
+    return html;
+  }
+
   function renderObstacles() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
+    const mini = obstacles.length > 1;
 
-    let title = '';
-    let id0 = '#sign1';
-    let id1 = '#sign2';
-    if (obstacles.length === 1) {
-      title = obstacles[0].name;
-      if (picked === 'sign2') {
-        id0 = '#sign2';
-        id1 = '#sign1';
-      }
+    $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
+    $('#sign2').html(renderObstacle(obstacles[1], mini)).remove('hidden');
+
+    if (!mini || Obstacles.stage() === 2) {
+      $('#sign2').add('hidden');
     }
-
-    title = `${Obstacles.remaining()} - ${title}`;
-
-    $(id0).html(renderCard(obstacles[0]));
-    $(id1).html(renderCard(obstacles[1]));
-    $('#flavor-title').html(title);
   }
 
   function renderTokens() {
@@ -776,10 +794,6 @@ const Renderer = (function renderer() {
     requestAnimationFrame(render);
   }
 
-  function pick(value) {
-    picked = value;
-  }
-
   function invalidate() {
     dirty = true;
   }
@@ -808,7 +822,6 @@ const Renderer = (function renderer() {
 
   return {
     render,
-    pick,
     invalidate,
     playCard,
     playToken,
@@ -883,7 +896,6 @@ const Game = (function game() {
 
     if (Obstacles.get().length >= 2) {
       let type = sign;
-      Renderer.pick(sign);
       if (type === 'sign1') {
         type = Obstacles.get()[0].name;
       }
