@@ -140,17 +140,17 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.author = { value: 2, suits: ['moons', 'knots'], title: 'rat' };
-  cards.painter = { value: 3, suits: ['suns', 'knots'], title: 'spiders' };
-  cards.savage = { value: 3, suits: ['leaves', 'wyrms'], title: 'spiders' };
-  cards.lunatic = { value: 6, suits: ['moons', 'waves'], title: 'rabbit' };
-  cards.penitent = { value: 6, suits: ['suns', 'wyrms'], title: 'rabbit' };
-  cards.merchant = { value: 9, suits: ['leaves', 'knots'], title: 'snake' };
-  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'], title: 'wolf' };
-  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'], title: 'wolf' };
-  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'], title: 'boar' };
-  cards.bard = { value: 12, suits: ['suns'], title: 'bear' };
-  cards.huntress = { value: 12, suits: ['moons'], title: 'bear' };
+  cards.author = { value: 2, suits: ['moons', 'knots'] };
+  cards.painter = { value: 3, suits: ['suns', 'knots'] };
+  cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
+  cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
+  cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
+  cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
+  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
+  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
+  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'] };
+  cards.bard = { value: 12, suits: ['suns'] };
+  cards.huntress = { value: 12, suits: ['moons'] };
 
   // If you don't persuade the personality you encouter...
   function events() {
@@ -160,17 +160,17 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.journey = { value: 3, suits: ['moons', 'waves'], title: 'spiders' };
-  cards.battle = { value: 4, suits: ['wyrms', 'knots'], title: 'lizard' };
-  cards.discovery = { value: 5, suits: ['suns', 'waves'], title: 'arachnid' };
-  cards.market = { value: 6, suits: ['leaves', 'knots'], title: 'rabbit' };
-  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'], title: 'mushrooms' };
-  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'], title: 'bat' };
-  cards.pact = { value: 9, suits: ['moons', 'suns'], title: 'snake' };
-  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'], title: 'wolf' };
-  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'], title: 'boar' };
-  cards.calamity = { value: 12, suits: ['wyrms'], title: 'bear' };
-  cards.windfall = { value: 12, suits: ['knots'], title: 'bear' };
+  cards.journey = { value: 3, suits: ['moons', 'waves'] };
+  cards.battle = { value: 4, suits: ['wyrms', 'knots'] };
+  cards.discovery = { value: 5, suits: ['suns', 'waves'] };
+  cards.market = { value: 6, suits: ['leaves', 'knots'] };
+  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'] };
+  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'] };
+  cards.pact = { value: 9, suits: ['moons', 'suns'] };
+  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'] };
+  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
+  cards.calamity = { value: 12, suits: ['wyrms'] };
+  cards.windfall = { value: 12, suits: ['knots'] };
 
   // Any personality you choose not to persuade or event you choose not to
   // assist is consumed by the ???. It mixes with the locations to become an
@@ -381,7 +381,7 @@ const Obstacles = (function obstacles() {
       return [challenger];
     }
 
-    return active.map(name => Decktet.get(name));
+    return active;
   }
 
   function deal() {
@@ -406,6 +406,31 @@ const Obstacles = (function obstacles() {
     }
 
     PRNG.shuffle(active);
+    active = active.map(name => Decktet.get(name));
+
+    const low = ['rat', 'spiders'];
+    PRNG.shuffle(low);
+
+    const med = ['lizard', 'arachnid', 'rabbit'];
+    PRNG.shuffle(med);
+
+    const high = ['snake', 'mushrooms', 'bat'];
+    PRNG.shuffle(high);
+
+    const epic = ['wolf', 'boar', 'bear'];
+    PRNG.shuffle(epic);
+
+    for (let i = 0; i < active.length; i += 1) {
+      if (active[i].value <= 3) {
+        active[i].title = low.pop();
+      } else if (active[i].value <= 6) {
+        active[i].title = med.pop();
+      } else if (active[i].value <= 9) {
+        active[i].title = high.pop();
+      } else {
+        active[i].title = epic.pop();
+      }
+    }
   }
 
   function pick(name) {
@@ -413,10 +438,16 @@ const Obstacles = (function obstacles() {
       return;
     }
 
-    const index = active.indexOf(name);
-    if (index > -1) {
+    let index = 0;
+    for (index = 0; index < active.length; index += 1) {
+      if (active[index].name === name) {
+        break;
+      }
+    }
+
+    if (index < active.length) {
+      challenger = active[index];
       active = active.splice(index, 1);
-      challenger = Decktet.get(name);
     }
   }
 
