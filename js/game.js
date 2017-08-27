@@ -408,16 +408,16 @@ const Obstacles = (function obstacles() {
     PRNG.shuffle(active);
     active = active.map(name => Decktet.get(name));
 
-    const low = ['rat', 'spiders'];
+    const low = (phase === 1) ? ['rat', 'spiders'] : ['vampire bat', 'scorpion'];
     PRNG.shuffle(low);
 
-    const med = ['lizard', 'arachnid', 'rabbit'];
+    const med = (phase === 1) ? ['lizard', 'arachnid', 'rabbit'] : ['octo', 'ghost', 'eye'];
     PRNG.shuffle(med);
 
-    const high = ['snake', 'mushrooms', 'bat'];
+    const high = (phase === 1) ? ['snake', 'mushrooms', 'bat'] : ['goblin', 'skeleton', 'orc'];
     PRNG.shuffle(high);
 
-    const epic = ['wolf', 'boar', 'bear'];
+    const epic = (phase === 1) ? ['wolf', 'boar', 'bear'] : ['cyclops', 'demon'];
     PRNG.shuffle(epic);
 
     for (let i = 0; i < active.length; i += 1) {
