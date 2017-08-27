@@ -10,27 +10,27 @@ const Character = (function character() {
   // you must be one of these other things.
 
   // The Penitent is a cleric .
-  roles.penitent = { suns: 4, bdy: 4, dex: 6, int: 8, wil: 8, chr: 6 };
+  roles.penitent = { suns: 4, leaves: 4, dex: 6, int: 8, wil: 8, chr: 6 };
   // The Consul is a figher .
-  roles.consul = { suns: 8, bdy: 6, dex: 4, int: 6, wil: 6, chr: 6 };
+  roles.consul = { suns: 8, leaves: 6, dex: 4, int: 6, wil: 6, chr: 6 };
   // The Light Keeper is a rogue .
-  roles['light keeper'] = { suns: 6, bdy: 8, dex: 8, int: 6, wil: 4, chr: 4 };
+  roles['light keeper'] = { suns: 6, leaves: 8, dex: 8, int: 6, wil: 4, chr: 4 };
   // The Painter is a wizard .
-  roles.painter = { suns: 6, bdy: 4, dex: 6, int: 8, wil: 8, chr: 4 };
+  roles.painter = { suns: 6, leaves: 4, dex: 6, int: 8, wil: 8, chr: 4 };
   // The Savage is a barbarian .
-  roles.savage = { suns: 8, bdy: 8, dex: 4, int: 6, wil: 4, chr: 6 };
+  roles.savage = { suns: 8, leaves: 8, dex: 4, int: 6, wil: 4, chr: 6 };
   // THe Lunatic is a druid .
-  roles.lunatic = { suns: 4, bdy: 1, dex: 4, int: 9, wil: 9, chr: 9 };
+  roles.lunatic = { suns: 4, leaves: 1, dex: 4, int: 9, wil: 9, chr: 9 };
   // The Author is a monk.
-  roles.author = { suns: 4, bdy: 9, dex: 8, int: 5, wil: 9, chr: 1 };
+  roles.author = { suns: 4, leaves: 9, dex: 8, int: 5, wil: 9, chr: 1 };
   // The Watchman is a paladin.
-  roles.watchman = { suns: 6, bdy: 6, dex: 4, int: 4, wil: 8, chr: 8 };
+  roles.watchman = { suns: 6, leaves: 6, dex: 4, int: 4, wil: 8, chr: 8 };
   // The Huntress is a ranger.
-  roles.huntress = { suns: 6, bdy: 6, dex: 8, int: 6, wil: 6, chr: 4 };
+  roles.huntress = { suns: 6, leaves: 6, dex: 8, int: 6, wil: 6, chr: 4 };
   // The Merchant is a sorcerer.
-  roles.merchant = { suns: 4, bdy: 2, dex: 5, int: 9, wil: 8, chr: 8 };
+  roles.merchant = { suns: 4, leaves: 2, dex: 5, int: 9, wil: 8, chr: 8 };
   // The Bard is a bard.
-  roles.bard = { suns: 5, bdy: 4, dex: 6, int: 8, wil: 5, chr: 8 };
+  roles.bard = { suns: 5, leaves: 4, dex: 6, int: 8, wil: 5, chr: 8 };
 
   // So you can be anything you want to be. Except maybe a townsperson.
   // Townsperson does not appear to be a class in this RPG, or most any RPG for
@@ -160,7 +160,7 @@ const Decktet = (function decktet() {
   // The suit of Suns is strength.
   cards.suns = { value: 1, suits: ['suns'] };
 
-  // The suit of Leaves (ᚦ) is body.
+  // The suit of Leaves is body.
   cards.leaves = { value: 1, suits: ['leaves'] };
 
   // The suit of Waves (ᚲ) is quickness.
@@ -676,7 +676,7 @@ const Renderer = (function renderer() {
     const hero = Character.get();
     $('#role').html(hero.role);
 
-    ['suns', 'bdy', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
+    ['suns', 'leaves', 'dex', 'int', 'wil', 'chr'].forEach((attr) => {
       let html = '';
       html += `<span class="stat">`;
       if (hero[attr]) {
