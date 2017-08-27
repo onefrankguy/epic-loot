@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "npm-run-all --parallel watch:*",
-    "prebuild": "rm -f game.zip && npm run build:css && npm run build:js",
+    "prebuild": "rm -f game.zip && npm run build:css && npm run build:js && npm run build:gfx",
     "build": "cd public && zip -r ../game.zip . -i@../manifest.txt",
     "postbuild": "node test.js",
     "watch:css": "onchange 'scss/*.scss' -- npm run build:css",
@@ -14,6 +14,8 @@
     "scss": "node-sass --output-style compressed --omit-source-map-url -o public/css scss",
     "watch:js": "onchange 'js/*.js' -- npm run build:js",
     "build:js": "mkdir -p public/js && cp js/*.js public/js/.",
+    "watch:gfx": "onchange 'img/*.png' -- npm run build:gfx",
+    "build:gfx": "mkdir -p public/img && cp img/*.png public/img/.",
     "postbuild:js": "npm run docs",
     "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/js13k2017/",
     "lint": "eslint js",

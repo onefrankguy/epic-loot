@@ -107,7 +107,41 @@ a, a:visited {
   width: 4.8rem;
   height: 4.8rem;
   align-self: center;
-  border: 1px solid $ink-color;
+  background-image: url(../img/characters.png);
+  background-size: 8 * 100%;
+  background-position: 0 0;
+}
+
+.portrait.lunatic {
+  background-position: #{(100/7*0)}% 0;
+}
+
+.portrait.bard {
+  background-position: #{(100/7*1)}% 0;
+}
+
+.portrait.savage {
+  background-position: #{(100/7*2)}% 0;
+}
+
+.portrait.light.keeper {
+  background-position: #{(100/7*3)}% 0;
+}
+
+.portrait.huntress {
+  background-position: #{(100/7*4)}% 0;
+}
+
+.portrait.watchman {
+  background-position: #{(100/7*5)}% 0;
+}
+
+.portrait.painter {
+  background-position: #{(100/7*6)}% 0;
+}
+
+.portrait.merchant {
+  background-position: #{(100/7*7)}% 0;
 }
 
 .left.arrow {
@@ -501,4 +535,11 @@ a, a:visited {
 }
 .invisible {
   visibility: hidden !important;
+}
+.pixelated {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  image-rendering: pixelated;
 }

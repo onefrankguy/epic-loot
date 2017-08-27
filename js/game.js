@@ -2,28 +2,22 @@
 // it's all about you. So before we even get to the dungeon crawling, let's talk
 // about you. Who are you, and why are you wondering through this forest?
 const Character = (function character() {
-  let hero = 'author';
+  let hero = 'painter';
 
-  // Oh, I see. You're a hero and an author. But maybe not all the time? If
-  // you where a full time author, you'd be a `const hero`, and you're not. So
+  // Oh, I see. You're a hero and an painter. But maybe not all the time? If
+  // you where a full time painter, you'd be a `const hero`, and you're not. So
   // you must be one of these other things.
   const roles = [
-    // The Penitent is a cleric .
-    'penitent',
-    // The Consul is a figher .
-    'consul',
     // The Light Keeper is a rogue .
     'light keeper',
-    // The Painter is a wizard .
-    'painter',
-    // The Savage is a barbarian .
-    'savage',
     // THe Lunatic is a druid .
     'lunatic',
-    // The Author is a monk.
-    'author',
+    // The Painter is a wizard .
+    'painter',
     // The Watchman is a paladin.
     'watchman',
+    // The Savage is a barbarian .
+    'savage',
     // The Huntress is a ranger.
     'huntress',
     // The Merchant is a sorcerer.
@@ -40,7 +34,7 @@ const Character = (function character() {
   }
 
   // Here's how you change what you are. It's cyclic. If you go forward, you
-  // stop being an Author and start being a Watchman. If you go
+  // stop being a Painter and start being a Watchman. If you go
   // backward, you become a Lunatic. Hmm... Probably best not to go
   // backward.
   function next() {
@@ -49,7 +43,7 @@ const Character = (function character() {
       index = (index + 1) % roles.length;
       hero = roles[index];
     } else {
-      hero = 'author';
+      hero = 'painter';
     }
   }
 
@@ -61,16 +55,16 @@ const Character = (function character() {
       }
       hero = roles[index - 1];
     } else {
-      hero = 'author';
+      hero = 'painter';
     }
   }
 
 
   // And if you ever get tired of what you are, you can go back to being
-  // yourself, a heroic author. Though personally, I think you aught to try
+  // yourself, a heroic painter. Though personally, I think you aught to try
   // being a Bard. That role was the only one that wasn't also a something else.
   function reset() {
-    hero = 'author';
+    hero = 'painter';
   }
 
   return {
@@ -636,6 +630,9 @@ const Renderer = (function renderer() {
       $(`#starting-${attr}`).html(html.trim());
       $(`#in-game-${attr}`).html(html.trim());
     });
+
+    $('#starting-portrait').klass(`pixelated portrait ${hero.role}`);
+    $('#in-game-portrait').klass(`pixelated portrait ${hero.role}`);
   }
 
   function renderExperience() {
@@ -1079,6 +1076,14 @@ const Game = (function game() {
   Fn.prototype.remove = function remove(klass) {
     if (this.element) {
       this.element.classList.remove(klass);
+    }
+
+    return this;
+  };
+
+  Fn.prototype.klass = function klass(value) {
+    if (this.element) {
+      this.element.className = value;
     }
 
     return this;
