@@ -743,24 +743,15 @@ const Renderer = (function renderer() {
     $('#spells').html(html);
   }
 
-  function renderObstacle(card, mini) {
-    let klass = 'sign';
-    if (mini) {
-      klass += ' mini';
-    }
-
+  function renderObstacle(card) {
     let html = '';
+
     if (card) {
-      html += `<div class="${klass}">`;
-      html += `<span class="value">${card.value}</span>`;
-      html += '<div class="body">';
-      html += `<span class="pixelated monster portrait ${card.title}"></span>`;
-      html += '<span class="text">';
+      html += '<div class="sign">';
       html += `<span class="iconic title">${card.title}</span>`;
-      html += card.text;
-      html += '</span>';
-      html += '</div>';
-      html += '<div class="gems">';
+      html += `<span class="pixelated monster portrait ${card.title}"></span>`;
+      html += '<div class="info">';
+      html += `<span class="value">${card.value}</span>`;
       card.suits.forEach((suit) => {
         html += `<span class="${suit} gem"></span>`;
       });
@@ -774,12 +765,11 @@ const Renderer = (function renderer() {
   function renderObstacles() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
-    const mini = obstacles.length > 1;
 
-    $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
-    $('#sign2').html(renderObstacle(obstacles[1], mini)).remove('hidden');
+    $('#sign1').html(renderObstacle(obstacles[0])).remove('hidden');
+    $('#sign2').html(renderObstacle(obstacles[1])).remove('hidden');
 
-    if (!mini || Obstacles.stage() === 2) {
+    if (obstacles.length <= 1 || Obstacles.stage() === 2) {
       $('#sign2').add('hidden');
     }
   }

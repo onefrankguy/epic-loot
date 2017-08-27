@@ -448,43 +448,20 @@ a, a:visited {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
-}
-
-.sign .body {
-  display: flex;
-  flex-direction: row;
-}
-
-.sign .text {
-  padding-left: .5rem;
-  padding-right: .5rem + 2.4rem;
+  align-items: center;
 }
 
 .sign .title {
   font-weight: normal;
-  font-size: 1.5rem;
-  display: block;
 }
 
-.mini.sign .text {
-  display: none;
-}
-
-.sign .gems {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+.sign .info {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding: 0 .25rem .25rem .25rem;
+  justify-content: row;
+  align-items: center;
 }
 
 .sign .value {
-  position: absolute;
-  top: -.6rem;
-  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -493,6 +470,7 @@ a, a:visited {
   border: 1px solid $ink-color;
   border-bottom-left-radius: 33%;
   border-top-right-radius: 33%;
+  margin-right: .5rem;
 }
 
 .day .sign .value {
