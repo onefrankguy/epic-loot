@@ -644,9 +644,11 @@ const Renderer = (function renderer() {
     const card = Decktet.get(hero.role);
     $('#role').html(hero.role);
 
+    const attributes = Deck.get().attributes;
+
     Decktet.attributes().forEach((attr) => {
       let html = '';
-      let value = 1;
+      let value = 1 + attributes.filter(name => name === attr).length;
       if (card.suits.indexOf(attr) > -1) {
         value += 1;
       }
@@ -654,6 +656,7 @@ const Renderer = (function renderer() {
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
       $(`#starting-${attr}`).html(html.trim());
+      $(`#in-game-${attr}`).html(html.trim());
     });
   }
 
@@ -671,11 +674,9 @@ const Renderer = (function renderer() {
 
     if (Deck.empty()) {
       $('#collection').add('hidden');
-      $('#level-up-button').remove('hidden');
       $('#level-up').remove('hidden');
     } else {
       $('#collection').remove('hidden');
-      $('#level-up-button').add('hidden');
       $('#level-up').add('hidden');
     }
   }
@@ -917,12 +918,6 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function onLevelUp() {
-    if (Deck.empty()) {
-      Renderer.invalidate();
-    }
-  }
-
   function onLevelStat(element) {
     if (Deck.empty()) {
       const stat = element.unwrap().id;
@@ -1020,7 +1015,6 @@ const Game = (function game() {
     $('#role-prev').touch(undefined, onRolePrev);
     $('#role-next').touch(undefined, onRoleNext);
 
-    $('#level-up-button').touch(undefined, onLevelUp);
     $('#level-up-moons').touch(undefined, onLevelStat);
     $('#level-up-suns').touch(undefined, onLevelStat);
     $('#level-up-waves').touch(undefined, onLevelStat);

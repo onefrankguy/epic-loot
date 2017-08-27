@@ -33,8 +33,13 @@
 
 <div id="world" class="hidden">
   <div class="player">
-    <div class="portrait"></div>
-    <div id="level-up-button" class="hidden">Level up!</div>
+    <div class="in-game stats">
+      <div class="portrait"></div>
+      <div><span>str</span><span>bdy</span><span>dex</span></div>
+      <div><span id="in-game-suns"></span><span id="in-game-leaves"></span><span id="in-game-waves"></span></div>
+      <div><span>int</span><span>wil</span><span>chr</span></div>
+      <div><span id="in-game-knots"></span><span id="in-game-moons"></span><span id="in-game-wyrms"></span></div>
+    </div>
     <div class="experience">
       <div class="points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
       <div class="levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
@@ -44,9 +49,27 @@
     <div id="spells"></div>
     <div id="used-gems"></div>
   </div>
-  <div id="level-up" class="hidden">
-    <div><span id="level-up-suns">strength</span><span id="level-up-leaves">body</span><span id="level-up-waves">dexterity</span></div>
-    <div><span id="level-up-knots">intellect</span><span id="level-up-moons">will</span><span id="level-up-wyrms">charm</span></div>
+  <div id="level-up" class="stats level-up hidden">
+    <div>
+      <span id="level-up-suns" class="button">strength</span>
+      <span id="level-up-leaves" class="button">body</span>
+      <span id="level-up-waves" class="button">dexterity</span>
+    </div>
+    <div>
+      <span class="stat"><span class="suns gem"></span></span>
+      <span class="stat"><span class="leaves gem"></span></span>
+      <span class="stat"><span class="waves gem"></span></span>
+    </div>
+    <div>
+      <span id="level-up-knots" class="button">intellect</span>
+      <span id="level-up-moons" class="button">will</span>
+      <span id="level-up-wyrms" class="button">charm</span>
+    </div>
+    <div>
+      <span class="stat"><span class="knots gem"></span></span>
+      <span class="stat"><span class="moons gem"></span></span>
+      <span class="stat"><span class="wyrms gem"></span></span>
+    </div>
   </div>
   <div>
     <div id="flavor-title" class="flavor title"></div>

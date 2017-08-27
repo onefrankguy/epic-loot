@@ -104,8 +104,8 @@ a, a:visited {
 
 .portrait {
   display: flex;
-  width: 4rem;
-  height: 4rem;
+  width: 4.8rem;
+  height: 4.8rem;
   align-self: center;
   border: 1px solid $ink-color;
 }
@@ -134,22 +134,24 @@ a, a:visited {
   font-size: 1rem;
   font-variant: small-caps;
   text-transform: capitalize;
-  margin-bottom: 2rem;
-  padding-left: 1rem;
 }
 
 .stats > * {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   font-size: 1.4rem;
   line-height: 1.6rem;
-  margin-right: 1rem;
 }
 
 .stats .stat {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.stats div + div {
+  margin-left: 1rem;
 }
 
 .gem {
@@ -181,14 +183,20 @@ a, a:visited {
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: .5rem;
+  border-bottom: 1px solid $ink-color;
+}
+
+.in-game.stats {
+  margin: 0;
+  padding: 0;
 }
 
 .experience {
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
-  line-height: 1.5;
   flex-grow: 1;
+  margin-left: 1rem;
 }
 
 .experience > .points {
@@ -213,7 +221,7 @@ a, a:visited {
   flex-grow: 1;
   border: 1px solid $ink-color;
   margin: 0 1rem;
-  height: .5rem;
+  height: 1rem;
   border-radius: .25rem;
 }
 
@@ -273,20 +281,9 @@ a, a:visited {
 }
 
 /* LEVEL UP */
-#level-up {
+.level-up {
   flex-grow: 1;
-  display: flex;
-  flex-direction: row;
   justify-content: space-around;
-  font-variant: small-caps;
-  text-transform: capitalize;
-}
-
-#level-up > * {
-  display: flex;
-  flex-direction: column;
-  font-size: 1.4rem;
-  line-height: 4.8rem;
 }
 
 /* FLAVOR */
