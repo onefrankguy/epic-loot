@@ -377,29 +377,6 @@ const Locations = (function locations() {
   };
 }());
 
-const Blighted = (function blighted() {
-  let cards = [];
-
-  function deal() {
-    return cards.pop();
-  }
-
-  function add(card) {
-    cards.push(card);
-    PRNG.shuffle(cards);
-  }
-
-  function reset() {
-    cards = [];
-  }
-
-  return {
-    deal,
-    add,
-    reset,
-  };
-}());
-
 const Obstacles = (function obstacles() {
   let phase = 1;
   let active = [];
@@ -444,9 +421,7 @@ const Obstacles = (function obstacles() {
 
     const index = active.indexOf(name);
     if (index > -1) {
-      const selected = active.splice(index, 1);
-      active.forEach(card => Blighted.add(card));
-      active = selected;
+      active = active.splice(index, 1);
       challenger = Decktet.get(name);
     }
   }
@@ -491,11 +466,14 @@ const Obstacles = (function obstacles() {
     return last;
   }
 
+  function stage() {
+    return phase;
+  }
+
   function reset() {
     Personalities.reset();
     Events.reset();
     Locations.reset();
-    Blighted.reset();
 
     phase = 1;
   }
@@ -507,6 +485,7 @@ const Obstacles = (function obstacles() {
     use,
     defeated,
     remaining,
+    stage,
     reset,
   };
 }());
@@ -665,6 +644,14 @@ const Renderer = (function renderer() {
     const deck = Deck.get();
     const points = deck.discards;
     const needed = deck.discards + deck.cards;
+
+    if (Obstacles.stage() === 1) {
+      $('#world').add('day');
+      $('#world').remove('night');
+    } else {
+      $('#world').add('night');
+      $('#world').remove('day');
+    }
 
     $('#xp-points').html(points);
     $('#xp-needed').html(needed);

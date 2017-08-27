@@ -187,6 +187,23 @@ a, a:visited {
   border-bottom: 1px solid $ink-color;
 }
 
+.celestial {
+  display: inline-block;
+  align-self: flex-end;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid $ink-color;
+  border-radius: 50%;
+}
+
+.day .celestial {
+  background: white;
+}
+
+.night .celestial {
+  background: black;
+}
+
 .in-game.stats {
   margin: 0;
   padding: 0;
@@ -195,6 +212,7 @@ a, a:visited {
 .experience {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   flex-grow: 1;
   margin-left: 1rem;
 }
