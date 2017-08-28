@@ -18,7 +18,7 @@
     "build:gfx": "mkdir -p public/img && cp img/*.png public/img/.",
     "postbuild:js": "npm run docs",
     "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/js13k2017/",
-    "lint": "eslint js",
+    "lint": "eslint js/*.js test.js",
     "docs": "rm -rf docs/* && docco -l linear js/*.js"
   },
   "devDependencies": {
