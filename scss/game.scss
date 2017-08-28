@@ -315,7 +315,8 @@ a, a:visited {
   width: 1.5rem;
   height: 1.5rem;
   border: 1px solid $ink-color;
-  border-radius: 50%;
+  border-top-left-radius: 33%;
+  border-bottom-right-radius: 33%;
 }
 
 .day .celestial {
@@ -362,7 +363,7 @@ a, a:visited {
   border: 1px solid $ink-color;
   margin: 0 1rem;
   height: 1rem;
-  border-radius: .25rem;
+  border-radius: (1rem / 2);
 }
 
 #xp-progress {
@@ -478,7 +479,12 @@ a, a:visited {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 0 .25rem .25rem .25rem;
+  opacity: .8;
+}
+
+.mini.sign .gems {
+  left: 0;
+  right: auto;
 }
 
 .sign .value {
@@ -491,8 +497,14 @@ a, a:visited {
   height: 2.4rem;
   width: 2.4rem;
   border: 1px solid $ink-color;
-  border-bottom-left-radius: 33%;
-  border-top-right-radius: 33%;
+  border-bottom-right-radius: 33%;
+  border-top-left-radius: 33%;
+  opacity: .8;
+}
+
+.mini.sign .value {
+  left: 0;
+  right: auto;
 }
 
 .day .sign .value {
