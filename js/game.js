@@ -751,7 +751,7 @@ const Renderer = (function renderer() {
 
     let html = '';
     if (card) {
-      html += `<div class="${klass}">`;
+      html += `<div class="${klass} ${card.title}">`;
       html += `<span class="value">${card.value}</span>`;
       html += '<div class="body">';
       html += `<span class="pixelated monster portrait ${card.title}"></span>`;

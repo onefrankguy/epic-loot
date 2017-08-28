@@ -479,12 +479,17 @@ a, a:visited {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  opacity: .8;
 }
 
 .mini.sign .gems {
   left: 0;
   right: auto;
+  opacity: .8;
+}
+
+.mini.sign.lizard .gems {
+  left: auto;
+  right: 0;
 }
 
 .sign .value {
@@ -499,12 +504,17 @@ a, a:visited {
   border: 1px solid $ink-color;
   border-bottom-right-radius: 33%;
   border-top-left-radius: 33%;
-  opacity: .8;
 }
 
 .mini.sign .value {
   left: 0;
   right: auto;
+  opacity: .8;
+}
+
+.mini.sign.wolf .value {
+  left: auto;
+  right: 0;
 }
 
 .day .sign .value {
