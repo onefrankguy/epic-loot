@@ -519,6 +519,7 @@ const Deck = (function deck() {
   let cards = [];
   let discards = [];
   let hand = [];
+  let maxed = false;
 
   function get() {
     const attributes = [];
@@ -539,7 +540,7 @@ const Deck = (function deck() {
   }
 
   function empty() {
-    return cards.length <= 0;
+    return maxed;
   }
 
   function shuffle() {
@@ -556,12 +557,19 @@ const Deck = (function deck() {
       discards.push(card);
     }
 
+    if (!card) {
+      maxed = true;
+    }
+
     return card;
   }
 
   function add(card) {
     if (card && Decktet.locations().indexOf(card) < 0) {
       hand.push(card);
+      if (Decktet.attributes().indexOf(card) > -1) {
+        maxed = false;
+      }
     }
   }
 
@@ -569,6 +577,7 @@ const Deck = (function deck() {
     cards = ['sailor', 'soldier', 'diplomat'];
     discards = [];
     hand = [];
+    maxed = false;
   }
 
   return {
@@ -669,8 +678,15 @@ const Renderer = (function renderer() {
   function renderExperience() {
     const $ = window.jQuery;
     const deck = Deck.get();
-    const points = deck.discards;
-    const needed = deck.discards + deck.cards;
+    let points = deck.discards;
+    let needed = deck.discards + deck.cards;
+    let percent = (points * 100) / needed;
+
+    if (Deck.empty()) {
+      points = '??';
+      needed = '??';
+      percent = 100;
+    }
 
     if (Obstacles.stage() === 1) {
       $('#world').add('day');
@@ -684,16 +700,16 @@ const Renderer = (function renderer() {
     $('#xp-needed').html(needed);
     $('#this-level').html(deck.attributes.length + 1);
     $('#next-level').html(deck.attributes.length + 2);
-    $('#xp-progress').style('width', `${(points * 100) / needed}%`);
+    $('#xp-progress').style('width', `${percent}%`);
 
-    if (Deck.empty()) {
+    if (Deck.empty() && Obstacles.get().length > 1) {
       $('#collection').add('hidden');
-      $('#signpost').add('hidden');
+      $('#controls').add('hidden');
       $('#level-up').remove('hidden');
     } else {
-      $('#collection').remove('hidden');
-      $('#signpost').remove('hidden');
       $('#level-up').add('hidden');
+      $('#controls').remove('hidden');
+      $('#collection').remove('hidden');
     }
   }
 
@@ -875,10 +891,6 @@ const Game = (function game() {
   }
 
   function onToken(element) {
-    if (Deck.empty()) {
-      return;
-    }
-
     if (Obstacles.defeated()) {
       return;
     }
@@ -890,17 +902,17 @@ const Game = (function game() {
       Obstacles.use(type);
       Renderer.playToken(type);
 
-      const card = Deck.deal();
+      let card = Deck.deal();
+      if (!card) {
+        Deck.shuffle();
+        card = Deck.deal();
+      }
       Obstacles.use(card);
       Renderer.playCard(card);
     }
   }
 
   function onSpells() {
-    if (Deck.empty()) {
-      return;
-    }
-
     if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
@@ -918,10 +930,6 @@ const Game = (function game() {
   }
 
   function onSign(element) {
-    if (Deck.empty()) {
-      return;
-    }
-
     const sign = element.unwrap().id;
 
     if (Obstacles.get().length >= 2) {
