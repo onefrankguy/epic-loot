@@ -593,28 +593,17 @@ const Deck = (function deck() {
 const Tokens = (function tokens() {
   const has = Object.prototype.hasOwnProperty;
   let counts = {};
-  let defaults = {};
 
   function get() {
     return counts;
   }
 
   function reset() {
-    counts = Object.assign({}, defaults);
-  }
-
-  function set(values) {
-    defaults = {};
+    counts = {};
 
     Decktet.attributes().forEach((attribute) => {
-      if (has.call(values, attribute)) {
-        defaults[attribute] = Math.abs(parseInt(values[attribute], 10));
-      } else {
-        defaults[attribute] = 9;
-      }
+      counts[attribute] = 9;
     });
-
-    reset();
   }
 
   function count(name) {
@@ -637,7 +626,6 @@ const Tokens = (function tokens() {
 
   return {
     get,
-    set,
     count,
     spend,
     reset,
@@ -980,8 +968,6 @@ const Game = (function game() {
 
     Personalities.remove(hero.role);
     Obstacles.deal();
-
-    Tokens.set({});
 
     Renderer.invalidate();
   }
