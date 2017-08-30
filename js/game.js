@@ -501,6 +501,8 @@ const Obstacles = (function obstacles() {
     Locations.reset();
 
     phase = 1;
+    active = [];
+    challenger = undefined;
   }
 
   return {
@@ -909,9 +911,6 @@ const Game = (function game() {
     }
 
     if (Tokens.size() <= 0 || Locations.size() <= 0) {
-      const $ = window.jQuery;
-      $('#world').add('hidden');
-      $('#character').remove('hidden');
       newColor();
       window.location.hash = color;
     }
@@ -958,8 +957,8 @@ const Game = (function game() {
 
   function onStart() {
     const $ = window.jQuery;
-    $('#character').add('hidden');
-    $('#world').remove('hidden');
+    $('#buttons').add('hidden');
+    $('#narrative').add('hidden');
 
     const hero = Character.get();
 
@@ -974,8 +973,8 @@ const Game = (function game() {
 
   function resetGame() {
     const $ = window.jQuery;
-    $('#world').add('hidden');
-    $('#character').remove('hidden');
+    $('#buttons').remove('hidden');
+    $('#narrative').remove('hidden');
 
     Obstacles.reset();
     Deck.reset();

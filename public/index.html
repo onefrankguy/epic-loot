@@ -11,27 +11,7 @@
   <link rel="stylesheet" media="only screen and (min-width:40em)" href="css/screen.css" />
 </head>
 <body class="unselectable">
-<div id="character">
-  <h1 class="title">Darcy&rsquo;s Dungeon</h1>
-  <p class="flavor">The Queen had not been overly specific about where the dungeon was. &ldquo;It&rsquo;s north of the castle, in Flylock Forest. You&rsquo;ll probably need some help cleaning it out.&rdquo; That was all you caught before the attendant bustled you out the door.</p>
-  <div class="character">
-    <div class="stats">
-      <div id="starting-portrait"></div>
-      <div><span>strength</span><span>body</span><span>dexterity</span></div>
-      <div><span id="starting-suns"></span><span id="starting-leaves"></span><span id="starting-waves"></span></div>
-      <div><span>intellect</span><span>will</span><span>charm</span></div>
-      <div><span id="starting-knots"></span><span id="starting-moons"></span><span id="starting-wyrms"></span></div>
-    </div>
-    <div class="picker">
-      <div id="role-prev" class="hitbox"><span class="left arrow"></span></div>
-      <div id="role" class="role"></div>
-      <div id="role-next" class="hitbox"><span class="right arrow"></span></div>
-    </div>
-  </div>
-  <div id="start" class="button">Start</div>
-</div>
-
-<div id="world" class="day hidden">
+<div id="world" class="day">
   <div class="player">
     <div class="in-game stats">
       <div id="in-game-portrait"></div>
@@ -46,7 +26,8 @@
       <div class="levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
     </div>
   </div>
-  <div id="collection" class="collection">
+  <div id="narrative" class="narrative flavor">You make camp near a forest as night falls. The mushrooms you found earlier become a hearty meal. The warmth of your fire lulls you to sleep. You dream you are a <span id="role">wizard</span> on a quest&hellip;</div>
+  <div id="collection" class="collection hidden">
     <div id="spells"></div>
     <div id="used-gems"></div>
   </div>
@@ -72,9 +53,12 @@
       <span class="stat"><span class="wyrms gem"></span></span>
     </div>
   </div>
+  <div id="buttons" class="picker">
+    <div id="role-prev" class="hitbox button"><span class="left arrow"></span></div>
+    <div id="start" class="hitbox iconic button">Start</div>
+    <div id="role-next" class="hitbox button"><span class="right arrow"></span></div>
+  </div>
   <div id="controls">
-    <div id="flavor-title" class="flavor title"></div>
-    <div id="flavor-text" class="flavor text"></div>
     <div id="signpost">
       <div id="sign1"></div>
       <div id="sign2"></div>

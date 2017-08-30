@@ -64,32 +64,10 @@ a, a:visited {
   -webkit-touch-callout: none;
 }
 
-/* CHARACTER */
-#character {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  /* Usable area on an iPhone 4 is 320x372 pixels */
-  width: 32rem;
-  min-height: 37.2rem;
-  overflow: hidden;
-  margin: 0 auto;
-  background: $map-color;
-  padding: 1rem;
-}
-
-#character h1 {
-  font-size: $base-font-size * 1.5;
-  line-height: 1;
-  font-weight: normal;
-  font-variant: small-caps;
-}
-
-.character {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* NARRATIVE */
+.narrative {
+  padding: .5rem;
+  flex-grow: 1;
 }
 
 .picker {
@@ -97,9 +75,7 @@ a, a:visited {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  font-variant: small-caps;
-  text-transform: capitalize;
+  padding: .5rem;
 }
 
 .portrait {
