@@ -657,11 +657,9 @@ const Renderer = (function renderer() {
       html += `<span class="stat">${value}`;
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
-      $(`#starting-${attr}`).html(html.trim());
       $(`#in-game-${attr}`).html(html.trim());
     });
 
-    $('#starting-portrait').klass(`pixelated portrait ${hero.role}`);
     $('#in-game-portrait').klass(`pixelated portrait ${hero.role}`);
   }
 
