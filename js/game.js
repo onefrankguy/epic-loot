@@ -646,8 +646,6 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     const hero = Character.get();
     const card = Decktet.get(hero.role);
-    $('#role').html(hero.role);
-
     const attributes = Deck.get().attributes;
 
     Decktet.attributes().forEach((attr) => {
