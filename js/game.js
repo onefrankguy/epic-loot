@@ -136,7 +136,7 @@ const Decktet = (function decktet() {
   function personalities() {
     return [
       'author', 'painter', 'savage', 'lunatic', 'penitent', 'merchant',
-      'watchman', 'light keeper', 'consul', 'bard', 'huntress',
+      'watchman', 'light keeper', 'consul', 'bard', 'huntress', 'excuse',
     ];
   }
 
@@ -414,14 +414,16 @@ const Obstacles = (function obstacles() {
     const med = (phase === 1) ? ['lizard', 'arachnid', 'rabbit'] : ['octo', 'ghost', 'eye'];
     PRNG.shuffle(med);
 
-    const high = (phase === 1) ? ['snake', 'mushrooms', 'bat'] : ['goblin', 'skeleton', 'orc'];
+    const high = (phase === 1) ? ['snake', 'bat'] : ['goblin', 'skeleton', 'orc'];
     PRNG.shuffle(high);
 
     const epic = (phase === 1) ? ['wolf', 'boar', 'bear'] : ['cyclops', 'demon'];
     PRNG.shuffle(epic);
 
     for (let i = 0; i < active.length; i += 1) {
-      if (active[i].value <= 3) {
+      if (active[i].value <= 0) {
+        active[i].title = 'mushrooms';
+      } else if (active[i].value <= 3) {
         active[i].title = low.pop();
       } else if (active[i].value <= 6) {
         active[i].title = med.pop();
