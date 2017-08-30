@@ -694,11 +694,9 @@ const Renderer = (function renderer() {
 
     if (Deck.empty() && Obstacles.get().length > 1) {
       $('#collection').add('hidden');
-      $('#controls').add('hidden');
       $('#level-up').remove('hidden');
     } else {
       $('#level-up').add('hidden');
-      $('#controls').remove('hidden');
       $('#collection').remove('hidden');
     }
   }
@@ -919,6 +917,10 @@ const Game = (function game() {
   function onSign(element) {
     const sign = element.unwrap().id;
 
+    if (Deck.empty()) {
+      return;
+    }
+
     if (Obstacles.get().length >= 2) {
       let type = sign;
       if (type === 'sign1') {
@@ -959,6 +961,7 @@ const Game = (function game() {
     const $ = window.jQuery;
     $('#buttons').add('hidden');
     $('#narrative').add('hidden');
+    $('#signpost').remove('hidden');
 
     const hero = Character.get();
 
@@ -973,6 +976,7 @@ const Game = (function game() {
 
   function resetGame() {
     const $ = window.jQuery;
+    $('#signpost').add('hidden');
     $('#buttons').remove('hidden');
     $('#narrative').remove('hidden');
 

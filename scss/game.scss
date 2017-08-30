@@ -67,15 +67,14 @@ a, a:visited {
 /* NARRATIVE */
 .narrative {
   padding: .5rem;
-  flex-grow: 1;
 }
 
 .picker {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   padding: .5rem;
+  margin-bottom: 4rem;
 }
 
 .portrait {
@@ -270,7 +269,7 @@ a, a:visited {
   flex-direction: column;
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
-  min-height: 37.2rem;
+  height: 37.2rem;
   overflow: hidden;
   margin: 0 auto;
   background: $map-color;
@@ -417,6 +416,7 @@ a, a:visited {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  padding: .5rem;
   margin-bottom: 4rem;
 }
 
