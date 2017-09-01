@@ -864,12 +864,16 @@ const Renderer = (function renderer() {
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
 
-    if (Deck.empty() && Obstacles.get().length > 1) {
-      $('#collection').add('hidden');
-      $('#level-up').remove('hidden');
-    } else {
-      $('#level-up').add('hidden');
-      $('#collection').remove('hidden');
+    if (Obstacles.get().length > 1) {
+      if (Deck.empty()) {
+        $('#collection').add('hidden');
+        $('#signpost').add('hidden');
+        $('#level-up').remove('hidden');
+      } else {
+        $('#level-up').add('hidden');
+        $('#signpost').remove('hidden');
+        $('#collection').remove('hidden');
+      }
     }
   }
 
@@ -903,7 +907,7 @@ const Renderer = (function renderer() {
     $('#used-gems').html(html);
 
     html = '';
-    playedCards.forEach((name) => {
+    playedCards.slice(-10).forEach((name) => {
       const card = Decktet.get(name);
       const loot = Loot.get(name);
       if (card && loot) {
@@ -1009,16 +1013,21 @@ const Renderer = (function renderer() {
       return;
     }
 
+    if (Deck.empty() && Obstacles.get().length > 1) {
+      $('#narrative').html('You have gained experience. Level up!');
+      return;
+    }
+
     $('#narrative').html('');
   }
 
   function render() {
     if (dirty) {
       renderRole();
-      renderExperience();
       renderDeck();
       renderObstacles();
       renderTokens();
+      renderExperience();
       renderNarrative();
       dirty = false;
     }
