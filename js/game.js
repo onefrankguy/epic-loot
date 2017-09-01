@@ -123,28 +123,23 @@ const Decktet = (function decktet() {
   // The suit of Wyrms is charm.
   cards.wyrms = { value: 1, suits: ['wyrms'], title: 'chr' };
 
-  // You start the game with four personalities, the Excuse, the Sailor,
-  // the Soldier, and the Diplomat. This gives you one of each suit.
-  cards.excuse = { value: 0, suits: [] };
-  cards.sailor = { value: 4, suits: ['waves', 'leaves'], title: 'dex / bdy' };
-  cards.soldier = { value: 5, suits: ['wyrms', 'knots'], title: 'chr / int' };
-  cards.diplomat = { value: 8, suits: ['moons', 'suns'], title: 'wil / str' };
-
-  // You encounter the remaining eleven personalities during your journey.
-  // Successfully persuading a personality to join your quest adds it to your
-  // hand.
   function personalities() {
     return [
-      'author', 'painter', 'savage', 'lunatic', 'penitent', 'merchant',
-      'watchman', 'light keeper', 'consul', 'bard', 'huntress', 'excuse',
+      'excuse', 'author', 'painter', 'savage', 'sailor', 'soldier', 'lunatic',
+      'penitent', 'diplomat', 'merchant', 'watchman', 'light keeper', 'consul',
+      'bard', 'huntress',
     ];
   }
 
+  cards.excuse = { value: 0, suits: [] };
   cards.author = { value: 2, suits: ['moons', 'knots'] };
   cards.painter = { value: 3, suits: ['suns', 'knots'] };
   cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
+  cards.sailor = { value: 4, suits: ['waves', 'leaves'], title: 'dex / bdy' };
+  cards.soldier = { value: 5, suits: ['wyrms', 'knots'], title: 'chr / int' };
   cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
   cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
+  cards.diplomat = { value: 8, suits: ['moons', 'suns'], title: 'wil / str' };
   cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
   cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
   cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
@@ -227,6 +222,10 @@ const PRNG = (function prng() {
   }
 
   function random() {
+    if (state === undefined) {
+      seed();
+    }
+
     state += (state * state) | 5;
     return (state >>> 32) / max;
   }
@@ -405,12 +404,7 @@ const Loot = (function loot() {
 
   function get(name) {
     if (!has.call(items, name)) {
-      let item = generate(name);
-      const used = Object.keys(items).map(key => items[key].title);
-      while (has.call(used, item.title)) {
-        item = generate(name);
-      }
-      items[name] = item;
+      items[name] = generate(name);
     }
 
     return items[name];
@@ -448,12 +442,6 @@ const Personalities = (function personalities() {
     return cards.length;
   }
 
-  function reset() {
-    cards = Decktet.personalities();
-    discards = [];
-    PRNG.shuffle(cards);
-  }
-
   function remove(name) {
     let index = cards.indexOf(name);
     if (index > -1) {
@@ -466,11 +454,20 @@ const Personalities = (function personalities() {
     }
   }
 
+  function reset() {
+    cards = Decktet.personalities();
+    remove('sailor');
+    remove('soldier');
+    remove('diplomat');
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
   return {
     deal,
     size,
-    reset,
     remove,
+    reset,
   };
 }());
 
