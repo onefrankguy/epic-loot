@@ -811,6 +811,114 @@ const Tokens = (function tokens() {
   };
 }());
 
+const Stage = (function stage() {
+  let state = 'encumbered';
+
+  function get() {
+    console.log(`in ${state}`);
+    return state;
+  }
+
+  function next(message) {
+    console.log(`in ${state}, got ${message}`);
+
+    const obstacles = Obstacles.get();
+
+    if (state === 'encumbered') {
+      if (message === 'reroll') {
+        state = 'encumbered';
+        return this;
+      }
+      if (message === 'start') {
+        state = 'choice';
+      }
+      return this;
+    }
+
+    if (state === 'choice') {
+      if (message === 'items') {
+        if (Locations.size() <= 0) {
+          state = 'victory';
+          return this;
+        }
+      }
+      if (message === 'sign1' || message === 'sign2') {
+        if (obstacles.length > 0) {
+          state = 'combat';
+          return this;
+        }
+      }
+      return this;
+    }
+
+    if (state === 'combat') {
+      if (message === 'items') {
+        if (Obstacles.defeated()) {
+          state = 'defeated';
+          return this;
+        }
+
+        if (Tokens.size() <= 0) {
+          state = 'madness';
+          return this;
+        }
+      }
+      return this;
+    }
+
+    if (state === 'defeated') {
+      if (message === 'items') {
+        state = 'loot';
+      }
+      return this;
+    }
+
+    if (state === 'loot') {
+      if (message === 'items') {
+        if (Deck.empty()) {
+          state = 'level-up';
+        } else {
+          state = 'choice';
+        }
+      }
+      return this;
+    }
+
+    if (state === 'level-up') {
+      if (message === 'level') {
+        state = 'choice';
+      }
+      return this;
+    }
+
+    if (state === 'victory') {
+      if (message === 'items') {
+        state = 'encumbered';
+      }
+      return this;
+    }
+
+    if (state === 'madness') {
+      if (message === 'items') {
+        state = 'encumbered';
+      }
+    }
+
+    return this;
+  }
+
+  function reset() {
+    state = 'encumbered';
+    console.log(`in ${state}`);
+  }
+
+  return {
+    get,
+    next,
+    reset,
+  };
+}());
+
 const Renderer = (function renderer() {
   let playedCards = [];
   let playedTokens = [];
@@ -1086,6 +1194,8 @@ const Game = (function game() {
   }
 
   function onToken(element) {
+    Stage.next('gems').get();
+
     if (Obstacles.defeated()) {
       return;
     }
@@ -1108,6 +1218,8 @@ const Game = (function game() {
   }
 
   function onSpells() {
+    Stage.next('items').get();
+
     if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
       Obstacles.deal();
@@ -1123,6 +1235,7 @@ const Game = (function game() {
 
   function onSign(element) {
     const sign = element.unwrap().id;
+    Stage.next(sign).get();
 
     if (Deck.empty()) {
       return;
@@ -1152,6 +1265,7 @@ const Game = (function game() {
   }
 
   function onLevelStat(element) {
+    Stage.next('level').get();
     if (Deck.empty()) {
       const stat = element.unwrap().id;
       Decktet.attributes().forEach((attr) => {
@@ -1178,6 +1292,7 @@ const Game = (function game() {
     Obstacles.deal();
 
     Renderer.invalidate();
+    Stage.next('start').get();
   }
 
   function resetGame() {
@@ -1189,6 +1304,7 @@ const Game = (function game() {
     Obstacles.reset();
     Deck.reset();
     Tokens.reset();
+    Stage.reset();
     Renderer.reset();
   }
 
