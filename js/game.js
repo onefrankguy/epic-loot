@@ -257,6 +257,13 @@ const PRNG = (function prng() {
 
 const Loot = (function loot() {
   const has = Object.prototype.hasOwnProperty;
+  let helmetTypes = [];
+  let armourTypes = [];
+  let swordTypes = [];
+  let bowTypes = [];
+  let axeTypes = [];
+  let staffTypes = [];
+  let bottleTypes = [];
   let armour = [];
   let weapons = [];
   let bottles = [];
@@ -273,18 +280,36 @@ const Loot = (function loot() {
 
   function getArmour() {
     if (armour.length <= 0) {
-      armour = ['helm', 'helmet', 'hauberk', 'cuirass'];
+      armour = [
+        'helm', 'helmet', 'hauberk', 'cuirass', 'vambraces', 'gauntlets',
+        'chausses', 'greaves', 'boots', 'shoes',
+      ];
       PRNG.shuffle(armour);
     }
 
-    let item = armour.pop();
+    let type = armour.pop();
+    let title = type;
 
     const material = maybeOneOf(['plate', 'mail', 'leather']);
     if (material) {
-      item = `${material} ${item}`;
+      title = `${material} ${title}`;
     }
 
-    return item;
+    if (type.indexOf('helm') < 1) {
+      if (armourTypes.length <= 0) {
+        armourTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+        PRNG.shuffle(armourTypes);
+      }
+      type = `armour${armourTypes.pop()}`;
+    } else {
+      if (helmetTypes.length <= 0) {
+        helmetTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+        PRNG.shuffle(helmetTypes);
+      }
+      type = `helmet${helmetTypes.pop()}`;
+    }
+
+    return { type, title };
   }
 
   function getWeapon() {
@@ -293,14 +318,47 @@ const Loot = (function loot() {
       PRNG.shuffle(weapons);
     }
 
-    let item = weapons.pop();
+    let type = weapons.pop();
+    let title = type;
 
     const material = maybeOneOf(['metal', 'glass', 'bone']);
     if (material) {
-      item = `${material} ${item}`;
+      title = `${material} ${title}`;
     }
 
-    return item;
+    if (type === 'bow') {
+      if (bowTypes.length <= 0) {
+        bowTypes = [0, 1, 2];
+        PRNG.shuffle(bowTypes);
+      }
+      type = `bow${bowTypes.pop()}`;
+    }
+
+    if (type === 'axe') {
+      if (axeTypes.length <= 0) {
+        axeTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+        PRNG.shuffle(axeTypes);
+      }
+      type = `axe${axeTypes.pop()}`;
+    }
+
+    if (type === 'sword') {
+      if (swordTypes.length <= 0) {
+        swordTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+        PRNG.shuffle(swordTypes);
+      }
+      type = `sword${swordTypes.pop()}`;
+    }
+
+    if (type === 'staff') {
+      if (staffTypes.length <= 0) {
+        staffTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+        PRNG.shuffle(staffTypes);
+      }
+      type = `staff${staffTypes.pop()}`;
+    }
+
+    return { type, title };
   }
 
   function getBottle() {
@@ -309,27 +367,34 @@ const Loot = (function loot() {
       PRNG.shuffle(bottles);
     }
 
-    let item = bottles.pop();
+    let type = 'bottle';
+    let title = bottles.pop();
 
     const attribute = maybeOneOf(['sticky', 'noxious', 'fragrent']);
     if (attribute) {
-      item = `${attribute} ${item}`;
+      title = `${attribute} ${title}`;
     }
 
-    return item;
+    if (bottleTypes.length <= 0) {
+      bottleTypes = [0, 1, 2, 3, 4, 5, 6, 7];
+      PRNG.shuffle(bottleTypes);
+    }
+    type = `bottle${bottleTypes.pop()}`;
+
+    return { type, title };
   }
 
   function generate(name) {
     const card = Decktet.get(name);
     if (!card) {
-      return 'mysterious tonic';
+      return { type: 'bottle1', title: 'mysterious tonic' };
     }
 
     if (card.value <= 0) {
-      return 'mushrooms';
+      return { title: 'mushrooms', type: 'mushrooms' };
     }
 
-    let item = '';
+    let item = {};
 
     if (card.value <= 1) {
       item = getBottle();
@@ -341,7 +406,7 @@ const Loot = (function loot() {
 
     const rarity = maybeOneOf(['epic', 'greater', 'lesser']);
     if (rarity) {
-      item = `${rarity} ${item}`;
+      item.title = `${rarity} ${item.title}`;
     }
 
     const bonus = maybeOneOf([
@@ -349,7 +414,7 @@ const Loot = (function loot() {
       'archery', 'smiting', 'wondering',
     ]);
     if (bonus) {
-      item = `${item} of ${bonus}`;
+      item.title = `${item.title} of ${bonus}`;
     }
 
     return item;
@@ -358,8 +423,8 @@ const Loot = (function loot() {
   function get(name) {
     if (!has.call(items, name)) {
       let item = generate(name);
-      const used = Object.values(items);
-      while (has.call(used, item)) {
+      const used = Object.keys(items).map(key => items[key].title);
+      while (has.call(used, item.title)) {
         item = generate(name);
       }
       items[name] = item;
@@ -369,6 +434,13 @@ const Loot = (function loot() {
   }
 
   function reset() {
+    helmetTypes = [];
+    armourTypes = [];
+    swordTypes = [];
+    bowTypes = [];
+    axeTypes = [];
+    staffTypes = [];
+    bottleTypes = [];
     armour = [];
     weapons = [];
     bottles = [];
@@ -950,8 +1022,8 @@ const Renderer = (function renderer() {
 
     if (Obstacles.defeated()) {
       const loot = Loot.get(obstacles[0].name);
-      html = `The ${obstacles[0].title} flees, leaving behind a ${loot}.`;
-      if (obstacles[0].name === 'excuse') {
+      let html = `The ${obstacles[0].title} flees, leaving behind a ${loot.title}.`;
+      if (loot.type === 'mushrooms') {
         html = 'You pick the mushrooms.';
       }
       $('#narrative').html(html);
