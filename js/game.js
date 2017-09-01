@@ -230,20 +230,22 @@ const PRNG = (function prng() {
     return (state >>> 32) / max;
   }
 
+  // https://bost.ocks.org/mike/shuffle/
   function shuffle(array) {
-    let i;
-    let j;
-    let temp;
-
     if (state === undefined) {
       seed();
     }
 
-    for (i = array.length - 1; i > 0; i -= 1) {
-      j = Math.floor(random() * (i + 1));
-      temp = array[i];
-      array[i] = array[j]; // eslint-disable-line no-param-reassign
-      array[j] = temp; // eslint-disable-line no-param-reassign
+    let m = array.length;
+    let t;
+    let i;
+
+    while (m > 0) {
+      i = Math.floor(random() * m);
+      m -= 1;
+      t = array[m];
+      array[m] = array[i]; // eslint-disable-line no-param-reassign
+      array[i] = t; // eslint-disable-line no-param-reassign
     }
   }
 
@@ -369,7 +371,7 @@ const Loot = (function loot() {
   }
 
   function generate(name) {
-    let item = getVariation(name);
+    const item = getVariation(name);
     if (item.title) {
       return item;
     }
@@ -1002,7 +1004,6 @@ const Renderer = (function renderer() {
 
     if (obstacles.length <= 1 && playedCards.length >= 1) {
       const loot = Loot.get(playedCards[playedCards.length - 1]);
-      console.log(loot);
       const html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
       $('#narrative').html(html);
       return;
