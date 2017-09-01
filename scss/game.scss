@@ -31,6 +31,8 @@ $leaves-color: rgb(210, 170, 153);
 $wyrms-color: rgb(109, 170, 44);
 $knots-color: rgb(218, 212, 94);
 $base-font-size: 1.6rem;
+$sprite-cols: 100% / 7;
+$sprite-rows: 100% / 10;
 
 /* RESET */
 * {
@@ -88,123 +90,123 @@ a, a:visited {
 }
 
 .portrait.lunatic {
-  background-position: #{(100/7*0)}% 0;
+  background-position: ($sprite-cols * 0) ($sprite-rows * 0);
 }
 
 .portrait.bard {
-  background-position: #{(100/7*1)}% 0;
+  background-position: ($sprite-cols * 1) ($sprite-rows * 0);
 }
 
 .portrait.savage {
-  background-position: #{(100/7*2)}% 0;
+  background-position: ($sprite-cols * 2) ($sprite-rows * 0);
 }
 
 .portrait.light.keeper {
-  background-position: #{(100/7*3)}% 0;
+  background-position: ($sprite-cols * 3) ($sprite-rows * 0);
 }
 
 .portrait.huntress {
-  background-position: #{(100/7*4)}% 0;
+  background-position: ($sprite-cols * 4) ($sprite-rows * 0);
 }
 
 .portrait.watchman {
-  background-position: #{(100/7*5)}% 0;
+  background-position: ($sprite-cols * 5) ($sprite-rows * 0);
 }
 
 .portrait.painter {
-  background-position: #{(100/7*6)}% 0;
+  background-position: ($sprite-cols * 6) ($sprite-rows * 0);
 }
 
 .portrait.merchant {
-  background-position: #{(100/7*7)}% 0;
+  background-position: ($sprite-cols * 7) ($sprite-rows * 0);
 }
 
 .monster.rat {
-  background-position: ((100% / 7) * 0) ((100% / 4) * 1);
+  background-position: ($sprite-cols * 0) ($sprite-rows * 1);
 }
 
 .monster.spiders {
-  background-position: ((100% / 7) * 1) ((100% / 4) * 1);
+  background-position: ($sprite-cols * 1) ($sprite-rows * 1);
 }
 
 .monster.lizard {
-  background-position: ((100% / 7) * 2) ((100% / 4) * 1);
+  background-position: ($sprite-cols * 2) ($sprite-rows * 1);
 }
 
 .monster.arachnid {
-  background-position: ((100% / 7) * 3) ((100% / 4) * 1);
+  background-position: ($sprite-cols * 3) ($sprite-rows * 1);
 }
 
 .monster.mushrooms {
-  background-position: ((100% / 7) * 0) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 0) ($sprite-rows * 2);
 }
 
 .monster.rabbit {
-  background-position: ((100% / 7) * 1) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 1) ($sprite-rows * 2);
 }
 
 .monster.bat {
-  background-position: ((100% / 7) * 2) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 2) ($sprite-rows * 2);
 }
 
 .monster.snake {
-  background-position: ((100% / 7) * 4) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 4) ($sprite-rows * 2);
 }
 
 .monster.wolf {
-  background-position: ((100% / 7) * 5) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 5) ($sprite-rows * 2);
 }
 
 .monster.boar {
-  background-position: ((100% / 7) * 6) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 6) ($sprite-rows * 2);
 }
 
 .monster.bear {
-  background-position: ((100% / 7) * 7) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 7) ($sprite-rows * 2);
 }
 
 .monster.vampire.bat {
-  background-position: ((100% / 7) * 3) ((100% / 4) * 2);
+  background-position: ($sprite-cols * 3) ($sprite-rows * 2);
 }
 
 .monster.scorpion {
-  background-position: ((100% / 7) * 2) ((100% / 4) * 3);
+  background-position: ($sprite-cols * 2) ($sprite-rows * 3);
 }
 
 .monster.octo {
-  background-position: ((100% / 7) * 3) ((100% / 4) * 3);
+  background-position: ($sprite-cols * 3) ($sprite-rows * 3);
 }
 
 .monster.ghost {
-  background-position: ((100% / 7) * 6) ((100% / 4) * 3);
+  background-position: ($sprite-cols * 6) ($sprite-rows * 3);
 }
 
 .monster.eye {
-  background-position: ((100% / 7) * 7) ((100% / 4) * 3);
+  background-position: ($sprite-cols * 7) ($sprite-rows * 3);
 }
 
 .monster.goblin {
-  background-position: ((100% / 7) * 0) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 0) ($sprite-rows * 4);
 }
 
 .monster.skeleton {
-  background-position: ((100% / 7) * 2) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 2) ($sprite-rows * 4);
 }
 
 .monster.orc {
-  background-position: ((100% / 7) * 3) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 3) ($sprite-rows * 4);
 }
 
 .monster.cyclops {
-  background-position: ((100% / 7) * 4) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 4) ($sprite-rows * 4);
 }
 
 .monster.werewolf {
-  background-position: ((100% / 7) * 5) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 5) ($sprite-rows * 4);
 }
 
 .monster.demon {
-  background-position: ((100% / 7) * 7) ((100% / 4) * 4);
+  background-position: ($sprite-cols * 7) ($sprite-rows * 4);
 }
 
 .left.arrow {
