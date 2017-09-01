@@ -941,15 +941,24 @@ const Renderer = (function renderer() {
 
   function renderNarrative() {
     const $ = window.jQuery;
-    let text = '';
+    const obstacles = Obstacles.get();
 
-    if (Obstacles.defeated()) {
-      const obstacle = Obstacles.get()[0];
-      const loot = Loot.get(obstacle.name);
-      text = `The ${obstacle.title} flees, leaving behind a ${loot}.`;
+    if (obstacles.length <= 0) {
+      $('#narrative').html('You make camp near a forest as night falls. The mushrooms you found earlier become a hearty meal. The warmth of your fire lulls you to sleep. You dream you are on a quest&hellip;');
+      return;
     }
 
-    $('#narrative').html(text);
+    if (Obstacles.defeated()) {
+      const loot = Loot.get(obstacles[0].name);
+      html = `The ${obstacles[0].title} flees, leaving behind a ${loot}.`;
+      if (obstacles[0].name === 'excuse') {
+        html = 'You pick the mushrooms.';
+      }
+      $('#narrative').html(html);
+      return;
+    }
+
+    $('#narrative').html('');
   }
 
   function render() {
@@ -1116,6 +1125,7 @@ const Game = (function game() {
     $('#signpost').add('hidden');
     $('#buttons').remove('hidden');
 
+    Loot.reset();
     Obstacles.reset();
     Deck.reset();
     Tokens.reset();
