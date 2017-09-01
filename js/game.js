@@ -1099,34 +1099,54 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
 
-    if (obstacles.length <= 0) {
-      $('#narrative').html('You make camp near a forest as night falls. The mushrooms you found earlier become a hearty meal. The warmth of your fire lulls you to sleep. You dream you are on a quest&hellip;');
-      return;
+    let html = '';
+    let loot;
+
+    switch (Stage.get()) {
+      case 'encumbered':
+        html = 'You are encumbered! You empty your bag on the ground and dig through the items looking for anything useful.';
+        break;
+
+      case 'choice':
+        html = `There is a ${obstacles[0].title} to the north. There is a ${obstacles[1].title} to the south. Make a choice.`;
+        break;
+
+      case 'combat':
+        loot = Loot.get(playedCards[playedCards.length - 1]);
+        html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+        break;
+
+      case 'defeated':
+        loot = Loot.get(playedCards[playedCards.length - 1]);
+        html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+        break;
+
+      case 'loot':
+        loot = Loot.get(obstacles[0].name);
+        if (loot.type === 'mushrooms') {
+          html = 'You pick up the mushrooms.';
+        } else {
+          html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
+        }
+        break;
+
+      case 'level-up':
+        html = 'You have gained experience. Level up!';
+        break;
+
+      case 'victory':
+        html = 'You are victorious.';
+        break;
+
+      case 'madness':
+        html += 'The monsters eat your dreams and you descend into madness.';
+        break;
+
+      default:
+        break;
     }
 
-    if (Obstacles.defeated()) {
-      const loot = Loot.get(obstacles[0].name);
-      let html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
-      if (loot.type === 'mushrooms') {
-        html = 'You pick the mushrooms.';
-      }
-      $('#narrative').html(html);
-      return;
-    }
-
-    if (obstacles.length <= 1 && playedCards.length >= 1) {
-      const loot = Loot.get(playedCards[playedCards.length - 1]);
-      const html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
-      $('#narrative').html(html);
-      return;
-    }
-
-    if (Deck.empty() && Obstacles.get().length > 1) {
-      $('#narrative').html('You have gained experience. Level up!');
-      return;
-    }
-
-    $('#narrative').html('');
+    $('#narrative').html(html);
   }
 
   function render() {
@@ -1194,7 +1214,7 @@ const Game = (function game() {
   }
 
   function onToken(element) {
-    Stage.next('gems').get();
+    Stage.next('gems');
 
     if (Obstacles.defeated()) {
       return;
@@ -1218,7 +1238,7 @@ const Game = (function game() {
   }
 
   function onSpells() {
-    Stage.next('items').get();
+    Stage.next('items');
 
     if (Obstacles.defeated()) {
       Deck.add(Obstacles.get()[0].name);
@@ -1235,7 +1255,7 @@ const Game = (function game() {
 
   function onSign(element) {
     const sign = element.unwrap().id;
-    Stage.next(sign).get();
+    Stage.next(sign);
 
     if (Deck.empty()) {
       return;
@@ -1265,7 +1285,7 @@ const Game = (function game() {
   }
 
   function onLevelStat(element) {
-    Stage.next('level').get();
+    Stage.next('level');
     if (Deck.empty()) {
       const stat = element.unwrap().id;
       Decktet.attributes().forEach((attr) => {
@@ -1292,7 +1312,7 @@ const Game = (function game() {
     Obstacles.deal();
 
     Renderer.invalidate();
-    Stage.next('start').get();
+    Stage.next('start');
   }
 
   function resetGame() {
