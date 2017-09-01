@@ -874,7 +874,7 @@ const Renderer = (function renderer() {
   function renderCard(card, loot) {
     let html = '';
 
-    html += `<div class="sign mini">`;
+    html += '<div class="sign mini loot">';
     html += `<span class="value">${card.value}</span>`;
     html += `<span class="pixelated loot portrait ${loot.type}${loot.variety}"></span>`;
     html += '<div class="gems">';
@@ -901,7 +901,7 @@ const Renderer = (function renderer() {
     $('#used-gems').html(html);
 
     html = '';
-    playedCards.slice(-8).forEach((name) => {
+    playedCards.forEach((name) => {
       const card = Decktet.get(name);
       const loot = Loot.get(name);
       if (card && loot) {
@@ -996,6 +996,14 @@ const Renderer = (function renderer() {
       if (loot.type === 'mushrooms') {
         html = 'You pick the mushrooms.';
       }
+      $('#narrative').html(html);
+      return;
+    }
+
+    if (obstacles.length <= 1 && playedCards.length >= 1) {
+      const loot = Loot.get(playedCards[playedCards.length - 1]);
+      console.log(loot);
+      const html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
       $('#narrative').html(html);
       return;
     }
