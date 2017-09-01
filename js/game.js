@@ -255,6 +255,132 @@ const PRNG = (function prng() {
   };
 }());
 
+const Loot = (function loot() {
+  const has = Object.prototype.hasOwnProperty;
+  let armour = [];
+  let weapons = [];
+  let bottles = [];
+  let items = {};
+
+  function randomRangeInclusive(min, max) {
+    return Math.floor(PRNG.random() * (max + -min + 1)) + min;
+  }
+
+  function maybeOneOf(things) {
+    const index = randomRangeInclusive(0, things.length);
+    return things[index];
+  }
+
+  function getArmour() {
+    if (armour.length <= 0) {
+      armour = ['helm', 'helmet', 'hauberk', 'cuirass'];
+      PRNG.shuffle(armour);
+    }
+
+    let item = armour.pop();
+
+    const material = maybeOneOf(['plate', 'mail', 'leather']);
+    if (material) {
+      item = `${material} ${item}`;
+    }
+
+    return item;
+  }
+
+  function getWeapon() {
+    if (weapons.length <= 0) {
+      weapons = ['bow', 'axe', 'sword', 'staff'];
+      PRNG.shuffle(weapons);
+    }
+
+    let item = weapons.pop();
+
+    const material = maybeOneOf(['metal', 'glass', 'bone']);
+    if (material) {
+      item = `${material} ${item}`;
+    }
+
+    return item;
+  }
+
+  function getBottle() {
+    if (bottles.length <= 0) {
+      bottles = ['potion', 'tonic', 'salve'];
+      PRNG.shuffle(bottles);
+    }
+
+    let item = bottles.pop();
+
+    const attribute = maybeOneOf(['sticky', 'noxious', 'fragrent']);
+    if (attribute) {
+      item = `${attribute} ${item}`;
+    }
+
+    return item;
+  }
+
+  function generate(name) {
+    const card = Decktet.get(name);
+    if (!card) {
+      return 'mysterious tonic';
+    }
+
+    if (card.value <= 0) {
+      return 'mushrooms';
+    }
+
+    let item = '';
+
+    if (card.value <= 1) {
+      item = getBottle();
+    } else if (card.value <= 6) {
+      item = getArmour();
+    } else {
+      item = getWeapon();
+    }
+
+    const rarity = maybeOneOf(['epic', 'greater', 'lesser']);
+    if (rarity) {
+      item = `${rarity} ${item}`;
+    }
+
+    const bonus = maybeOneOf([
+      'healing', 'casting', 'shocking', 'poisoning', 'burning', 'freezing',
+      'archery', 'smiting', 'wondering',
+    ]);
+    if (bonus) {
+      item = `${item} of ${bonus}`;
+    }
+
+    return item;
+  }
+
+  function get(name) {
+    if (!has.call(items, name)) {
+      let item = generate(name);
+      const used = Object.values(items);
+      while (has.call(used, item)) {
+        item = generate(name);
+      }
+      items[name] = item;
+    }
+
+    return items[name];
+  }
+
+  function reset() {
+    armour = [];
+    weapons = [];
+    bottles = [];
+    items = {};
+  }
+
+  return {
+    get,
+    reset,
+  };
+}());
+
 const Personalities = (function personalities() {
   let cards = [];
   let discards = [];
@@ -813,6 +939,19 @@ const Renderer = (function renderer() {
     });
   }
 
+  function renderNarrative() {
+    const $ = window.jQuery;
+    let text = '';
+
+    if (Obstacles.defeated()) {
+      const obstacle = Obstacles.get()[0];
+      const loot = Loot.get(obstacle.name);
+      text = `The ${obstacle.title} flees, leaving behind a ${loot}.`;
+    }
+
+    $('#narrative').html(text);
+  }
+
   function render() {
     if (dirty) {
       renderRole();
@@ -820,6 +959,7 @@ const Renderer = (function renderer() {
       renderDeck();
       renderObstacles();
       renderTokens();
+      renderNarrative();
       dirty = false;
     }
 
@@ -958,7 +1098,6 @@ const Game = (function game() {
   function onStart() {
     const $ = window.jQuery;
     $('#buttons').add('hidden');
-    $('#narrative').add('hidden');
     $('#signpost').remove('hidden');
 
     const hero = Character.get();
@@ -976,7 +1115,6 @@ const Game = (function game() {
     const $ = window.jQuery;
     $('#signpost').add('hidden');
     $('#buttons').remove('hidden');
-    $('#narrative').remove('hidden');
 
     Obstacles.reset();
     Deck.reset();
