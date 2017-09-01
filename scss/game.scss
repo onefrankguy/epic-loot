@@ -209,6 +209,46 @@ a, a:visited {
   background-position: ($sprite-cols * 7) ($sprite-rows * 4);
 }
 
+/* ARMOUR */
+.loot.armour0 { background-position: ($sprite-cols * 1) ($sprite-rows * 9); }
+.loot.armour1 { background-position: ($sprite-cols * 2) ($sprite-rows * 9); }
+.loot.armour2 { background-position: ($sprite-cols * 3) ($sprite-rows * 9); }
+.loot.armour3 { background-position: ($sprite-cols * 4) ($sprite-rows * 9); }
+/* BOTTLES */
+.loot.bottle0 { background-position: ($sprite-cols * 1) ($sprite-rows * 6); }
+.loot.bottle1 { background-position: ($sprite-cols * 2) ($sprite-rows * 6); }
+.loot.bottle2 { background-position: ($sprite-cols * 3) ($sprite-rows * 6); }
+.loot.bottle3 { background-position: ($sprite-cols * 4) ($sprite-rows * 6); }
+.loot.bottle4 { background-position: ($sprite-cols * 5) ($sprite-rows * 6); }
+.loot.bottle5 { background-position: ($sprite-cols * 6) ($sprite-rows * 6); }
+/* BOWS */
+.loot.bow0 { background-position: ($sprite-cols * 3) ($sprite-rows * 10); }
+.loot.bow1 { background-position: ($sprite-cols * 4) ($sprite-rows * 10); }
+.loot.bow2 { background-position: ($sprite-cols * 5) ($sprite-rows * 10); }
+/* HELMETS */
+.loot.helmet0 { background-position: ($sprite-cols * 0) ($sprite-rows * 8); }
+.loot.helmet1 { background-position: ($sprite-cols * 2) ($sprite-rows * 8); }
+.loot.helmet2 { background-position: ($sprite-cols * 3) ($sprite-rows * 8); }
+.loot.helmet3 { background-position: ($sprite-cols * 4) ($sprite-rows * 8); }
+.loot.helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 8); }
+/* MUSHROOMS */
+.loot.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 2); }
+/* STAVES */
+.loot.staff0 { background-position: ($sprite-cols * 1) ($sprite-rows * 7); }
+.loot.staff1 { background-position: ($sprite-cols * 3) ($sprite-rows * 7); }
+.loot.staff2 { background-position: ($sprite-cols * 5) ($sprite-rows * 7); }
+.loot.staff3 { background-position: ($sprite-cols * 6) ($sprite-rows * 7); }
+.loot.staff4 { background-position: ($sprite-cols * 7) ($sprite-rows * 7); }
+/* SWORDS */
+.loot.sword0 { background-position: ($sprite-cols * 0) ($sprite-rows * 5); }
+.loot.sword1 { background-position: ($sprite-cols * 1) ($sprite-rows * 5); }
+.loot.sword2 { background-position: ($sprite-cols * 2) ($sprite-rows * 5); }
+.loot.sword3 { background-position: ($sprite-cols * 3) ($sprite-rows * 5); }
+.loot.sword4 { background-position: ($sprite-cols * 4) ($sprite-rows * 5); }
+.loot.sword5 { background-position: ($sprite-cols * 5) ($sprite-rows * 5); }
+.loot.sword6 { background-position: ($sprite-cols * 6) ($sprite-rows * 5); }
+.loot.sword7 { background-position: ($sprite-cols * 7) ($sprite-rows * 5); }
+
 .left.arrow {
   display: block;
   width: 2rem;
@@ -365,37 +405,12 @@ a, a:visited {
 }
 
 #spells {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   flex-grow: 1;
-}
-
-.spell {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid $ink-color;
-  border-top: none;
-  border-bottom-left-radius: .5rem;
-  border-bottom-right-radius: .5rem;
-  margin: 0 .5rem;
+  flex-wrap: wrap;
   padding: .5rem;
-}
-
-.spell .name {
-  align-self: stretch;
-  text-align: center;
-  font-variant: small-caps;
-  text-transform: capitalize;
-}
-
-.spell .gems {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.spell .gem + .gem {
-  margin-left: .5rem;
 }
 
 /* LEVEL UP */

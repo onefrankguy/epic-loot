@@ -871,23 +871,18 @@ const Renderer = (function renderer() {
     }
   }
 
-  function renderCard(card, isDeck) {
+  function renderCard(card, loot) {
     let html = '';
 
-    if (card) {
-      html += `<span class="value">${card.value}</span>`;
-      html += `<span class="name">${card.name}</span>`;
-      html += '<div class="gems">';
-      if (isDeck) {
-        for (let i = card.suits.length; i < 3; i += 1) {
-          html += '<span class="invisible gem"></span>';
-        }
-      }
-      card.suits.forEach((suit) => {
-        html += `<span class="${suit} gem"></span>`;
-      });
-      html += '</div>';
-    }
+    html += `<div class="sign mini">`;
+    html += `<span class="value">${card.value}</span>`;
+    html += `<span class="pixelated loot portrait ${loot.type}${loot.variety}"></span>`;
+    html += '<div class="gems">';
+    card.suits.forEach((suit) => {
+      html += `<span class="${suit} gem"></span>`;
+    });
+    html += '</div>';
+    html += '</div>';
 
     return html;
   }
@@ -906,11 +901,12 @@ const Renderer = (function renderer() {
     $('#used-gems').html(html);
 
     html = '';
-    playedCards.slice(-5).forEach((name) => {
+    playedCards.slice(-8).forEach((name) => {
       const card = Decktet.get(name);
-      if (card) {
+      const loot = Loot.get(name);
+      if (card && loot) {
         html += '<div class="spell">';
-        html += renderCard(card, true);
+        html += renderCard(card, loot);
         html += '</div>';
       }
     });
