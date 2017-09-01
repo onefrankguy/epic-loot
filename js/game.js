@@ -1060,11 +1060,22 @@ const Renderer = (function renderer() {
     const obstacles = Obstacles.get();
     const mini = obstacles.length > 1;
 
-    $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
-    $('#sign2').html(renderObstacle(obstacles[1], mini)).remove('hidden');
+    switch (Stage.get()) {
+      case 'choice':
+      case 'combat':
+      case 'defeated':
+      case 'loot':
+        $('#signpost').remove('hidden');
+        $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
+        $('#sign2').html(renderObstacle(obstacles[1], mini)).remove('hidden');
+        if (!mini || Obstacles.stage() === 2) {
+          $('#sign2').add('hidden');
+        }
+        break;
 
-    if (!mini || Obstacles.stage() === 2) {
-      $('#sign2').add('hidden');
+      default:
+        $('#signpost').add('hidden');
+        break;
     }
   }
 
