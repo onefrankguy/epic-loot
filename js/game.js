@@ -794,12 +794,6 @@ const Stage = (function stage() {
     }
 
     if (state === 'choice') {
-      if (message === 'items') {
-        if (Locations.size() <= 0) {
-          state = 'victory';
-          return this;
-        }
-      }
       if (message === 'sign1' || message === 'sign2') {
         if (obstacles.length > 0) {
           state = 'combat';
@@ -826,7 +820,9 @@ const Stage = (function stage() {
 
     if (state === 'loot') {
       if (message === 'items') {
-        if (Deck.empty()) {
+        if (Locations.size() <= 0) {
+          state = 'victory';
+        } else if (Deck.empty()) {
           state = 'level-up';
         } else {
           state = 'choice';
