@@ -698,19 +698,20 @@ const Deck = (function deck() {
   let cards = [];
   let discards = [];
   let hand = [];
+  let backpack = [];
   let maxed = false;
 
   function get() {
     const attributes = [];
-    const backpack = [].concat(cards, discards);
+    const swag = [].concat(backpack).reverse();
 
-    backpack.forEach((card) => {
+    [].concat(cards, discards).forEach((card) => {
       if (Decktet.attributes().indexOf(card) > -1) {
         attributes.push(card);
       }
     });
 
-    return { cards: cards.length, discards: discards.length, attributes, backpack };
+    return { cards: cards.length, discards: discards.length, attributes, backpack: swag };
   }
 
   function empty() {
@@ -741,6 +742,7 @@ const Deck = (function deck() {
   function add(card) {
     if (card && Decktet.locations().indexOf(card) < 0) {
       hand.push(card);
+      backpack.push(card);
       if (Decktet.attributes().indexOf(card) > -1) {
         maxed = false;
       }
@@ -789,6 +791,7 @@ const Deck = (function deck() {
     cards = starting.pop();
     discards = [];
     hand = [];
+    backpack = [].concat(cards, discards);
     maxed = false;
   }
 
@@ -942,6 +945,20 @@ const Renderer = (function renderer() {
   let playedCards = [];
   let playedTokens = [];
   let dirty = true;
+
+  function renderBackpack() {
+    const $ = window.jQuery;
+    let html = '';
+
+    html += '<ol>';
+    Deck.get().backpack.forEach((name) => {
+      const loot = Loot.get(name);
+      html += `<li>${loot.title}</li>`;
+    });
+    html += '</ol>';
+
+    $('#backpack').html(html);
+  }
 
   function renderRole() {
     const $ = window.jQuery;
@@ -1229,6 +1246,7 @@ const Renderer = (function renderer() {
 
   function render() {
     if (dirty) {
+      renderBackpack();
       renderRole();
       renderUsedItems();
       renderUsedGems();
@@ -1386,16 +1404,9 @@ const Game = (function game() {
     $('#buttons').add('hidden');
     $('#signpost').remove('hidden');
 
-    const hero = Character.get();
-
-    Deck.add(hero.role);
-    Deck.shuffle();
-
-    Personalities.remove(hero.role);
     Obstacles.deal();
-
-    Renderer.invalidate();
     Stage.next('start');
+    Renderer.invalidate();
   }
 
   function resetGame() {

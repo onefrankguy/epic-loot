@@ -58,6 +58,10 @@ a, a:visited {
   text-decoration: none;
 }
 
+ul, ol {
+  list-style-position: inside;
+}
+
 .unselectable {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -288,6 +292,16 @@ a, a:visited {
 }
 
 /* GAME */
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
 #world {
   display: flex;
   flex-direction: column;
@@ -297,6 +311,16 @@ a, a:visited {
   overflow: hidden;
   margin: 0 auto;
   background: $map-color;
+}
+
+.map {
+  width: 32rem;
+  margin: 0 auto;
+  background: $map-color;
+}
+
+.backpack {
+  padding: .5rem;
 }
 
 /* PLAYER */
