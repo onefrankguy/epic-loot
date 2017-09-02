@@ -104,51 +104,17 @@ a, a:visited {
   background-position: ($sprite-cols * 0) ($sprite-rows * 0);
 }
 
-.monster.rat {
-  background-position: ($sprite-cols * 0) ($sprite-rows * 1);
-}
+/* DAY MONSTERS */
+.monster.rat       { background-position: ($sprite-cols * 0) ($sprite-rows * 1); }
+.monster.millipede { background-position: ($sprite-cols * 1) ($sprite-rows * 1); }
+.monster.rabbit    { background-position: ($sprite-cols * 2) ($sprite-rows * 1); }
+.monster.arachnid  { background-position: ($sprite-cols * 3) ($sprite-rows * 1); }
+.monster.bat       { background-position: ($sprite-cols * 4) ($sprite-rows * 1); }
+.monster.snake     { background-position: ($sprite-cols * 5) ($sprite-rows * 1); }
+.monster.wolf      { background-position: ($sprite-cols * 6) ($sprite-rows * 1); }
+.monster.boar      { background-position: ($sprite-cols * 7) ($sprite-rows * 1); }
 
-.monster.millipede {
-  background-position: ($sprite-cols * 1) ($sprite-rows * 1);
-}
-
-.monster.lizard {
-  background-position: ($sprite-cols * 2) ($sprite-rows * 1);
-}
-
-.monster.arachnid {
-  background-position: ($sprite-cols * 3) ($sprite-rows * 1);
-}
-
-.monster.mushrooms {
-  background-position: ($sprite-cols * 0) ($sprite-rows * 2);
-}
-
-.monster.rabbit {
-  background-position: ($sprite-cols * 1) ($sprite-rows * 2);
-}
-
-.monster.bat {
-  background-position: ($sprite-cols * 2) ($sprite-rows * 2);
-}
-
-.monster.snake {
-  background-position: ($sprite-cols * 4) ($sprite-rows * 2);
-}
-
-.monster.wolf {
-  background-position: ($sprite-cols * 5) ($sprite-rows * 2);
-}
-
-.monster.boar {
-  background-position: ($sprite-cols * 6) ($sprite-rows * 2);
-}
-
-.monster.bear {
-  background-position: ($sprite-cols * 7) ($sprite-rows * 2);
-}
-
-/* MONSTERS */
+/* NIGHT MONSTERS */
 .monster.vampire.bat { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
 .monster.scorpion    { background-position: ($sprite-cols * 1) ($sprite-rows * 3); }
 .monster.octo        { background-position: ($sprite-cols * 2) ($sprite-rows * 3); }
@@ -181,7 +147,8 @@ a, a:visited {
 .loot.helmet3 { background-position: ($sprite-cols * 4) ($sprite-rows * 8); }
 .loot.helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 8); }
 /* MUSHROOMS */
-.loot.mushrooms0 { background-position: ($sprite-cols * 0) ($sprite-rows * 2); }
+.monster.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 6); }
+.loot.mushrooms0   { background-position: ($sprite-cols * 0) ($sprite-rows * 6); }
 /* STAVES */
 .loot.staff0 { background-position: ($sprite-cols * 1) ($sprite-rows * 7); }
 .loot.staff1 { background-position: ($sprite-cols * 3) ($sprite-rows * 7); }
@@ -440,11 +407,6 @@ a, a:visited {
   left: 0;
   right: auto;
   opacity: .8;
-}
-
-.mini.sign.lizard .gems {
-  left: auto;
-  right: 0;
 }
 
 .sign .value {

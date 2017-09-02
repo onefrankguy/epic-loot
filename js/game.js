@@ -509,13 +509,13 @@ const Obstacles = (function obstacles() {
     const low = (phase === 1) ? ['rat', 'millipede'] : ['vampire bat', 'scorpion'];
     PRNG.shuffle(low);
 
-    const med = (phase === 1) ? ['lizard', 'arachnid', 'rabbit'] : ['octo', 'eye'];
+    const med = (phase === 1) ? ['arachnid', 'rabbit'] : ['octo', 'eye'];
     PRNG.shuffle(med);
 
     const high = (phase === 1) ? ['snake', 'bat'] : ['ghost', 'skeleton'];
     PRNG.shuffle(high);
 
-    const epic = (phase === 1) ? ['wolf', 'boar', 'bear'] : ['orc', 'werewolf'];
+    const epic = (phase === 1) ? ['wolf', 'boar'] : ['orc', 'werewolf'];
     PRNG.shuffle(epic);
 
     for (let i = 0; i < active.length; i += 1) {
