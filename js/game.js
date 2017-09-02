@@ -617,7 +617,7 @@ const Obstacles = (function obstacles() {
 }());
 
 const Deck = (function deck() {
-  let starting = [];
+  const starting = [];
   let cards = [];
   let discards = [];
   let hand = [];
@@ -673,7 +673,7 @@ const Deck = (function deck() {
   }
 
   function combinations(list, k) {
-    let result = [];
+    const result = [];
     let i;
     let j;
     let sub;
@@ -700,11 +700,15 @@ const Deck = (function deck() {
       const possible = combinations(Decktet.personalities(), 4);
       possible.forEach((collection) => {
         let suits = [];
+
         collection.forEach((name) => {
-          suits = suits.concat(Decktet.get(name).suits);
+          const card = Decktet.get(name);
+          suits = suits.concat(card.suits);
         });
+
         suits = new Set(suits);
         if (suits.size === 6) {
+          PRNG.shuffle(collection);
           starting.push(collection);
         }
       });
@@ -876,7 +880,6 @@ const Renderer = (function renderer() {
     html += '<div class="col">';
     Deck.get().backpack.forEach((name) => {
       const loot = Loot.get(name);
-      console.log(loot);
       html += '<div class="row item">';
       html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
       html += `<span>${loot.title}</span>`;
@@ -890,12 +893,11 @@ const Renderer = (function renderer() {
   function renderHero() {
     const $ = window.jQuery;
     const hero = 'watchman';
-    const card = Decktet.get(hero);
     const attributes = Deck.get().attributes;
 
     Decktet.attributes().forEach((attr) => {
+      const value = 1 + attributes.filter(name => name === attr).length;
       let html = '';
-      let value = 1 + attributes.filter(name => name === attr).length;
       html += `<span class="stat">${value}`;
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
@@ -1135,12 +1137,10 @@ const Renderer = (function renderer() {
         if (playedCards.length > 0) {
           loot = Loot.get(playedCards[playedCards.length - 1]);
           html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+        } else if (obstacles[0].title === 'mushrooms') {
+          html = 'You find some mushrooms growing in the forest.';
         } else {
-          if (obstacles[0].title === 'mushrooms') {
-            html = 'You find some mushrooms growing in the forest.';
-          } else {
-            html = `A wild ${obstacles[0].title} appears!`;
-          }
+          html = `A wild ${obstacles[0].title} appears!`;
         }
         break;
 
@@ -1148,12 +1148,10 @@ const Renderer = (function renderer() {
         loot = Loot.get(obstacles[0].name);
         if (loot.type === 'mushrooms') {
           html = 'You pick the mushrooms and put them in your bag.';
+        } else if (Obstacles.stage() === 1) {
+          html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
         } else {
-          if (Obstacles.stage() === 1) {
-            html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
-          } else {
-            html = `The ${obstacles[0].title} flees. It&rsquo;s too dark to find any loot.`;
-          }
+          html = `The ${obstacles[0].title} flees. It&rsquo;s too dark to find any loot.`;
         }
         break;
 
