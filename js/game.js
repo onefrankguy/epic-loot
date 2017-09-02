@@ -854,7 +854,7 @@ const Stage = (function stage() {
     if (state === 'combat') {
       if (message === 'items') {
         if (Obstacles.defeated()) {
-          state = 'defeated';
+          state = 'loot';
           return this;
         }
 
@@ -862,13 +862,6 @@ const Stage = (function stage() {
           state = 'madness';
           return this;
         }
-      }
-      return this;
-    }
-
-    if (state === 'defeated') {
-      if (message === 'items') {
-        state = 'loot';
       }
       return this;
     }
@@ -1001,30 +994,72 @@ const Renderer = (function renderer() {
     return html;
   }
 
-  function renderDeck() {
+  function renderItems() {
     const $ = window.jQuery;
-    let html = '';
-    playedTokens.forEach((type) => {
-      html += '<span class="box">';
-      html += `<span class="${type} gem"></span>`;
-      html += '</span>';
-    });
-    for (let i = playedTokens.length; i < 9; i += 1) {
-      html += '<span class="box"></span>';
-    }
-    $('#used-gems').html(html);
+    const obstacles = Obstacles.get();
+    let html;
+    let card;
+    let loot;
 
-    html = '';
-    playedCards.slice(-10).forEach((name) => {
-      const card = Decktet.get(name);
-      const loot = Loot.get(name);
-      if (card && loot) {
-        html += '<div class="spell">';
-        html += renderCard(card, loot);
-        html += '</div>';
-      }
-    });
-    $('#spells').html(html);
+    switch (Stage.get()) {
+      case 'combat':
+        html = '';
+        playedCards.slice(-10).forEach((name) => {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          if (card && loot) {
+            html += '<div class="spell">';
+            html += renderCard(card, loot);
+            html += '</div>';
+          }
+        });
+        $('#spells').remove('hidden').html(html);
+        break;
+
+      case 'loot':
+        html = '';
+        card = Decktet.get(obstacles[0].name);
+        loot = Loot.get(obstacles[0].name);
+        if (card && loot) {
+          html += '<div class="spell">';
+          html += renderCard(card, loot);
+          html += '</div>';
+        }
+        $('#spells').remove('hidden').html(html);
+        break;
+
+      case 'victory':
+      case 'madness':
+        $('#spells').remove('hidden').html('');
+        break;
+
+      default:
+        $('#spells').add('hidden');
+        break;
+    }
+  }
+
+  function renderUsedGems() {
+    const $ = window.jQuery;
+
+    switch (Stage.get()) {
+      case 'combat':
+        let html = '';
+        playedTokens.forEach((type) => {
+          html += '<span class="box">';
+          html += `<span class="${type} gem"></span>`;
+          html += '</span>';
+        });
+        for (let i = playedTokens.length; i < 9; i += 1) {
+          html += '<span class="box"></span>';
+         }
+        $('#used-gems').remove('hidden').html(html);
+        break;
+
+      default:
+        $('#used-gems').add('hidden').html('');
+        break;
+    }
   }
 
   function renderObstacle(card, mini) {
@@ -1063,7 +1098,6 @@ const Renderer = (function renderer() {
     switch (Stage.get()) {
       case 'choice':
       case 'combat':
-      case 'defeated':
       case 'loot':
         $('#signpost').remove('hidden');
         $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
@@ -1127,11 +1161,6 @@ const Renderer = (function renderer() {
         html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
         break;
 
-      case 'defeated':
-        loot = Loot.get(playedCards[playedCards.length - 1]);
-        html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
-        break;
-
       case 'loot':
         loot = Loot.get(obstacles[0].name);
         if (loot.type === 'mushrooms') {
@@ -1163,7 +1192,8 @@ const Renderer = (function renderer() {
   function render() {
     if (dirty) {
       renderRole();
-      renderDeck();
+      renderItems();
+      renderUsedGems();
       renderObstacles();
       renderTokens();
       renderExperience();
@@ -1249,19 +1279,25 @@ const Game = (function game() {
   }
 
   function onSpells() {
+    switch (Stage.get()) {
+      case 'loot':
+        Deck.add(Obstacles.get()[0].name);
+        Obstacles.deal();
+        Renderer.clearPlayed();
+        break;
+
+      case 'victory':
+      case 'madness':
+        newColor();
+        window.location.hash = color;
+        break;
+
+      default:
+        break;
+    }
+
     Stage.next('items');
-
-    if (Obstacles.defeated()) {
-      Deck.add(Obstacles.get()[0].name);
-      Obstacles.deal();
-      Renderer.clearPlayed();
-      return;
-    }
-
-    if (Tokens.size() <= 0 || Locations.size() <= 0) {
-      newColor();
-      window.location.hash = color;
-    }
+    Renderer.invalidate();
   }
 
   function onSign(element) {
@@ -1449,7 +1485,7 @@ const Game = (function game() {
   };
 
   Fn.prototype.add = function add(klass) {
-    if (this.element) {
+    if (this.element && this.element.classList) {
       this.element.classList.add(klass);
     }
 
@@ -1457,7 +1493,7 @@ const Game = (function game() {
   };
 
   Fn.prototype.remove = function remove(klass) {
-    if (this.element) {
+    if (this.element && this.element.classList) {
       this.element.classList.remove(klass);
     }
 
