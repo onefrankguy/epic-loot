@@ -352,16 +352,9 @@ const Loot = (function loot() {
 
 const Personalities = (function personalities() {
   let cards = [];
-  let discards = [];
 
   function deal() {
-    const card = cards.pop();
-
-    if (card) {
-      discards.push(card);
-    }
-
-    return card;
+    return cards.pop();
   }
 
   function size() {
@@ -369,14 +362,9 @@ const Personalities = (function personalities() {
   }
 
   function remove(name) {
-    let index = cards.indexOf(name);
+    const index = cards.indexOf(name);
     if (index > -1) {
       cards.splice(index, 1);
-    }
-
-    index = discards.indexOf(name);
-    if (index > -1) {
-      discards.splice(index, 1);
     }
   }
 
@@ -385,7 +373,6 @@ const Personalities = (function personalities() {
     remove('sailor');
     remove('soldier');
     remove('diplomat');
-    discards = [];
     PRNG.shuffle(cards);
   }
 
@@ -399,21 +386,13 @@ const Personalities = (function personalities() {
 
 const Events = (function events() {
   let cards = [];
-  let discards = [];
 
   function deal() {
-    const card = cards.pop();
-
-    if (card) {
-      discards.push(card);
-    }
-
-    return card;
+    return cards.pop();
   }
 
   function reset() {
     cards = Decktet.events();
-    discards = [];
     PRNG.shuffle(cards);
   }
 
@@ -425,16 +404,9 @@ const Events = (function events() {
 
 const Locations = (function locations() {
   let cards = [];
-  let discards = [];
 
   function deal() {
-    const card = cards.pop();
-
-    if (card) {
-      discards.push(card);
-    }
-
-    return card;
+    return cards.pop();
   }
 
   function size() {
@@ -445,7 +417,6 @@ const Locations = (function locations() {
     let index = -1;
 
     cards = Decktet.locations();
-    discards = [];
 
     index = cards.indexOf('origin');
     if (index > -1) {
@@ -930,8 +901,6 @@ const Stage = (function stage() {
   }
 
   function next(message) {
-    const obstacles = Obstacles.get();
-
     if (state === 'encumbered') {
       return onEncumbered(message);
     }
@@ -1130,16 +1099,14 @@ const Renderer = (function renderer() {
 
   function renderUsedGems() {
     const $ = window.jQuery;
-    const gems = Stage.gems();
-    let html;
-    let i;
+    let html = '';
 
-    html = '';
-    gems.forEach((type) => {
+    Stage.gems().forEach((type) => {
       html += '<span class="box">';
       html += `<span class="${type} gem"></span>`;
       html += '</span>';
     });
+
     $('#used-gems').html(html);
   }
 
