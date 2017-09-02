@@ -787,6 +787,9 @@ const Stage = (function stage() {
     const obstacles = Obstacles.get();
 
     if (state === 'encumbered') {
+      if (message === 'reroll') {
+        Deck.reset();
+      }
       if (message === 'start') {
         state = 'choice';
       }
@@ -1304,11 +1307,8 @@ const Game = (function game() {
   }
 
   function onReroll() {
-    if (Stage.get() === 'encumbered') {
-      Deck.reset();
-      Stage.next('reroll');
-      Renderer.invalidate();
-    }
+    Stage.next('reroll');
+    Renderer.invalidate();
   }
 
   function onLevelStat(element) {
