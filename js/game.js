@@ -745,7 +745,7 @@ const Gems = (function gems() {
     counts = {};
 
     Decktet.attributes().forEach((attribute) => {
-      counts[attribute] = 100;
+      counts[attribute] = 9;
     });
   }
 
@@ -783,6 +783,17 @@ const Stage = (function stage() {
 
   function get() {
     return state;
+  }
+
+  function reset() {
+    Loot.reset();
+    Obstacles.reset();
+    Deck.reset();
+    Gems.reset();
+
+    usedGems = [];
+    usedItems = [];
+    state = 'encumbered';
   }
 
   function onEncumbered(message) {
@@ -941,20 +952,9 @@ const Stage = (function stage() {
       return onLevelUp(message);
     }
 
-    if (state === 'victory') {
+    if (state === 'victory' || state === 'madness') {
       if (message === 'items') {
-        usedGems = [];
-        usedItems = [];
-        state = 'encumbered';
-      }
-      return this;
-    }
-
-    if (state === 'madness') {
-      if (message === 'items') {
-        usedGems = [];
-        usedItems = [];
-        state = 'encumbered';
+        reset();
       }
     }
 
@@ -967,12 +967,6 @@ const Stage = (function stage() {
 
   function items() {
     return [].concat(usedItems);
-  }
-
-  function reset() {
-    usedGems = [];
-    usedItems = [];
-    state = 'encumbered';
   }
 
   return {
@@ -1140,18 +1134,13 @@ const Renderer = (function renderer() {
     let html;
     let i;
 
-    if (Stage.get() === 'combat') {
-      html = '';
-      gems.forEach((type) => {
-        html += '<span class="box">';
-        html += `<span class="${type} gem"></span>`;
-        html += '</span>';
-      });
-      for (i = gems.length; i < 9; i += 1) {
-        html += '<span class="box"></span>';
-      }
-      $('#used-gems').html(html);
-    }
+    html = '';
+    gems.forEach((type) => {
+      html += '<span class="box">';
+      html += `<span class="${type} gem"></span>`;
+      html += '</span>';
+    });
+    $('#used-gems').html(html);
   }
 
   function renderObstacle(card, mini) {
@@ -1326,14 +1315,9 @@ const Renderer = (function renderer() {
     dirty = true;
   }
 
-  function reset() {
-    dirty = true;
-  }
-
   return {
     render,
     invalidate,
-    reset,
   };
 }());
 
@@ -1357,17 +1341,6 @@ const Game = (function game() {
   }
 
   function onUsedItems() {
-    switch (Stage.get()) {
-      case 'victory':
-      case 'madness':
-        newColor();
-        window.location.hash = color;
-        break;
-
-      default:
-        break;
-    }
-
     Stage.next('items');
     Renderer.invalidate();
   }
@@ -1393,16 +1366,8 @@ const Game = (function game() {
   }
 
   function resetGame() {
-    const $ = window.jQuery;
-    $('#signpost').add('hidden');
-    $('#buttons').remove('hidden');
-
-    Loot.reset();
-    Obstacles.reset();
-    Deck.reset();
-    Gems.reset();
     Stage.reset();
-    Renderer.reset();
+    Renderer.invalidate();
   }
 
   function onHashChange() {
