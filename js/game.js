@@ -954,15 +954,13 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     let html = '';
 
-    html += '<div class="col">';
     Deck.get().backpack.forEach((name) => {
       const loot = Loot.get(name);
       html += '<div class="row item">';
       html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
-      html += `<span>${loot.title}</span>`;
+      html += `<span class="name">${loot.title}</span>`;
       html += '</div>';
     });
-    html += '</div>';
 
     $('#backpack').html(html);
   }
@@ -1263,7 +1261,11 @@ const Renderer = (function renderer() {
         break;
 
       case 'loot':
-        html = 'loot';
+        if (Obstacles.stage() === 1) {
+          html = 'loot';
+        } else {
+          html = 'next';
+        }
         break;
 
       default:
