@@ -777,6 +777,8 @@ const Gems = (function gems() {
 }());
 
 const Stage = (function stage() {
+  let usedGems = [];
+  let usedItems = [];
   let state = 'encumbered';
 
   function get() {
@@ -820,6 +822,52 @@ const Stage = (function stage() {
     return this;
   }
 
+  function onCombat(message) {
+    const part = message.split('-');
+
+    if (part[0] === 'gems') {
+      const type = part[1];
+
+      if (Gems.count(type) <= 0) {
+        return this;
+      }
+
+      if (Obstacles.defeated()) {
+        return this;
+      }
+
+      if (Obstacles.get().length !== 1) {
+        return this;
+      }
+
+      Gems.spend(type);
+      Obstacles.use(type);
+      usedGems.push(type);
+
+      let card = Deck.deal();
+      if (!card) {
+        Deck.shuffle();
+        card = Deck.deal();
+      }
+      Obstacles.use(card);
+      usedItems.push(card);
+    }
+
+    if (message === 'items') {
+      if (Obstacles.defeated()) {
+        state = 'loot';
+        return this;
+      }
+
+      if (Gems.size() <= 0) {
+        state = 'madness';
+        return this;
+      }
+    }
+
+    return this;
+  }
+
   function onLoot(message) {
     if (message !== 'items') {
       return this;
@@ -833,6 +881,8 @@ const Stage = (function stage() {
     Deck.add(obstacles[0].name);
     Obstacles.deal();
     obstacles = Obstacles.get();
+
+    usedItems = [];
 
     if (obstacles.length < 1) {
       state = 'victory';
@@ -880,18 +930,7 @@ const Stage = (function stage() {
     }
 
     if (state === 'combat') {
-      if (message === 'items') {
-        if (Obstacles.defeated()) {
-          state = 'loot';
-          return this;
-        }
-
-        if (Gems.size() <= 0) {
-          state = 'madness';
-          return this;
-        }
-      }
-      return this;
+      return onCombat(message);
     }
 
     if (state === 'loot') {
@@ -904,6 +943,8 @@ const Stage = (function stage() {
 
     if (state === 'victory') {
       if (message === 'items') {
+        usedGems = [];
+        usedItems = [];
         state = 'encumbered';
       }
       return this;
@@ -911,6 +952,8 @@ const Stage = (function stage() {
 
     if (state === 'madness') {
       if (message === 'items') {
+        usedGems = [];
+        usedItems = [];
         state = 'encumbered';
       }
     }
@@ -918,20 +961,30 @@ const Stage = (function stage() {
     return this;
   }
 
+  function gems() {
+    return [].concat(usedGems);
+  }
+
+  function items() {
+    return [].concat(usedItems);
+  }
+
   function reset() {
+    usedGems = [];
+    usedItems = [];
     state = 'encumbered';
   }
 
   return {
     get,
     next,
+    gems,
+    items,
     reset,
   };
 }());
 
 const Renderer = (function renderer() {
-  let playedCards = [];
-  let playedGems = [];
   let dirty = true;
 
   function renderBackpack() {
@@ -1044,7 +1097,7 @@ const Renderer = (function renderer() {
 
       case 'combat':
         html = '';
-        playedCards.slice(-10).forEach((name) => {
+        Stage.items().forEach((name) => {
           card = Decktet.get(name);
           loot = Loot.get(name);
           if (card && loot) {
@@ -1083,17 +1136,18 @@ const Renderer = (function renderer() {
 
   function renderUsedGems() {
     const $ = window.jQuery;
+    const gems = Stage.gems();
     let html;
     let i;
 
     if (Stage.get() === 'combat') {
       html = '';
-      playedGems.forEach((type) => {
+      gems.forEach((type) => {
         html += '<span class="box">';
         html += `<span class="${type} gem"></span>`;
         html += '</span>';
       });
-      for (i = playedGems.length; i < 9; i += 1) {
+      for (i = gems.length; i < 9; i += 1) {
         html += '<span class="box"></span>';
       }
       $('#used-gems').html(html);
@@ -1174,7 +1228,7 @@ const Renderer = (function renderer() {
         }
         html += '</span>';
       }
-      $(`#${type}`).html(html.trim());
+      $(`#gems-${type}`).html(html.trim());
     });
   }
 
@@ -1184,6 +1238,7 @@ const Renderer = (function renderer() {
 
     let html = '';
     let loot;
+    let items;
 
     switch (Stage.get()) {
       case 'encumbered':
@@ -1195,8 +1250,9 @@ const Renderer = (function renderer() {
         break;
 
       case 'combat':
-        if (playedCards.length > 0) {
-          loot = Loot.get(playedCards[playedCards.length - 1]);
+        items = Stage.items();
+        if (items.length > 0) {
+          loot = Loot.get(items.slice(-1)[0]);
           html = `You pull ${loot.article} ${loot.title} from your bag and throw ${loot.pronoun} at the ${obstacles[0].title}.`;
         } else if (obstacles[0].title === 'mushrooms') {
           html = 'You find some mushrooms growing in the forest.';
@@ -1270,33 +1326,13 @@ const Renderer = (function renderer() {
     dirty = true;
   }
 
-  function playCard(card) {
-    playedCards.push(card);
-    invalidate();
-  }
-
-  function playGem(type) {
-    playedGems.push(type);
-    invalidate();
-  }
-
-  function clearPlayed() {
-    playedCards = [];
-    invalidate();
-  }
-
   function reset() {
-    playedCards = [];
-    playedGems = [];
     dirty = true;
   }
 
   return {
     render,
     invalidate,
-    playCard,
-    playGem,
-    clearPlayed,
     reset,
   };
 }());
@@ -1315,28 +1351,9 @@ const Game = (function game() {
     color = hash;
   }
 
-  function onGem(element) {
-    Stage.next('gems');
-
-    if (Obstacles.defeated()) {
-      return;
-    }
-
-    const type = element.unwrap().id;
-
-    if (Obstacles.get().length === 1 && Gems.count(type) > 0) {
-      Gems.spend(type);
-      Obstacles.use(type);
-      Renderer.playGem(type);
-
-      let card = Deck.deal();
-      if (!card) {
-        Deck.shuffle();
-        card = Deck.deal();
-      }
-      Obstacles.use(card);
-      Renderer.playCard(card);
-    }
+  function onGems(element) {
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
   }
 
   function onUsedItems() {
@@ -1427,12 +1444,12 @@ const Game = (function game() {
   function play() {
     const $ = window.jQuery;
 
-    $('#moons').touch(undefined, onGem);
-    $('#suns').touch(undefined, onGem);
-    $('#waves').touch(undefined, onGem);
-    $('#leaves').touch(undefined, onGem);
-    $('#wyrms').touch(undefined, onGem);
-    $('#knots').touch(undefined, onGem);
+    $('#gems-moons').touch(undefined, onGems);
+    $('#gems-suns').touch(undefined, onGems);
+    $('#gems-waves').touch(undefined, onGems);
+    $('#gems-leaves').touch(undefined, onGems);
+    $('#gems-wyrms').touch(undefined, onGems);
+    $('#gems-knots').touch(undefined, onGems);
 
     $('#used-items').touch(undefined, onUsedItems);
     $('#sign1').touch(undefined, onChoice);
