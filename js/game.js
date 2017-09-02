@@ -1071,12 +1071,14 @@ const Renderer = (function renderer() {
 
       case 'loot':
         html = '';
-        card = Decktet.get(obstacles[0].name);
-        loot = Loot.get(obstacles[0].name);
-        if (card && loot) {
-          html += '<div class="spell">';
-          html += renderCard(card, loot);
-          html += '</div>';
+        if (Obstacles.stage() === 1) {
+          card = Decktet.get(obstacles[0].name);
+          loot = Loot.get(obstacles[0].name);
+          if (card && loot) {
+            html += '<div class="spell">';
+            html += renderCard(card, loot);
+            html += '</div>';
+          }
         }
         $('#used-items').remove('hidden').html(html);
         break;
@@ -1229,7 +1231,11 @@ const Renderer = (function renderer() {
         if (loot.type === 'mushrooms') {
           html = 'You pick the mushrooms and put them in your bag.';
         } else {
-          html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
+          if (Obstacles.stage() === 1) {
+            html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
+          } else {
+            html = `The ${obstacles[0].title} flees. It&rsquo;s too dark to find any loot.`;
+          }
         }
         break;
 
