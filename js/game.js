@@ -1338,6 +1338,7 @@ const Game = (function game() {
     Deck.get().backpack.forEach((name) => {
       Personalities.remove(name);
     });
+    Deck.shuffle();
     Obstacles.deal();
 
     Stage.next('start');
