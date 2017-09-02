@@ -2,7 +2,7 @@
 // it's all about you. So before we even get to the dungeon crawling, let's talk
 // about you. Who are you, and why are you wondering through this forest?
 const Character = (function character() {
-  let hero = 'painter';
+  let hero = 'watchman';
 
   // Oh, I see. You're a hero and an painter. But maybe not all the time? If
   // you where a full time painter, you'd be a `const hero`, and you're not. So
@@ -43,7 +43,7 @@ const Character = (function character() {
       index = (index + 1) % roles.length;
       hero = roles[index];
     } else {
-      hero = 'painter';
+      hero = 'watchman';
     }
   }
 
@@ -55,7 +55,7 @@ const Character = (function character() {
       }
       hero = roles[index - 1];
     } else {
-      hero = 'painter';
+      hero = 'watchman';
     }
   }
 
@@ -64,7 +64,7 @@ const Character = (function character() {
   // yourself, a heroic painter. Though personally, I think you aught to try
   // being a Bard. That role was the only one that wasn't also a something else.
   function reset() {
-    hero = 'painter';
+    hero = 'watchman';
   }
 
   return {
@@ -694,6 +694,7 @@ const Obstacles = (function obstacles() {
 }());
 
 const Deck = (function deck() {
+  let starting = [];
   let cards = [];
   let discards = [];
   let hand = [];
@@ -701,20 +702,15 @@ const Deck = (function deck() {
 
   function get() {
     const attributes = [];
+    const backpack = [].concat(cards, discards);
 
-    cards.forEach((card) => {
+    backpack.forEach((card) => {
       if (Decktet.attributes().indexOf(card) > -1) {
         attributes.push(card);
       }
     });
 
-    discards.forEach((card) => {
-      if (Decktet.attributes().indexOf(card) > -1) {
-        attributes.push(card);
-      }
-    });
-
-    return { cards: cards.length, discards: discards.length, attributes };
+    return { cards: cards.length, discards: discards.length, attributes, backpack };
   }
 
   function empty() {
@@ -751,8 +747,46 @@ const Deck = (function deck() {
     }
   }
 
+  function combinations(list, k) {
+    let result = [];
+    let i;
+    let j;
+    let sub;
+    let next;
+
+    for (i = 0; i < list.length; i += 1) {
+      if (k === 1) {
+        result.push([list[i]]);
+      } else {
+        sub = combinations(list.slice(i + 1, list.length), k - 1);
+        for (j = 0; j < sub.length; j += 1) {
+          next = sub[j];
+          next.unshift(list[i]);
+          result.push(next);
+        }
+      }
+    }
+
+    return result;
+  }
+
   function reset() {
-    cards = ['sailor', 'soldier', 'diplomat'];
+    if (starting.length <= 0) {
+      const possible = combinations(Decktet.personalities(), 4);
+      possible.forEach((collection) => {
+        let suits = [];
+        collection.forEach((name) => {
+          suits = suits.concat(Decktet.get(name).suits);
+        });
+        suits = new Set(suits);
+        if (suits.size === 6) {
+          starting.push(collection);
+        }
+      });
+      PRNG.shuffle(starting);
+    }
+
+    cards = starting.pop();
     discards = [];
     hand = [];
     maxed = false;
@@ -822,10 +856,6 @@ const Stage = (function stage() {
     const obstacles = Obstacles.get();
 
     if (state === 'encumbered') {
-      if (message === 'reroll') {
-        state = 'encumbered';
-        return this;
-      }
       if (message === 'start') {
         state = 'choice';
       }
@@ -960,18 +990,6 @@ const Renderer = (function renderer() {
     $('#this-level').html(deck.attributes.length + 1);
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
-
-    if (Obstacles.get().length > 1) {
-      if (Deck.empty()) {
-        $('#collection').add('hidden');
-        $('#signpost').add('hidden');
-        $('#level-up').remove('hidden');
-      } else {
-        $('#level-up').add('hidden');
-        $('#signpost').remove('hidden');
-        $('#collection').remove('hidden');
-      }
-    }
   }
 
   function renderCard(card, loot) {
@@ -998,6 +1016,20 @@ const Renderer = (function renderer() {
     let loot;
 
     switch (Stage.get()) {
+      case 'encumbered':
+        html = '';
+        Deck.get().backpack.forEach((name) => {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          if (card && loot) {
+            html += '<div class="spell">';
+            html += renderCard(card, loot);
+            html += '</div>';
+          }
+        });
+        $('#used-items').remove('hidden').html(html);
+        break;
+
       case 'combat':
         html = '';
         playedCards.slice(-10).forEach((name) => {
@@ -1147,7 +1179,7 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        html = 'You are encumbered! You empty your bag on the ground and dig through the items looking for anything useful.';
+        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for anything useful.';
         break;
 
       case 'choice':
@@ -1327,14 +1359,12 @@ const Game = (function game() {
     }
   }
 
-  function onRolePrev() {
-    Character.prev();
-    Renderer.invalidate();
-  }
-
-  function onRoleNext() {
-    Character.next();
-    Renderer.invalidate();
+  function onReroll() {
+    if (Stage.get() === 'encumbered') {
+      Deck.reset();
+      Stage.next('reroll');
+      Renderer.invalidate();
+    }
   }
 
   function onLevelStat(element) {
@@ -1432,9 +1462,7 @@ const Game = (function game() {
     $('#sign2').touch(undefined, onSign);
 
     $('#start').touch(undefined, onStart);
-
-    $('#role-prev').touch(undefined, onRolePrev);
-    $('#role-next').touch(undefined, onRoleNext);
+    $('#reroll').touch(undefined, onReroll);
 
     $('#level-up-moons').touch(undefined, onLevelStat);
     $('#level-up-suns').touch(undefined, onLevelStat);

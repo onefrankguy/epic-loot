@@ -249,24 +249,6 @@ a, a:visited {
 .loot.sword6 { background-position: ($sprite-cols * 6) ($sprite-rows * 5); }
 .loot.sword7 { background-position: ($sprite-cols * 7) ($sprite-rows * 5); }
 
-.left.arrow {
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  border-left: .5rem solid $metal-color;
-  border-top: .5rem solid $metal-color;
-  transform: translateX(.4rem) rotate(-45deg);
-}
-
-.right.arrow {
-  display: block;
-  width: 2rem;
-  height: 2rem;
-  border-right: .5rem solid $metal-color;
-  border-top: .5rem solid $metal-color;
-  transform: translateX(-.4rem) rotate(45deg);
-}
-
 .stats {
   display: flex;
   flex-direction: row;
