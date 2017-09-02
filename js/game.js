@@ -1412,7 +1412,11 @@ const Game = (function game() {
     $('#buttons').add('hidden');
     $('#signpost').remove('hidden');
 
+    Deck.get().backpack.forEach((name) => {
+      Personalities.remove(name);
+    });
     Obstacles.deal();
+
     Stage.next('start');
     Renderer.invalidate();
   }
