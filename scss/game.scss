@@ -129,7 +129,7 @@ ul, ol {
   background-position: ($sprite-cols * 0) ($sprite-rows * 1);
 }
 
-.monster.spiders {
+.monster.millipede {
   background-position: ($sprite-cols * 1) ($sprite-rows * 1);
 }
 
@@ -281,8 +281,8 @@ ul, ol {
 
 .gem {
   display: inline-block;
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 1.2rem;
+  width: 1.2rem;
   border: 1px solid $ink-color;
   border-radius: 50%;
 }
@@ -486,11 +486,6 @@ ul, ol {
   opacity: .8;
 }
 
-.mini.sign.loot .value {
-  left: auto;
-  right: 0;
-}
-
 .mini.sign.lizard .gems {
   left: auto;
   right: 0;
@@ -516,6 +511,8 @@ ul, ol {
   opacity: .8;
 }
 
+.mini.sign.loot .value,
+.mini.sign.millipede .value,
 .mini.sign.wolf .value {
   left: auto;
   right: 0;
