@@ -32,7 +32,7 @@ $wyrms-color: rgb(109, 170, 44);
 $knots-color: rgb(218, 212, 94);
 $base-font-size: 1.6rem;
 $sprite-cols: 100% / 7;
-$sprite-rows: 100% / 10;
+$sprite-rows: 100% / 9;
 
 /* RESET */
 * {
@@ -205,9 +205,9 @@ a, a:visited {
 .loot.bottle4 { background-position: ($sprite-cols * 5) ($sprite-rows * 6); }
 .loot.bottle5 { background-position: ($sprite-cols * 6) ($sprite-rows * 6); }
 /* BOWS */
-.loot.bow0 { background-position: ($sprite-cols * 3) ($sprite-rows * 10); }
-.loot.bow1 { background-position: ($sprite-cols * 4) ($sprite-rows * 10); }
-.loot.bow2 { background-position: ($sprite-cols * 5) ($sprite-rows * 10); }
+.loot.bow0 { background-position: ($sprite-cols * 5) ($sprite-rows * 9); }
+.loot.bow1 { background-position: ($sprite-cols * 6) ($sprite-rows * 9); }
+.loot.bow2 { background-position: ($sprite-cols * 7) ($sprite-rows * 9); }
 /* HELMETS */
 .loot.helmet0 { background-position: ($sprite-cols * 0) ($sprite-rows * 8); }
 .loot.helmet1 { background-position: ($sprite-cols * 2) ($sprite-rows * 8); }
