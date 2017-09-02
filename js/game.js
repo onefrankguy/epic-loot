@@ -1257,7 +1257,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'combat':
-        if (Obstacles.defeated()) {
+        if (Obstacles.defeated() || Gems.size() <= 0) {
           html = 'next';
         }
         break;
