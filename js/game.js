@@ -745,7 +745,7 @@ const Gems = (function gems() {
     counts = {};
 
     Decktet.attributes().forEach((attribute) => {
-      counts[attribute] = 9;
+      counts[attribute] = 100;
     });
   }
 
@@ -820,6 +820,34 @@ const Stage = (function stage() {
     return this;
   }
 
+  function onLoot(message) {
+    if (message !== 'items') {
+      return this;
+    }
+
+    let obstacles = Obstacles.get();
+    if (obstacles.length < 1) {
+      return this;
+    }
+
+    Deck.add(obstacles[0].name);
+    Obstacles.deal();
+    obstacles = Obstacles.get();
+
+    if (obstacles.length < 1) {
+      state = 'victory';
+      return this;
+    }
+
+    if (Deck.empty()) {
+      state = 'level-up';
+      return this;
+    }
+
+    state = 'choice';
+    return this;
+  }
+
   function onLevelUp(message) {
     const part = message.split('-');
     if (part[0] !== 'level') {
@@ -867,16 +895,7 @@ const Stage = (function stage() {
     }
 
     if (state === 'loot') {
-      if (message === 'items') {
-        if (Locations.size() <= 0) {
-          state = 'victory';
-        } else if (Deck.empty()) {
-          state = 'level-up';
-        } else {
-          state = 'choice';
-        }
-      }
-      return this;
+      return onLoot(message);
     }
 
     if (state === 'level-up') {
@@ -1322,12 +1341,6 @@ const Game = (function game() {
 
   function onUsedItems() {
     switch (Stage.get()) {
-      case 'loot':
-        Deck.add(Obstacles.get()[0].name);
-        Obstacles.deal();
-        Renderer.clearPlayed();
-        break;
-
       case 'victory':
       case 'madness':
         newColor();
