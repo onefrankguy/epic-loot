@@ -801,7 +801,7 @@ const Stage = (function stage() {
       Deck.reset();
     }
 
-    if (message === 'start') {
+    if (message === 'items') {
       Deck.get().backpack.forEach((name) => {
         Personalities.remove(name);
       });
@@ -1280,6 +1280,36 @@ const Renderer = (function renderer() {
     $('#narrative').html(html);
   }
 
+  function renderButton() {
+    const $ = window.jQuery;
+    let html;
+
+    switch (Stage.get()) {
+      case 'encumbered':
+        html = 'start';
+        break;
+
+      case 'combat':
+        if (Obstacles.defeated()) {
+          html = 'next';
+        }
+        break;
+
+      case 'loot':
+        html = 'loot';
+        break;
+
+      default:
+        break;
+    }
+
+    if (html) {
+      $('#button').remove('invisible').html(html);
+    } else {
+      $('#button').add('invisible').html('epic');
+    }
+  }
+
   function renderButtons() {
     const $ = window.jQuery;
 
@@ -1304,6 +1334,7 @@ const Renderer = (function renderer() {
       renderGems();
       renderExperience();
       renderNarrative();
+      renderButton();
       renderButtons();
       dirty = false;
     }
@@ -1340,7 +1371,7 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function onUsedItems() {
+  function onButton() {
     Stage.next('items');
     Renderer.invalidate();
   }
@@ -1357,11 +1388,6 @@ const Game = (function game() {
 
   function onLevelUp(element) {
     Stage.next(element.unwrap().id);
-    Renderer.invalidate();
-  }
-
-  function onStart() {
-    Stage.next('start');
     Renderer.invalidate();
   }
 
@@ -1416,11 +1442,10 @@ const Game = (function game() {
     $('#gems-wyrms').touch(undefined, onGems);
     $('#gems-knots').touch(undefined, onGems);
 
-    $('#used-items').touch(undefined, onUsedItems);
+    $('#button').touch(undefined, onButton);
     $('#sign1').touch(undefined, onChoice);
     $('#sign2').touch(undefined, onChoice);
 
-    $('#start').touch(undefined, onStart);
     $('#reroll').touch(undefined, onReroll);
 
     $('#level-moons').touch(undefined, onLevelUp);
