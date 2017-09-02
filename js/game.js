@@ -1007,6 +1007,14 @@ const Renderer = (function renderer() {
     $('#this-level').html(deck.attributes.length + 1);
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
+
+    if (Stage.get() === 'level-up') {
+      $('#level-up').remove('hidden');
+      $('#collection').add('hidden');
+    } else {
+      $('#collection').remove('hidden');
+      $('#level-up').add('hidden');
+    }
   }
 
   function renderCard(card, loot) {
