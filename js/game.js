@@ -783,6 +783,23 @@ const Stage = (function stage() {
     return state;
   }
 
+  function onEncumbered(message) {
+    if (message === 'reroll') {
+      Deck.reset();
+    }
+
+    if (message === 'start') {
+      Deck.get().backpack.forEach((name) => {
+        Personalities.remove(name);
+      });
+      Deck.shuffle();
+      Obstacles.deal();
+      state = 'choice';
+    }
+
+    return this;
+  }
+
   function onLevelUp(message) {
     const part = message.split('-');
     if (part[0] !== 'level') {
@@ -807,13 +824,7 @@ const Stage = (function stage() {
     const obstacles = Obstacles.get();
 
     if (state === 'encumbered') {
-      if (message === 'reroll') {
-        Deck.reset();
-      }
-      if (message === 'start') {
-        state = 'choice';
-      }
-      return this;
+      return onEncumbered(message);
     }
 
     if (state === 'choice') {
@@ -1191,6 +1202,20 @@ const Renderer = (function renderer() {
     $('#narrative').html(html);
   }
 
+  function renderButtons() {
+    const $ = window.jQuery;
+
+    switch (Stage.get()) {
+      case 'encumbered':
+        $('#buttons').remove('hidden');
+        break;
+
+      default:
+        $('#buttons').add('hidden');
+        break;
+    }
+  }
+
   function render() {
     if (dirty) {
       renderHero();
@@ -1201,6 +1226,7 @@ const Renderer = (function renderer() {
       renderGems();
       renderExperience();
       renderNarrative();
+      renderButtons();
       dirty = false;
     }
 
@@ -1334,16 +1360,6 @@ const Game = (function game() {
   }
 
   function onStart() {
-    const $ = window.jQuery;
-    $('#buttons').add('hidden');
-    $('#signpost').remove('hidden');
-
-    Deck.get().backpack.forEach((name) => {
-      Personalities.remove(name);
-    });
-    Deck.shuffle();
-    Obstacles.deal();
-
     Stage.next('start');
     Renderer.invalidate();
   }
