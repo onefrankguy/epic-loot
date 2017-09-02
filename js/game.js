@@ -815,13 +815,10 @@ const Stage = (function stage() {
   let state = 'encumbered';
 
   function get() {
-    console.log(`in ${state}`);
     return state;
   }
 
   function next(message) {
-    console.log(`in ${state}, got ${message}`);
-
     const obstacles = Obstacles.get();
 
     if (state === 'encumbered') {
@@ -902,7 +899,6 @@ const Stage = (function stage() {
 
   function reset() {
     state = 'encumbered';
-    console.log(`in ${state}`);
   }
 
   return {
@@ -1041,18 +1037,20 @@ const Renderer = (function renderer() {
 
   function renderUsedGems() {
     const $ = window.jQuery;
+    let html;
+    let i;
 
     switch (Stage.get()) {
       case 'combat':
-        let html = '';
+        html = '';
         playedTokens.forEach((type) => {
           html += '<span class="box">';
           html += `<span class="${type} gem"></span>`;
           html += '</span>';
         });
-        for (let i = playedTokens.length; i < 9; i += 1) {
+        for (i = playedTokens.length; i < 9; i += 1) {
           html += '<span class="box"></span>';
-         }
+        }
         $('#used-gems').remove('hidden').html(html);
         break;
 
@@ -1153,12 +1151,16 @@ const Renderer = (function renderer() {
         break;
 
       case 'choice':
-        html = `There is a ${obstacles[0].title} to the north. There is a ${obstacles[1].title} to the south. Make a choice.`;
+        html = 'The path twists and turns. Pick a direction.';
         break;
 
       case 'combat':
-        loot = Loot.get(playedCards[playedCards.length - 1]);
-        html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+        if (playedCards.length > 0) {
+          loot = Loot.get(playedCards[playedCards.length - 1]);
+          html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+        } else {
+          html = `A ${obstacles[0].title} appears.`;
+        }
         break;
 
       case 'loot':
