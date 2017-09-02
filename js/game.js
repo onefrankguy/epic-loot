@@ -805,7 +805,7 @@ const Deck = (function deck() {
   };
 }());
 
-const Tokens = (function tokens() {
+const Gems = (function gems() {
   const has = Object.prototype.hasOwnProperty;
   let counts = {};
 
@@ -888,7 +888,7 @@ const Stage = (function stage() {
           return this;
         }
 
-        if (Tokens.size() <= 0) {
+        if (Gems.size() <= 0) {
           state = 'madness';
           return this;
         }
@@ -943,7 +943,7 @@ const Stage = (function stage() {
 
 const Renderer = (function renderer() {
   let playedCards = [];
-  let playedTokens = [];
+  let playedGems = [];
   let dirty = true;
 
   function renderBackpack() {
@@ -1102,12 +1102,12 @@ const Renderer = (function renderer() {
     switch (Stage.get()) {
       case 'combat':
         html = '';
-        playedTokens.forEach((type) => {
+        playedGems.forEach((type) => {
           html += '<span class="box">';
           html += `<span class="${type} gem"></span>`;
           html += '</span>';
         });
-        for (i = playedTokens.length; i < 9; i += 1) {
+        for (i = playedGems.length; i < 9; i += 1) {
           html += '<span class="box"></span>';
         }
         $('#used-gems').remove('hidden').html(html);
@@ -1170,24 +1170,24 @@ const Renderer = (function renderer() {
     }
   }
 
-  function renderTokens() {
+  function renderGems() {
     const $ = window.jQuery;
-    const tokens = Tokens.get();
+    const gems = Gems.get();
 
-    Object.keys(tokens).forEach((type) => {
+    Object.keys(gems).forEach((type) => {
       let html = '';
       for (let i = 0; i < 9; i += 1) {
         html += '<span class="box">';
         let gem = false;
-        gem = gem || (i === 0 && tokens[type] >= 7);
-        gem = gem || (i === 1 && tokens[type] >= 6);
-        gem = gem || (i === 2 && tokens[type] >= 5);
-        gem = gem || (i === 3 && tokens[type] >= 8);
-        gem = gem || (i === 4 && tokens[type] >= 1);
-        gem = gem || (i === 5 && tokens[type] >= 4);
-        gem = gem || (i === 6 && tokens[type] >= 9);
-        gem = gem || (i === 7 && tokens[type] >= 2);
-        gem = gem || (i === 8 && tokens[type] >= 3);
+        gem = gem || (i === 0 && gems[type] >= 7);
+        gem = gem || (i === 1 && gems[type] >= 6);
+        gem = gem || (i === 2 && gems[type] >= 5);
+        gem = gem || (i === 3 && gems[type] >= 8);
+        gem = gem || (i === 4 && gems[type] >= 1);
+        gem = gem || (i === 5 && gems[type] >= 4);
+        gem = gem || (i === 6 && gems[type] >= 9);
+        gem = gem || (i === 7 && gems[type] >= 2);
+        gem = gem || (i === 8 && gems[type] >= 3);
         if (gem) {
           html += `<span class="${type} gem"></span>`;
         }
@@ -1265,7 +1265,7 @@ const Renderer = (function renderer() {
       renderUsedItems();
       renderUsedGems();
       renderObstacles();
-      renderTokens();
+      renderGems();
       renderExperience();
       renderNarrative();
       dirty = false;
@@ -1283,20 +1283,20 @@ const Renderer = (function renderer() {
     invalidate();
   }
 
-  function playToken(type) {
-    playedTokens.push(type);
+  function playGem(type) {
+    playedGems.push(type);
     invalidate();
   }
 
   function clearPlayed() {
     playedCards = [];
-    playedTokens = [];
+    playedGems = [];
     invalidate();
   }
 
   function reset() {
     playedCards = [];
-    playedTokens = [];
+    playedGems = [];
     dirty = true;
   }
 
@@ -1304,7 +1304,7 @@ const Renderer = (function renderer() {
     render,
     invalidate,
     playCard,
-    playToken,
+    playGem,
     clearPlayed,
     reset,
   };
@@ -1324,7 +1324,7 @@ const Game = (function game() {
     color = hash;
   }
 
-  function onToken(element) {
+  function onGem(element) {
     Stage.next('gems');
 
     if (Obstacles.defeated()) {
@@ -1333,10 +1333,10 @@ const Game = (function game() {
 
     const type = element.unwrap().id;
 
-    if (Obstacles.get().length === 1 && Tokens.count(type) > 0) {
-      Tokens.spend(type);
+    if (Obstacles.get().length === 1 && Gems.count(type) > 0) {
+      Gems.spend(type);
       Obstacles.use(type);
-      Renderer.playToken(type);
+      Renderer.playGem(type);
 
       let card = Deck.deal();
       if (!card) {
@@ -1435,7 +1435,7 @@ const Game = (function game() {
     Loot.reset();
     Obstacles.reset();
     Deck.reset();
-    Tokens.reset();
+    Gems.reset();
     Stage.reset();
     Renderer.reset();
   }
@@ -1479,12 +1479,12 @@ const Game = (function game() {
   function play() {
     const $ = window.jQuery;
 
-    $('#moons').touch(undefined, onToken);
-    $('#suns').touch(undefined, onToken);
-    $('#waves').touch(undefined, onToken);
-    $('#leaves').touch(undefined, onToken);
-    $('#wyrms').touch(undefined, onToken);
-    $('#knots').touch(undefined, onToken);
+    $('#moons').touch(undefined, onGem);
+    $('#suns').touch(undefined, onGem);
+    $('#waves').touch(undefined, onGem);
+    $('#leaves').touch(undefined, onGem);
+    $('#wyrms').touch(undefined, onGem);
+    $('#knots').touch(undefined, onGem);
 
     $('#used-items').touch(undefined, onUsedItems);
     $('#sign1').touch(undefined, onSign);
