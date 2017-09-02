@@ -190,7 +190,7 @@ const Loot = (function loot() {
   function getVariation(name) {
     const card = Decktet.get(name);
     if (!card || card.suits.length <= 0 || card.value <= 0) {
-      return { type: 'mushrooms', variety: 0, title: 'a mushroom' };
+      return { type: 'mushrooms', variety: 0, title: 'mushrooms', article: 'some', pronoun: 'them' };
     }
 
     let type = card.suits[1];
@@ -222,7 +222,7 @@ const Loot = (function loot() {
       variations[type] += 1;
     }
 
-    return { type, variety: variations[type] };
+    return { type, variety: variations[type], article: 'a', pronoun: 'it' };
   }
 
   function randomRangeInclusive(min, max) {
@@ -309,11 +309,12 @@ const Loot = (function loot() {
       item.title = getWeapon(item.type);
     }
 
-    const rarity = maybeOneOf(['an epic', 'a greater', 'a lesser']);
+    const rarity = maybeOneOf(['epic', 'greater', 'lesser']);
     if (rarity) {
       item.title = `${rarity} ${item.title}`;
-    } else {
-      item.title = `a ${item.title}`;
+    }
+    if (rarity === 'epic') {
+      item.article = 'an';
     }
 
     const bonus = maybeOneOf([
@@ -1126,7 +1127,7 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for anything useful.';
+        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for epic loot.';
         break;
 
       case 'choice':
@@ -1136,11 +1137,11 @@ const Renderer = (function renderer() {
       case 'combat':
         if (playedCards.length > 0) {
           loot = Loot.get(playedCards[playedCards.length - 1]);
-          html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
+          html = `You pull ${loot.article} ${loot.title} from your bag and throw ${loot.pronoun} at the ${obstacles[0].title}.`;
         } else if (obstacles[0].title === 'mushrooms') {
           html = 'You find some mushrooms growing in the forest.';
         } else {
-          html = `A wild ${obstacles[0].title} appears!`;
+          html = `A ${obstacles[0].title} appears!`;
         }
         break;
 
@@ -1149,7 +1150,7 @@ const Renderer = (function renderer() {
         if (loot.type === 'mushrooms') {
           html = 'You pick the mushrooms and put them in your bag.';
         } else if (Obstacles.stage() === 1) {
-          html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
+          html = `The ${obstacles[0].title} flees, leaving behind ${loot.article} ${loot.title}.`;
         } else {
           html = `The ${obstacles[0].title} flees. It&rsquo;s too dark to find any loot.`;
         }
