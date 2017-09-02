@@ -783,6 +783,26 @@ const Stage = (function stage() {
     return state;
   }
 
+  function onLevelUp(message) {
+    const part = message.split('-');
+    if (part[0] !== 'level') {
+      return this;
+    }
+
+    if (Decktet.attributes().indexOf(part[1]) < 0) {
+      return this;
+    }
+
+    if (!Deck.empty()) {
+      return this;
+    }
+
+    Deck.add(part[1]);
+    Deck.shuffle();
+    state = 'choice';
+    return this;
+  }
+
   function next(message) {
     const obstacles = Obstacles.get();
 
@@ -835,10 +855,7 @@ const Stage = (function stage() {
     }
 
     if (state === 'level-up') {
-      if (message === 'level') {
-        state = 'choice';
-      }
-      return this;
+      return onLevelUp(message);
     }
 
     if (state === 'victory') {
@@ -1311,18 +1328,9 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function onLevelStat(element) {
-    Stage.next('level');
-    if (Deck.empty()) {
-      const stat = element.unwrap().id;
-      Decktet.attributes().forEach((attr) => {
-        if (stat.indexOf(attr) > -1) {
-          Deck.add(attr);
-          Deck.shuffle();
-          Renderer.invalidate();
-        }
-      });
-    }
+  function onLevelUp(element) {
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
   }
 
   function onStart() {
@@ -1406,12 +1414,12 @@ const Game = (function game() {
     $('#start').touch(undefined, onStart);
     $('#reroll').touch(undefined, onReroll);
 
-    $('#level-up-moons').touch(undefined, onLevelStat);
-    $('#level-up-suns').touch(undefined, onLevelStat);
-    $('#level-up-waves').touch(undefined, onLevelStat);
-    $('#level-up-leaves').touch(undefined, onLevelStat);
-    $('#level-up-wyrms').touch(undefined, onLevelStat);
-    $('#level-up-knots').touch(undefined, onLevelStat);
+    $('#level-moons').touch(undefined, onLevelUp);
+    $('#level-suns').touch(undefined, onLevelUp);
+    $('#level-waves').touch(undefined, onLevelUp);
+    $('#level-leaves').touch(undefined, onLevelUp);
+    $('#level-wyrms').touch(undefined, onLevelUp);
+    $('#level-knots').touch(undefined, onLevelUp);
 
     $(window).on('hashchange', onHashChange);
 
