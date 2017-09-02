@@ -58,10 +58,6 @@ a, a:visited {
   text-decoration: none;
 }
 
-ul, ol {
-  list-style-position: inside;
-}
-
 .unselectable {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -93,36 +89,17 @@ ul, ol {
   background-position: 0 0;
 }
 
-.portrait.lunatic {
-  background-position: ($sprite-cols * 0) ($sprite-rows * 0);
-}
-
-.portrait.bard {
-  background-position: ($sprite-cols * 1) ($sprite-rows * 0);
-}
-
-.portrait.savage {
-  background-position: ($sprite-cols * 2) ($sprite-rows * 0);
-}
-
-.portrait.light.keeper {
-  background-position: ($sprite-cols * 3) ($sprite-rows * 0);
-}
-
-.portrait.huntress {
-  background-position: ($sprite-cols * 4) ($sprite-rows * 0);
+.icon {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-image: url(../img/sprites.png);
+  background-size: 8 * 100%;
+  background-position: 0 0;
 }
 
 .portrait.watchman {
   background-position: ($sprite-cols * 5) ($sprite-rows * 0);
-}
-
-.portrait.painter {
-  background-position: ($sprite-cols * 6) ($sprite-rows * 0);
-}
-
-.portrait.merchant {
-  background-position: ($sprite-cols * 7) ($sprite-rows * 0);
 }
 
 .monster.rat {

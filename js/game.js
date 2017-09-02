@@ -873,12 +873,16 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     let html = '';
 
-    html += '<ol>';
+    html += '<div class="col">';
     Deck.get().backpack.forEach((name) => {
       const loot = Loot.get(name);
-      html += `<li>${loot.title}</li>`;
+      console.log(loot);
+      html += '<div class="row item">';
+      html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
+      html += `<span>${loot.title}</span>`;
+      html += '</div>';
     });
-    html += '</ol>';
+    html += '</div>';
 
     $('#backpack').html(html);
   }
