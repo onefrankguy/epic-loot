@@ -148,49 +148,15 @@ a, a:visited {
   background-position: ($sprite-cols * 7) ($sprite-rows * 2);
 }
 
-.monster.vampire.bat {
-  background-position: ($sprite-cols * 3) ($sprite-rows * 2);
-}
-
-.monster.scorpion {
-  background-position: ($sprite-cols * 2) ($sprite-rows * 3);
-}
-
-.monster.octo {
-  background-position: ($sprite-cols * 3) ($sprite-rows * 3);
-}
-
-.monster.ghost {
-  background-position: ($sprite-cols * 6) ($sprite-rows * 3);
-}
-
-.monster.eye {
-  background-position: ($sprite-cols * 7) ($sprite-rows * 3);
-}
-
-.monster.goblin {
-  background-position: ($sprite-cols * 0) ($sprite-rows * 4);
-}
-
-.monster.skeleton {
-  background-position: ($sprite-cols * 2) ($sprite-rows * 4);
-}
-
-.monster.orc {
-  background-position: ($sprite-cols * 3) ($sprite-rows * 4);
-}
-
-.monster.cyclops {
-  background-position: ($sprite-cols * 4) ($sprite-rows * 4);
-}
-
-.monster.werewolf {
-  background-position: ($sprite-cols * 5) ($sprite-rows * 4);
-}
-
-.monster.demon {
-  background-position: ($sprite-cols * 7) ($sprite-rows * 4);
-}
+/* MONSTERS */
+.monster.vampire.bat { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
+.monster.scorpion    { background-position: ($sprite-cols * 1) ($sprite-rows * 3); }
+.monster.octo        { background-position: ($sprite-cols * 2) ($sprite-rows * 3); }
+.monster.ghost       { background-position: ($sprite-cols * 3) ($sprite-rows * 3); }
+.monster.eye         { background-position: ($sprite-cols * 4) ($sprite-rows * 3); }
+.monster.skeleton    { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
+.monster.orc         { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
+.monster.werewolf    { background-position: ($sprite-cols * 7) ($sprite-rows * 3); }
 
 /* ARMOUR */
 .loot.armour0 { background-position: ($sprite-cols * 1) ($sprite-rows * 0); }
