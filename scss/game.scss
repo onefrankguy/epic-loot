@@ -32,7 +32,7 @@ $wyrms-color: rgb(109, 170, 44);
 $knots-color: rgb(218, 212, 94);
 $base-font-size: 1.6rem;
 $sprite-cols: 100% / 7;
-$sprite-rows: 100% / 9;
+$sprite-rows: 100% / 8;
 
 /* RESET */
 * {
@@ -101,7 +101,7 @@ a, a:visited {
 }
 
 .portrait.watchman {
-  background-position: ($sprite-cols * 5) ($sprite-rows * 0);
+  background-position: ($sprite-cols * 0) ($sprite-rows * 0);
 }
 
 .monster.rat {
@@ -193,10 +193,10 @@ a, a:visited {
 }
 
 /* ARMOUR */
-.loot.armour0 { background-position: ($sprite-cols * 1) ($sprite-rows * 9); }
-.loot.armour1 { background-position: ($sprite-cols * 2) ($sprite-rows * 9); }
-.loot.armour2 { background-position: ($sprite-cols * 3) ($sprite-rows * 9); }
-.loot.armour3 { background-position: ($sprite-cols * 4) ($sprite-rows * 9); }
+.loot.armour0 { background-position: ($sprite-cols * 1) ($sprite-rows * 0); }
+.loot.armour1 { background-position: ($sprite-cols * 2) ($sprite-rows * 0); }
+.loot.armour2 { background-position: ($sprite-cols * 3) ($sprite-rows * 0); }
+.loot.armour3 { background-position: ($sprite-cols * 4) ($sprite-rows * 0); }
 /* BOTTLES */
 .loot.bottle0 { background-position: ($sprite-cols * 1) ($sprite-rows * 6); }
 .loot.bottle1 { background-position: ($sprite-cols * 2) ($sprite-rows * 6); }
@@ -205,9 +205,9 @@ a, a:visited {
 .loot.bottle4 { background-position: ($sprite-cols * 5) ($sprite-rows * 6); }
 .loot.bottle5 { background-position: ($sprite-cols * 6) ($sprite-rows * 6); }
 /* BOWS */
-.loot.bow0 { background-position: ($sprite-cols * 5) ($sprite-rows * 9); }
-.loot.bow1 { background-position: ($sprite-cols * 6) ($sprite-rows * 9); }
-.loot.bow2 { background-position: ($sprite-cols * 7) ($sprite-rows * 9); }
+.loot.bow0 { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
+.loot.bow1 { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
+.loot.bow2 { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
 /* HELMETS */
 .loot.helmet0 { background-position: ($sprite-cols * 0) ($sprite-rows * 8); }
 .loot.helmet1 { background-position: ($sprite-cols * 2) ($sprite-rows * 8); }
