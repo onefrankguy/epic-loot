@@ -91,8 +91,10 @@ a, a:visited {
 
 .icon {
   display: inline-block;
-  width: 32px;
-  height: 32px;
+  width: $base-font-size * 1.5;
+  height: $base-font-size * 1.5;
+  max-width: 32px;
+  max-height: 32px;
   background-image: url(../img/sprites.png);
   background-size: 8 * 100%;
   background-position: 0 0;
@@ -301,6 +303,10 @@ a, a:visited {
   flex-grow: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.backpack .item {
+  align-items: center;
 }
 
 /* PLAYER */
