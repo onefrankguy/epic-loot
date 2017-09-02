@@ -800,6 +800,26 @@ const Stage = (function stage() {
     return this;
   }
 
+  function onChoice(message) {
+    const obstacles = Obstacles.get();
+
+    if (obstacles.length < 2) {
+      return this;
+    }
+
+    if (message === 'sign1') {
+      Obstacles.pick(obstacles[0].name);
+      state = 'combat';
+    }
+
+    if (message === 'sign2') {
+      Obstacles.pick(obstacles[1].name);
+      state = 'combat';
+    }
+
+    return this;
+  }
+
   function onLevelUp(message) {
     const part = message.split('-');
     if (part[0] !== 'level') {
@@ -828,13 +848,7 @@ const Stage = (function stage() {
     }
 
     if (state === 'choice') {
-      if (message === 'sign1' || message === 'sign2') {
-        if (obstacles.length > 0) {
-          state = 'combat';
-          return this;
-        }
-      }
-      return this;
+      return onChoice(message);
     }
 
     if (state === 'combat') {
@@ -1328,25 +1342,9 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function onSign(element) {
-    const sign = element.unwrap().id;
-    Stage.next(sign);
-
-    if (Deck.empty()) {
-      return;
-    }
-
-    if (Obstacles.get().length >= 2) {
-      let type = sign;
-      if (type === 'sign1') {
-        type = Obstacles.get()[0].name;
-      }
-      if (type === 'sign2') {
-        type = Obstacles.get()[1].name;
-      }
-      Obstacles.pick(type);
-      Renderer.invalidate();
-    }
+  function onChoice(element) {
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
   }
 
   function onReroll() {
@@ -1424,8 +1422,8 @@ const Game = (function game() {
     $('#knots').touch(undefined, onGem);
 
     $('#used-items').touch(undefined, onUsedItems);
-    $('#sign1').touch(undefined, onSign);
-    $('#sign2').touch(undefined, onSign);
+    $('#sign1').touch(undefined, onChoice);
+    $('#sign2').touch(undefined, onChoice);
 
     $('#start').touch(undefined, onStart);
     $('#reroll').touch(undefined, onReroll);
