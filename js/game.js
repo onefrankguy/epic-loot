@@ -1019,23 +1019,17 @@ const Renderer = (function renderer() {
     let html;
     let i;
 
-    switch (Stage.get()) {
-      case 'combat':
-        html = '';
-        playedGems.forEach((type) => {
-          html += '<span class="box">';
-          html += `<span class="${type} gem"></span>`;
-          html += '</span>';
-        });
-        for (i = playedGems.length; i < 9; i += 1) {
-          html += '<span class="box"></span>';
-        }
-        $('#used-gems').remove('hidden').html(html);
-        break;
-
-      default:
-        $('#used-gems').add('hidden').html('');
-        break;
+    if (Stage.get() === 'combat') {
+      html = '';
+      playedGems.forEach((type) => {
+        html += '<span class="box">';
+        html += `<span class="${type} gem"></span>`;
+        html += '</span>';
+      });
+      for (i = playedGems.length; i < 9; i += 1) {
+        html += '<span class="box"></span>';
+      }
+      $('#used-gems').html(html);
     }
   }
 
@@ -1210,7 +1204,6 @@ const Renderer = (function renderer() {
 
   function clearPlayed() {
     playedCards = [];
-    playedGems = [];
     invalidate();
   }
 
