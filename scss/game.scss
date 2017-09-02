@@ -232,7 +232,7 @@ a, a:visited {
 .loot.helmet3 { background-position: ($sprite-cols * 4) ($sprite-rows * 8); }
 .loot.helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 8); }
 /* MUSHROOMS */
-.loot.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 2); }
+.loot.mushrooms0 { background-position: ($sprite-cols * 0) ($sprite-rows * 2); }
 /* STAVES */
 .loot.staff0 { background-position: ($sprite-cols * 1) ($sprite-rows * 7); }
 .loot.staff1 { background-position: ($sprite-cols * 3) ($sprite-rows * 7); }
@@ -389,7 +389,7 @@ a, a:visited {
   background: $metal-color;
 }
 
-/* SPELLS */
+/* ITEMS */
 .collection {
   display: flex;
   flex-direction: row;
@@ -404,7 +404,7 @@ a, a:visited {
   margin: .5rem .5rem 0 0;
 }
 
-#spells {
+#used-items {
   display: flex;
   flex-direction: row;
   align-items: flex-start;

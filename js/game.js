@@ -267,7 +267,7 @@ const Loot = (function loot() {
   function getVariation(name) {
     const card = Decktet.get(name);
     if (!card || card.suits.length <= 0 || card.value <= 0) {
-      return { type: 'mushrooms', variety: 0, title: 'mushrooms' };
+      return { type: 'mushrooms', variety: 0, title: 'a mushroom' };
     }
 
     let type = card.suits[1];
@@ -990,7 +990,7 @@ const Renderer = (function renderer() {
     return html;
   }
 
-  function renderItems() {
+  function renderUsedItems() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
     let html;
@@ -1009,7 +1009,7 @@ const Renderer = (function renderer() {
             html += '</div>';
           }
         });
-        $('#spells').remove('hidden').html(html);
+        $('#used-items').remove('hidden').html(html);
         break;
 
       case 'loot':
@@ -1021,16 +1021,16 @@ const Renderer = (function renderer() {
           html += renderCard(card, loot);
           html += '</div>';
         }
-        $('#spells').remove('hidden').html(html);
+        $('#used-items').remove('hidden').html(html);
         break;
 
       case 'victory':
       case 'madness':
-        $('#spells').remove('hidden').html('');
+        $('#used-items').remove('hidden').html('');
         break;
 
       default:
-        $('#spells').add('hidden');
+        $('#used-items').add('hidden');
         break;
     }
   }
@@ -1159,14 +1159,18 @@ const Renderer = (function renderer() {
           loot = Loot.get(playedCards[playedCards.length - 1]);
           html = `You pull ${loot.title} from your bag and throw it at the ${obstacles[0].title}.`;
         } else {
-          html = `A ${obstacles[0].title} appears.`;
+          if (obstacles[0].title === 'mushrooms') {
+            html = 'You find some mushrooms growing in the forest.';
+          } else {
+            html = `A wild ${obstacles[0].title} appears!`;
+          }
         }
         break;
 
       case 'loot':
         loot = Loot.get(obstacles[0].name);
         if (loot.type === 'mushrooms') {
-          html = 'You pick up the mushrooms.';
+          html = 'You pick the mushrooms and put them in your bag.';
         } else {
           html = `The ${obstacles[0].title} flees, leaving behind ${loot.title}.`;
         }
@@ -1194,7 +1198,7 @@ const Renderer = (function renderer() {
   function render() {
     if (dirty) {
       renderRole();
-      renderItems();
+      renderUsedItems();
       renderUsedGems();
       renderObstacles();
       renderTokens();
@@ -1280,7 +1284,7 @@ const Game = (function game() {
     }
   }
 
-  function onSpells() {
+  function onUsedItems() {
     switch (Stage.get()) {
       case 'loot':
         Deck.add(Obstacles.get()[0].name);
@@ -1423,7 +1427,7 @@ const Game = (function game() {
     $('#wyrms').touch(undefined, onToken);
     $('#knots').touch(undefined, onToken);
 
-    $('#spells').touch(undefined, onSpells);
+    $('#used-items').touch(undefined, onUsedItems);
     $('#sign1').touch(undefined, onSign);
     $('#sign2').touch(undefined, onSign);
 
