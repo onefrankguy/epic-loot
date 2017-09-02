@@ -1,80 +1,3 @@
-// **Darcy's Dungeon** is a role-playing game at heart. Like every good RPG,
-// it's all about you. So before we even get to the dungeon crawling, let's talk
-// about you. Who are you, and why are you wondering through this forest?
-const Character = (function character() {
-  let hero = 'watchman';
-
-  // Oh, I see. You're a hero and an painter. But maybe not all the time? If
-  // you where a full time painter, you'd be a `const hero`, and you're not. So
-  // you must be one of these other things.
-  const roles = [
-    // The Light Keeper is a rogue .
-    'light keeper',
-    // THe Lunatic is a druid .
-    'lunatic',
-    // The Painter is a wizard .
-    'painter',
-    // The Watchman is a paladin.
-    'watchman',
-    // The Savage is a barbarian .
-    'savage',
-    // The Huntress is a ranger.
-    'huntress',
-    // The Merchant is a sorcerer.
-    'merchant',
-    // The Bard is a bard.
-    'bard',
-  ];
-
-  // So you can be anything you want to be. Except maybe a townsperson.
-  // Townsperson does not appear to be a class in this RPG, or most any RPG for
-  // that matter.
-  function get() {
-    return { role: hero };
-  }
-
-  // Here's how you change what you are. It's cyclic. If you go forward, you
-  // stop being a Painter and start being a Watchman. If you go
-  // backward, you become a Lunatic. Hmm... Probably best not to go
-  // backward.
-  function next() {
-    let index = roles.indexOf(hero);
-    if (index > -1) {
-      index = (index + 1) % roles.length;
-      hero = roles[index];
-    } else {
-      hero = 'watchman';
-    }
-  }
-
-  function prev() {
-    let index = roles.indexOf(hero);
-    if (index > -1) {
-      if (index - 1 < 0) {
-        index = roles.length;
-      }
-      hero = roles[index - 1];
-    } else {
-      hero = 'watchman';
-    }
-  }
-
-
-  // And if you ever get tired of what you are, you can go back to being
-  // yourself, a heroic painter. Though personally, I think you aught to try
-  // being a Bard. That role was the only one that wasn't also a something else.
-  function reset() {
-    hero = 'watchman';
-  }
-
-  return {
-    get,
-    next,
-    prev,
-    reset,
-  };
-}());
-
 // Are we dungeon crawling yet? No! Because before you can crawl into a dungeon,
 // you have to find a dungeon to crawl into, and findng a dungeon is not an easy
 // thing. After all, if it was easy, they wouldn't need a hero to do it.
@@ -106,22 +29,22 @@ const Decktet = (function decktet() {
   }
 
   // The suit of Suns is strength.
-  cards.suns = { value: 1, suits: ['suns'], title: 'str' };
+  cards.suns = { value: 1, suits: ['suns'] };
 
   // The suit of Leaves is body.
-  cards.leaves = { value: 1, suits: ['leaves'], title: 'bdy' };
+  cards.leaves = { value: 1, suits: ['leaves'] };
 
-  // The suit of Waves is dexterity.
-  cards.waves = { value: 1, suits: ['waves'], title: 'dex' };
+  // The suit of Waves is quickness.
+  cards.waves = { value: 1, suits: ['waves'] };
 
   // The suit of Knots is intellect.
-  cards.knots = { value: 1, suits: ['knots'], title: 'int' };
+  cards.knots = { value: 1, suits: ['knots'] };
 
   // The suit of Moons is will.
-  cards.moons = { value: 1, suits: ['moons'], title: 'wil' };
+  cards.moons = { value: 1, suits: ['moons'] };
 
   // The suit of Wyrms is charm.
-  cards.wyrms = { value: 1, suits: ['wyrms'], title: 'chr' };
+  cards.wyrms = { value: 1, suits: ['wyrms'] };
 
   function personalities() {
     return [
@@ -135,11 +58,11 @@ const Decktet = (function decktet() {
   cards.author = { value: 2, suits: ['moons', 'knots'] };
   cards.painter = { value: 3, suits: ['suns', 'knots'] };
   cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
-  cards.sailor = { value: 4, suits: ['waves', 'leaves'], title: 'dex / bdy' };
-  cards.soldier = { value: 5, suits: ['wyrms', 'knots'], title: 'chr / int' };
+  cards.sailor = { value: 4, suits: ['waves', 'leaves'] };
+  cards.soldier = { value: 5, suits: ['wyrms', 'knots'] };
   cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
   cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
-  cards.diplomat = { value: 8, suits: ['moons', 'suns'], title: 'wil / str' };
+  cards.diplomat = { value: 8, suits: ['moons', 'suns'] };
   cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
   cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
   cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
@@ -960,25 +883,22 @@ const Renderer = (function renderer() {
     $('#backpack').html(html);
   }
 
-  function renderRole() {
+  function renderHero() {
     const $ = window.jQuery;
-    const hero = Character.get();
-    const card = Decktet.get(hero.role);
+    const hero = 'watchman';
+    const card = Decktet.get(hero);
     const attributes = Deck.get().attributes;
 
     Decktet.attributes().forEach((attr) => {
       let html = '';
       let value = 1 + attributes.filter(name => name === attr).length;
-      if (card.suits.indexOf(attr) > -1) {
-        value += 1;
-      }
       html += `<span class="stat">${value}`;
       html += `<span class="${attr} gem"></span>`;
       html += '</span>';
       $(`#in-game-${attr}`).html(html.trim());
     });
 
-    $('#in-game-portrait').klass(`pixelated portrait ${hero.role}`);
+    $('#in-game-portrait').klass(`pixelated portrait ${hero}`);
   }
 
   function renderExperience() {
@@ -1260,8 +1180,8 @@ const Renderer = (function renderer() {
 
   function render() {
     if (dirty) {
+      renderHero();
       renderBackpack();
-      renderRole();
       renderUsedItems();
       renderUsedGems();
       renderObstacles();
