@@ -1020,19 +1020,38 @@ const Renderer = (function renderer() {
     }
   }
 
-  function renderCard(card, loot) {
-    let html = '';
+  function renderItem(card, loot, mini) {
+    let klass = 'sign';
+    if (mini || loot) {
+      klass += ' mini';
+    }
+    if (loot) {
+      klass += ' loot';
+    }
 
-    html += '<div class="sign mini loot">';
-    html += `<span class="value">${card.value}</span>`;
-    html += `<span class="pixelated loot portrait ${loot.type}${loot.variety}"></span>`;
-    html += '<div class="gems">';
-    card.suits.forEach((suit) => {
-      html += `<span class="${suit} gem"></span>`;
-    });
-    html += '</div>';
-    html += '</div>';
+    let portrait = card.title;
+    if (loot) {
+      portrait = `loot ${loot.type}${loot.variety}`;
+    }
 
+    let html;
+    if (card) {
+      html = '';
+      html += `<div class="${klass}">`;
+      html += `<span class="value">${card.value}</span>`;
+      html += '<div class="row">';
+      html += `<span class="pixelated portrait ${portrait}"></span>`;
+      html += '<span class="text">';
+      html += `<span class="iconic title">${card.title}</span>`;
+      html += '</span>';
+      html += '</div>';
+      html += '<div class="gems">';
+      card.suits.forEach((suit) => {
+        html += `<span class="${suit} gem"></span>`;
+      });
+      html += '</div>';
+      html += '</div>';
+    }
     return html;
   }
 
@@ -1050,7 +1069,7 @@ const Renderer = (function renderer() {
           loot = Loot.get(name);
           if (card && loot) {
             html += '<div class="spell">';
-            html += renderCard(card, loot);
+            html += renderItem(card, loot, true);
             html += '</div>';
           }
         });
@@ -1064,7 +1083,7 @@ const Renderer = (function renderer() {
           loot = Loot.get(name);
           if (card && loot) {
             html += '<div class="spell">';
-            html += renderCard(card, loot);
+            html += renderItem(card, loot, true);
             html += '</div>';
           }
         });
@@ -1096,34 +1115,6 @@ const Renderer = (function renderer() {
     $('#used-gems').html(html);
   }
 
-  function renderObstacle(card, mini) {
-    let klass = 'sign';
-    if (mini) {
-      klass += ' mini';
-    }
-
-    let html = '';
-    if (card) {
-      html += `<div class="${klass} ${card.title}">`;
-      html += `<span class="value">${card.value}</span>`;
-      html += '<div class="body">';
-      html += `<span class="pixelated portrait ${card.title}"></span>`;
-      html += '<span class="text">';
-      html += `<span class="iconic title">${card.title}</span>`;
-      html += card.text;
-      html += '</span>';
-      html += '</div>';
-      html += '<div class="gems">';
-      card.suits.forEach((suit) => {
-        html += `<span class="${suit} gem"></span>`;
-      });
-      html += '</div>';
-      html += '</div>';
-    }
-
-    return html;
-  }
-
   function renderObstacles() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
@@ -1136,9 +1127,9 @@ const Renderer = (function renderer() {
     switch (Stage.get()) {
       case 'choice':
       case 'combat':
-        sign1 = renderObstacle(obstacles[0], mini);
+        sign1 = renderItem(obstacles[0], undefined, mini);
         if (mini && Obstacles.stage() === 1) {
-          sign2 = renderObstacle(obstacles[1], mini);
+          sign2 = renderItem(obstacles[1], undefined, mini);
         }
         break;
 
@@ -1146,9 +1137,9 @@ const Renderer = (function renderer() {
         if (Obstacles.stage() === 1) {
           card = Decktet.get(obstacles[0].name);
           loot = Loot.get(obstacles[0].name);
-          sign1 = renderCard(card, loot);
+          sign1 = renderItem(card, loot, true);
         } else {
-          sign1 = renderObstacle(obstacles[0], true);
+          sign1 = renderItem(obstacles[0], undefined, true);
         }
         break;
 

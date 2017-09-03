@@ -386,14 +386,15 @@ a, a:visited {
   align-items: flex-end;
 }
 
-.sign .body {
-  display: flex;
-  flex-direction: row;
-}
-
 .sign .text {
   padding-left: .5rem;
   padding-right: .5rem + 2.4rem;
+}
+
+.sign .title {
+  font-weight: normal;
+  font-size: 1.5rem;
+  display: block;
 }
 
 .sign .title {
