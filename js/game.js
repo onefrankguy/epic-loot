@@ -1211,15 +1211,15 @@ const Renderer = (function renderer() {
     }
 
     if (sign1) {
-      $('#sign1').html(sign1).remove('hidden');
+      $('#sign1').remove('hidden').html(sign1);
     } else {
-      $('#sign1').html('').add('hidden');
+      $('#sign1').add('hidden').html('');
     }
 
     if (sign2) {
-      $('#sign2').html(sign2).remove('hidden');
+      $('#sign2').remove('hidden').html(sign2);
     } else {
-      $('#sign2').html('').add('hidden');
+      $('#sign2').add('hidden').html('');
     }
   }
 
@@ -1348,9 +1348,9 @@ const Renderer = (function renderer() {
     }
 
     if (html) {
-      $('#button').remove('invisible').html(html);
+      $('#button').remove('hidden').html(html);
     } else {
-      $('#button').add('invisible').html('epic');
+      $('#button').add('hidden').html('');
     }
   }
 
