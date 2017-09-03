@@ -1091,7 +1091,7 @@ const Renderer = (function renderer() {
 
       case 'combat':
         html = '';
-        Stage.items().forEach((name) => {
+        Stage.items().slice(-6).forEach((name) => {
           card = Decktet.get(name);
           loot = Loot.get(name);
           if (card && loot) {
