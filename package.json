@@ -5,9 +5,11 @@
   "license": "MIT",
   "scripts": {
     "watch": "npm-run-all --parallel watch:*",
-    "prebuild": "rm -f game.zip && npm run build:css && npm run build:js && npm run build:gfx",
+    "prebuild": "rm -f game.zip && rm -rf public/* && npm run build:html && npm run build:css && npm run build:js && npm run build:gfx",
     "build": "cd public && zip -r ../game.zip . -i@../manifest.txt",
     "postbuild": "node test.js",
+    "watch:html": "onchange *.html -- npm run build:html",
+    "build:html": "mkdir -p public && cp *.html public/.",
     "watch:css": "onchange 'scss/*.scss' -- npm run build:css",
     "build:css": "npm run scss && npm run autoprefixer",
     "autoprefixer": "postcss --no-map -u autoprefixer -r public/css/*",

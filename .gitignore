@@ -1,8 +1,6 @@
 .DS_Store
 *.zip
 *.log
-public/css/
-public/img/
-public/js/
+public/
 docs/
 node_modules/
