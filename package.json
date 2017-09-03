@@ -16,9 +16,10 @@
     "scss": "node-sass --output-style compressed --omit-source-map-url -o public/css scss",
     "watch:js": "onchange 'js/*.js' -- npm run build:js",
     "build:js": "mkdir -p public/js && uglifyjs js/*.js -m -c -o public/js/game.js",
+    "postbuild:js": "npm run docs",
     "watch:gfx": "onchange 'img/*.png' -- npm run build:gfx",
     "build:gfx": "mkdir -p public/img && imagemin img/*.png --out-dir=public/img",
-    "postbuild:js": "npm run docs",
+    "postbuild:gfx": "advpng -z -4 public/img/*.png",
     "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/js13k2017/",
     "lint": "eslint js/*.js test.js",
     "docs": "rm -rf docs/* && docco -l linear js/*.js"
