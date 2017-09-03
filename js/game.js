@@ -1031,7 +1031,7 @@ const Renderer = (function renderer() {
 
     let portrait = card.title;
     if (loot) {
-      portrait = `loot ${loot.type}${loot.variety}`;
+      portrait = `${loot.type}${loot.variety}`;
     }
 
     let html;
