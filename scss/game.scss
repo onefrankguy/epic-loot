@@ -21,7 +21,8 @@ white       - rgb(222, 238, 214)
 
 http://pixeljoint.com/forum/forum_posts.asp?TID=12795
 */
-$map-color: rgb(222, 238, 214);
+$map-color: rgba(241, 233, 210, 1);
+$stain-color: rgba(214, 204, 169, .1);
 $ink-color: rgb(20, 12, 28);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
@@ -209,13 +210,12 @@ a, a:visited {
   flex-direction: column;
 }
 
-#world {
+.world {
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
   height: 37.2rem;
   overflow: hidden;
   margin: 0 auto;
-  background: $map-color;
 }
 
 .ui {
@@ -225,10 +225,9 @@ a, a:visited {
 }
 
 .map {
+  padding: .5rem;
   width: 32rem;
   margin: 0 auto;
-  padding: .5rem;
-  background: $map-color;
 }
 
 .backpack {
@@ -535,10 +534,54 @@ a, a:visited {
   border: 4px double $ink-color;
 }
 
+/* PATTERNS */
+
+.stars {
+  /* http://lea.verou.me/css3patterns/#starry-night */
+  background-color:black;
+  background-image:
+  radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+  radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+  radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+  radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+}
+
+.paper {
+  /* http://lea.verou.me/css3patterns/#microbial-mat */
+  background:
+  radial-gradient(circle at 0% 50%, transparent  9px, $stain-color 10px, transparent 11px) 0px 10px,
+  radial-gradient(at 100% 100%, transparent 9px, $stain-color 10px, transparent 11px), $map-color;
+  background-size: 20px 20px;
+  /* https://www.sitepoint.com/pure-css3-paper-curls/ */
+  position: relative;
+  box-shadow: 0 0 .5rem rgba(0,0,0,.2), inset 0 0 5rem rgba(0,0,0,.1);
+}
+.paper:before, .paper:after {
+  /* https://www.sitepoint.com/pure-css3-paper-curls/ */
+  position: absolute;
+  width: 40%;
+  height: 1rem;
+  content: ' ';
+  left: 1.2rem;
+  bottom: 1.2rem;
+  background: transparent;
+  transform: skew(-5deg) rotate(-5deg);
+  box-shadow: 0 .6rem 1.2rem rgba(0,0,0,.3);
+  z-index: -1;
+}
+.paper:after {
+  left: auto;
+  right: 1rem;
+  transform: skew(5deg) rotate(5deg);
+}
+
 /* UTILITY */
 .hidden {
   display: none !important;
 }
+
 .pixelated {
   image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
