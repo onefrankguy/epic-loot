@@ -258,21 +258,36 @@ a, a:visited {
 }
 
 .celestial {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   align-self: flex-end;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  font-size: 1.5rem;
   border: 1px solid $ink-color;
   border-top-left-radius: 33%;
   border-bottom-right-radius: 33%;
+  opacity: .8;
 }
 
 .day .celestial {
   background: white;
+  color: black;
+}
+
+.day .celestial:before {
+  content: '\00263c';
 }
 
 .night .celestial {
   background: black;
+  color: white;
+}
+
+.night .celestial:before {
+  content: '\00263e';
+  margin-top: -.4rem;
 }
 
 .in-game.stats {
