@@ -1289,7 +1289,7 @@ const Renderer = (function renderer() {
       case 'loot':
         loot = Loot.get(obstacles[0].name);
         if (loot.type === 'mushrooms') {
-          html = 'You pick the mushrooms and put them in your bag.';
+          html = 'The mushrooms look delicious.';
         } else if (Obstacles.stage() === 1) {
           html = `The ${obstacles[0].title} flees, leaving behind ${loot.article} ${loot.title}.`;
         } else {
@@ -1344,7 +1344,7 @@ const Renderer = (function renderer() {
 
       case 'victory':
       case 'madness':
-        html = 'flee';
+        html = 'end';
         break;
 
       default:
