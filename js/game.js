@@ -1210,9 +1210,21 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
 
+    const dayPlaces = [
+      'clearing in the forest',
+      'glade in the forest',
+      'fork in the path',
+    ];
+
+    const nightPlaces = [
+      'submle through the darkened forest',
+      'push your way through tangled branches',
+    ];
+
     let html = '';
     let loot;
     let items;
+    let place;
 
     switch (Stage.get()) {
       case 'encumbered':
@@ -1220,7 +1232,13 @@ const Renderer = (function renderer() {
         break;
 
       case 'choice':
-        html = 'The path twists and turns. Pick a direction.';
+        if (Obstacles.stage() === 1) {
+          place = dayPlaces[Math.floor(PRNG.random() * dayPlaces.length)];
+          html = `You come to a ${place}. Wild animals block your way. You&rsquo;ll have to scare them away.`;
+        } else {
+          place = nightPlaces[Math.floor(PRNG.random() * nightPlaces.length)];
+          html = `You ${place}. A monster blocks your way. You&rsquo;ll have to scare it away.`;
+        }
         break;
 
       case 'combat':
