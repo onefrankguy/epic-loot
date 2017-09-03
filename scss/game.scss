@@ -210,8 +210,6 @@ a, a:visited {
 }
 
 #world {
-  display: flex;
-  flex-direction: column;
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
   height: 37.2rem;
@@ -277,8 +275,6 @@ a, a:visited {
 }
 
 .experience {
-  display: flex;
-  flex-direction: column;
   justify-content: space-around;
   flex-grow: 1;
   margin-left: 1rem;
