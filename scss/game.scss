@@ -32,7 +32,7 @@ $wyrms-color: rgb(109, 170, 44);
 $knots-color: rgb(218, 212, 94);
 $base-font-size: 1.6rem;
 $sprite-cols: 100% / 7;
-$sprite-rows: 100% / 6;
+$sprite-rows: 100% / 5;
 
 /* RESET */
 * {
@@ -139,40 +139,39 @@ a, a:visited {
 .loot.armour2 { background-position: ($sprite-cols * 3) ($sprite-rows * 0); }
 .loot.armour3 { background-position: ($sprite-cols * 4) ($sprite-rows * 0); }
 /* BOTTLES */
-.loot.bottle0 { background-position: ($sprite-cols * 1) ($sprite-rows * 4); }
-.loot.bottle1 { background-position: ($sprite-cols * 2) ($sprite-rows * 4); }
-.loot.bottle2 { background-position: ($sprite-cols * 3) ($sprite-rows * 4); }
-.loot.bottle3 { background-position: ($sprite-cols * 4) ($sprite-rows * 4); }
-.loot.bottle4 { background-position: ($sprite-cols * 5) ($sprite-rows * 4); }
-.loot.bottle5 { background-position: ($sprite-cols * 6) ($sprite-rows * 4); }
+.loot.bottle0 { background-position: ($sprite-cols * 0) ($sprite-rows * 4); }
+.loot.bottle1 { background-position: ($sprite-cols * 1) ($sprite-rows * 4); }
+.loot.bottle2 { background-position: ($sprite-cols * 2) ($sprite-rows * 4); }
+.loot.bottle3 { background-position: ($sprite-cols * 3) ($sprite-rows * 4); }
+.loot.bottle4 { background-position: ($sprite-cols * 4) ($sprite-rows * 4); }
+.loot.bottle5 { background-position: ($sprite-cols * 5) ($sprite-rows * 4); }
 /* BOWS */
 .loot.bow0 { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
 .loot.bow1 { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
 .loot.bow2 { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
 /* HELMETS */
-.loot.helmet0 { background-position: ($sprite-cols * 0) ($sprite-rows * 6); }
-.loot.helmet1 { background-position: ($sprite-cols * 2) ($sprite-rows * 6); }
-.loot.helmet2 { background-position: ($sprite-cols * 3) ($sprite-rows * 6); }
-.loot.helmet3 { background-position: ($sprite-cols * 4) ($sprite-rows * 6); }
-.loot.helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 6); }
+.loot.helmet0 { background-position: ($sprite-cols * 6) ($sprite-rows * 4); }
+.loot.helmet1 { background-position: ($sprite-cols * 5) ($sprite-rows * 5); }
+.loot.helmet2 { background-position: ($sprite-cols * 6) ($sprite-rows * 5); }
+.loot.helmet3 { background-position: ($sprite-cols * 7) ($sprite-rows * 5); }
+.loot.helmet4 { background-position: ($sprite-cols * 7) ($sprite-rows * 4); }
 /* MUSHROOMS */
-.monster.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 4); }
-.loot.mushrooms0   { background-position: ($sprite-cols * 0) ($sprite-rows * 4); }
+.monster.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
+.loot.mushrooms0   { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
 /* STAVES */
-.loot.staff0 { background-position: ($sprite-cols * 1) ($sprite-rows * 5); }
-.loot.staff1 { background-position: ($sprite-cols * 3) ($sprite-rows * 5); }
-.loot.staff2 { background-position: ($sprite-cols * 5) ($sprite-rows * 5); }
-.loot.staff3 { background-position: ($sprite-cols * 6) ($sprite-rows * 5); }
-.loot.staff4 { background-position: ($sprite-cols * 7) ($sprite-rows * 5); }
+.loot.staff0 { background-position: ($sprite-cols * 0) ($sprite-rows * 5); }
+.loot.staff1 { background-position: ($sprite-cols * 1) ($sprite-rows * 5); }
+.loot.staff2 { background-position: ($sprite-cols * 2) ($sprite-rows * 5); }
+.loot.staff3 { background-position: ($sprite-cols * 3) ($sprite-rows * 5); }
+.loot.staff4 { background-position: ($sprite-cols * 4) ($sprite-rows * 5); }
 /* SWORDS */
-.loot.sword0 { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
-.loot.sword1 { background-position: ($sprite-cols * 1) ($sprite-rows * 3); }
-.loot.sword2 { background-position: ($sprite-cols * 2) ($sprite-rows * 3); }
-.loot.sword3 { background-position: ($sprite-cols * 3) ($sprite-rows * 3); }
-.loot.sword4 { background-position: ($sprite-cols * 4) ($sprite-rows * 3); }
-.loot.sword5 { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
-.loot.sword6 { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
-.loot.sword7 { background-position: ($sprite-cols * 7) ($sprite-rows * 3); }
+.loot.sword0 { background-position: ($sprite-cols * 1) ($sprite-rows * 3); }
+.loot.sword1 { background-position: ($sprite-cols * 2) ($sprite-rows * 3); }
+.loot.sword2 { background-position: ($sprite-cols * 3) ($sprite-rows * 3); }
+.loot.sword3 { background-position: ($sprite-cols * 4) ($sprite-rows * 3); }
+.loot.sword4 { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
+.loot.sword5 { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
+.loot.sword6 { background-position: ($sprite-cols * 7) ($sprite-rows * 3); }
 
 .stats {
   display: flex;

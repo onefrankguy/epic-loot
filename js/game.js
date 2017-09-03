@@ -216,10 +216,12 @@ const Loot = (function loot() {
       type = 'bottle';
     }
 
+    const max = { helmet: 5, armour: 4, sword: 7, staff: 5, bow: 3, bottle: 6 };
     if (!has.call(variations, type)) {
       variations[type] = 0;
     } else {
       variations[type] += 1;
+      variations[type] %= max[type];
     }
 
     return { type, variety: variations[type], article: 'a', pronoun: 'it' };
