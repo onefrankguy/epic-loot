@@ -33,6 +33,7 @@ $knots-color: rgb(218, 212, 94);
 $base-font-size: 1.6rem;
 $sprite-cols: 100% / 7;
 $sprite-rows: 100% / 5;
+$touch-size: 4.8rem;
 
 /* RESET */
 * {
@@ -68,28 +69,27 @@ a, a:visited {
 
 /* NARRATIVE */
 .narrative {
-  padding: .5rem;
   justify-content: space-between;
+  min-height: 7.25rem;
 }
 
 .narrative .button {
-  width: 4.8rem;
-  height: 4.8rem;
+  width: $touch-size;
+  height: $touch-size;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   margin-left: .5rem;
 }
 
-.picker {
+.buttons {
   justify-content: space-around;
-  padding: .5rem;
-  margin-bottom: 4rem;
 }
 
 .portrait {
   display: flex;
-  width: 4.8rem;
-  height: 4.8rem;
+  width: $touch-size;
+  height: $touch-size;
   align-self: center;
   background-image: url(../img/sprites.png);
   background-size: 8 * 100%;
@@ -218,6 +218,12 @@ a, a:visited {
   background: $map-color;
 }
 
+.ui {
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: .5rem;
+}
+
 .map {
   width: 32rem;
   margin: 0 auto;
@@ -309,29 +315,23 @@ a, a:visited {
 }
 
 /* ITEMS */
-.collection {
-  flex-grow: 1;
-}
-
 #used-gems {
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
-  width: 4.8rem;
+  width: $touch-size;
   margin-top: .5rem;
 }
 
 #used-items {
   align-items: center;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  padding: .5rem;
+  min-height: $touch-size;
 }
 
 /* LEVEL UP */
 .level-up {
-  flex-grow: 1;
   justify-content: space-around;
+  flex-grow: 1;
 }
 
 .level-up > .col {
@@ -351,8 +351,6 @@ a, a:visited {
 /* SIGNS */
 #signpost {
   justify-content: space-around;
-  padding: .5rem;
-  margin-bottom: 4rem;
 }
 
 .sign {
@@ -437,7 +435,6 @@ a, a:visited {
 /* GEMS */
 #gems {
   justify-content: space-between;
-  padding: .5rem;
 }
 
 #gems > * {
@@ -445,8 +442,8 @@ a, a:visited {
   flex-flow: row wrap;
   justify-content: center;
   align-content: flex-start;
-  width: 4.8rem;
-  height: 4.8rem;
+  width: $touch-size;
+  height: $touch-size;
 }
 
 .box {
@@ -520,8 +517,8 @@ a, a:visited {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 4.8rem;
-  min-height: 4.8rem;
+  min-width: $touch-size;
+  min-height: $touch-size;
 }
 
 /* FLAVOR */

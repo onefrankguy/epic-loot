@@ -1102,11 +1102,11 @@ const Renderer = (function renderer() {
           $(`#level-${name}`).html(html);
         });
         $('#level-up').remove('hidden');
-        $('#collection').add('hidden');
+        $('#used-items').add('hidden');
         break;
 
       default:
-        $('#collection').remove('hidden');
+        $('#used-items').remove('hidden');
         $('#level-up').add('hidden');
         break;
     }
@@ -1154,7 +1154,7 @@ const Renderer = (function renderer() {
         break;
 
       default:
-        $('#used-items').add('hidden');
+        $('#used-items').add('hidden').html('');
         break;
     }
   }
