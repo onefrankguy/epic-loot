@@ -213,9 +213,12 @@ a, a:visited {
 .world {
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
+  margin: 0 auto;
+}
+
+.quest {
   height: 37.2rem;
   overflow: hidden;
-  margin: 0 auto;
 }
 
 .ui {
@@ -226,8 +229,6 @@ a, a:visited {
 
 .map {
   padding: .5rem;
-  width: 32rem;
-  margin: 0 auto;
 }
 
 .backpack {
