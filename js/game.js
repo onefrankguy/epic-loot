@@ -216,7 +216,7 @@ const Loot = (function loot() {
       type = 'bottle';
     }
 
-    const max = { helmet: 5, armour: 4, sword: 7, staff: 5, bow: 3, bottle: 6 };
+    const max = { helmet: 5, armour: 4, sword: 5, staff: 4, bow: 2, bottle: 6 };
     if (!has.call(variations, type)) {
       variations[type] = 0;
     } else {
@@ -479,29 +479,24 @@ const Obstacles = (function obstacles() {
     PRNG.shuffle(active);
     active = active.map(name => Decktet.get(name));
 
-    const low = (phase === 1) ? ['rat', 'millipede'] : ['vampire bat', 'scorpion'];
+    const low = (phase === 1) ? ['rat', 'rabbit'] : ['vampire bat', 'scorpion'];
     PRNG.shuffle(low);
 
-    const med = (phase === 1) ? ['arachnid', 'rabbit'] : ['octo', 'eye'];
+    const med = (phase === 1) ? ['arachnid', 'bat'] : ['ghost', 'skeleton'];
     PRNG.shuffle(med);
 
-    const high = (phase === 1) ? ['snake', 'bat'] : ['ghost', 'skeleton'];
+    const high = (phase === 1) ? ['snake', 'boar'] : ['eye', 'octo'];
     PRNG.shuffle(high);
-
-    const epic = (phase === 1) ? ['wolf', 'boar'] : ['orc', 'werewolf'];
-    PRNG.shuffle(epic);
 
     for (let i = 0; i < active.length; i += 1) {
       if (active[i].value <= 0) {
         active[i].title = 'mushrooms';
-      } else if (active[i].value <= 3) {
+      } else if (active[i].value <= 4) {
         active[i].title = low.pop();
-      } else if (active[i].value <= 6) {
+      } else if (active[i].value <= 8) {
         active[i].title = med.pop();
-      } else if (active[i].value <= 9) {
-        active[i].title = high.pop();
       } else {
-        active[i].title = epic.pop();
+        active[i].title = high.pop();
       }
     }
   }
