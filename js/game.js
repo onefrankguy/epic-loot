@@ -181,6 +181,9 @@ const PRNG = (function prng() {
 
 const Loot = (function loot() {
   const has = Object.prototype.hasOwnProperty;
+  let dayPlaces = [];
+  let nightPlaces = [];
+  let actions = [];
   let helmets = [];
   let armour = [];
   let bottles = [];
@@ -234,6 +237,41 @@ const Loot = (function loot() {
   function maybeOneOf(things) {
     const index = randomRangeInclusive(0, things.length);
     return things[index];
+  }
+
+  function getWhere(name) {
+    if (nightPlaces.length <= 0) {
+      nightPlaces = [
+        'submle through the darkened forest',
+        'push your way through tangled branches',
+      ];
+      PRNG.shuffle(nightPlaces);
+    }
+
+    if (dayPlaces.length <= 0) {
+      dayPlaces = [
+        'come to a clearing in the forest',
+        'find a glade in the forest',
+        'arrive at a fork in the path',
+      ];
+      PRNG.shuffle(dayPlaces);
+    }
+
+    if (Decktet.locations().indexOf(name) > -1) {
+      return nightPlaces.pop();
+    }
+    return dayPlaces.pop();
+  }
+
+  function getWhat() {
+    if (actions.length <= 0) {
+      actions = [
+        'blinks', 'growls', 'hisses', 'howls', 'glares',
+      ];
+      PRNG.shuffle(actions);
+    }
+
+    return actions.pop();
   }
 
   function getHelmet() {
@@ -327,6 +365,9 @@ const Loot = (function loot() {
       item.title = `${item.title} of ${bonus}`;
     }
 
+    item.where = getWhere(name);
+    item.what = getWhat();
+
     return item;
   }
 
@@ -339,6 +380,9 @@ const Loot = (function loot() {
   }
 
   function reset() {
+    dayPlaces = [];
+    nightPlaces = [];
+    actions = [];
     helmets = [];
     armour = [];
     bottles = [];
@@ -1210,21 +1254,9 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
 
-    const dayPlaces = [
-      'clearing in the forest',
-      'glade in the forest',
-      'fork in the path',
-    ];
-
-    const nightPlaces = [
-      'submle through the darkened forest',
-      'push your way through tangled branches',
-    ];
-
     let html = '';
     let loot;
     let items;
-    let place;
 
     switch (Stage.get()) {
       case 'encumbered':
@@ -1232,12 +1264,11 @@ const Renderer = (function renderer() {
         break;
 
       case 'choice':
+        loot = Loot.get(obstacles[0].name);
         if (Obstacles.stage() === 1) {
-          place = dayPlaces[Math.floor(PRNG.random() * dayPlaces.length)];
-          html = `You come to a ${place}. Wild animals block your way. You&rsquo;ll have to scare them away.`;
+          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare them away.`;
         } else {
-          place = nightPlaces[Math.floor(PRNG.random() * nightPlaces.length)];
-          html = `You ${place}. A monster blocks your way. You&rsquo;ll have to scare it away.`;
+          html = `You ${loot.where}. A monster blocks your way. You&rsquo;ll have to scare it away.`;
         }
         break;
 
@@ -1249,7 +1280,8 @@ const Renderer = (function renderer() {
         } else if (obstacles[0].title === 'mushrooms') {
           html = 'You find some mushrooms growing in the forest.';
         } else {
-          html = `A wild ${obstacles[0].title} appears!`;
+          loot = Loot.get(obstacles[0].name);
+          html = `The ${obstacles[0].title} ${loot.what} at you.`;
         }
         break;
 
