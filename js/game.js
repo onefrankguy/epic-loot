@@ -1266,7 +1266,7 @@ const Renderer = (function renderer() {
       case 'choice':
         loot = Loot.get(obstacles[0].name);
         if (Obstacles.stage() === 1) {
-          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare them away.`;
+          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare one of them away.`;
         } else {
           html = `You ${loot.where}. A monster blocks your way. You&rsquo;ll have to scare it away.`;
         }
@@ -1321,26 +1321,29 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        html = 'start';
+        html = 'take';
         break;
 
       case 'combat':
-        if (Obstacles.defeated() || Gems.size() <= 0) {
-          html = 'next';
+        if (Obstacles.defeated()) {
+          html = 'loot';
+        }
+        if (Gems.size() <= 0) {
+          html = 'flee';
         }
         break;
 
       case 'loot':
         if (Obstacles.stage() === 1) {
-          html = 'loot';
+          html = 'take';
         } else {
-          html = 'next';
+          html = 'walk';
         }
         break;
 
       case 'victory':
       case 'madness':
-        html = 'next';
+        html = 'flee';
         break;
 
       default:
