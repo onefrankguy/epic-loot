@@ -335,6 +335,10 @@ const Loot = (function loot() {
 
   function generate(name) {
     const item = getVariation(name);
+
+    item.where = getWhere(name);
+    item.what = getWhat();
+
     if (item.title) {
       return item;
     }
@@ -364,9 +368,6 @@ const Loot = (function loot() {
     if (bonus) {
       item.title = `${item.title} of ${bonus}`;
     }
-
-    item.where = getWhere(name);
-    item.what = getWhat();
 
     return item;
   }
