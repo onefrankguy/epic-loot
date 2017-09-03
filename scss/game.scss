@@ -21,8 +21,8 @@ white       - rgb(222, 238, 214)
 
 http://pixeljoint.com/forum/forum_posts.asp?TID=12795
 */
-$map-color: rgba(241, 233, 210, 1);
-$stain-color: rgba(214, 204, 169, .1);
+$map-color: rgb(241, 233, 210);
+$stain-color: rgb(139, 113, 80);
 $ink-color: rgb(20, 12, 28);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
@@ -193,6 +193,7 @@ a, a:visited {
   width: 1.2rem;
   border: 1px solid $ink-color;
   border-radius: 50%;
+  background: currentColor;
 }
 
 .stats .gem {
@@ -234,9 +235,13 @@ a, a:visited {
 .backpack {
   flex-grow: 1;
   min-width: 0;
+  color: $ink-color;
+  border: 1px solid $stain-color;
+  padding: .5rem;
 }
 
 .backpack .item {
+  color: $ink-color;
   align-items: center;
 }
 
@@ -254,10 +259,11 @@ a, a:visited {
 .player {
   align-items: center;
   padding: .5rem;
-  border-bottom: 1px solid $ink-color;
+  border-bottom: 1px solid $stain-color;
 }
 
 .celestial {
+  color: $ink-color;
   align-self: flex-end;
 }
 
@@ -306,6 +312,7 @@ a, a:visited {
   width: 0%;
   display: inline-block;
   background: $metal-color;
+  border-radius: (1rem / 2);
 }
 
 /* ITEMS */
@@ -315,6 +322,12 @@ a, a:visited {
   align-content: flex-start;
   width: $touch-size;
   margin-top: .5rem;
+}
+
+.used-gems {
+  padding: .5rem;
+  border: 1px solid $stain-color;
+  margin-left: .5rem;
 }
 
 #used-items {
@@ -400,7 +413,7 @@ a, a:visited {
   align-items: center;
   height: 2.4rem;
   width: 2.4rem;
-  border: 1px solid $ink-color;
+  border: 1px solid $stain-color;
   border-bottom-right-radius: 33%;
   border-top-left-radius: 33%;
 }
@@ -418,17 +431,17 @@ a, a:visited {
 
 .day .sign .value {
   background: white;
-  color: black;
+  color: $ink-color;
 }
 
 .night .sign .value {
-  background: black;
+  background: $ink-color;
   color: white;
 }
 
 .sign.loot .value {
   background: white;
-  color: black;
+  color: $ink-color;
 }
 
 /* GEMS */
@@ -481,33 +494,33 @@ a, a:visited {
 
 /* SUITS */
 .moons {
-  background-color: $moons-color;
+  color: $moons-color;
 }
 
 .suns {
-  background-color: $suns-color;
+  color: $suns-color;
 }
 
 .waves {
-  background-color: $waves-color;
+  color: $waves-color;
 }
 
 .leaves {
-  background-color: $leaves-color;
+  color: $leaves-color;
 }
 
 .wyrms {
-  background-color: $wyrms-color;
+  color: $wyrms-color;
 }
 
 .knots {
-  background-color: $knots-color;
+  color: $knots-color;
 }
 
 /* CONTROLS */
 .button {
-  color: $metal-color;
-  border: .1rem solid $metal-color;
+  color: $ink-color;
+  border: 1px solid currentColor;
   border-radius: .5rem;
 }
 
@@ -522,7 +535,6 @@ a, a:visited {
 /* FLAVOR */
 .iconic {
   font-variant: small-caps;
-  font-weight: bold;
   text-transform: capitalize;
 }
 
@@ -532,7 +544,8 @@ a, a:visited {
   line-height: 1;
   margin-right: .5rem;
   padding: .5rem;
-  border: 4px double $ink-color;
+  color: $ink-color;
+  border: 4px double currentColor;
 }
 
 /* PATTERNS */
@@ -555,26 +568,28 @@ a, a:visited {
   radial-gradient(circle at 0% 50%, transparent  9px, $stain-color 10px, transparent 11px) 0px 10px,
   radial-gradient(at 100% 100%, transparent 9px, $stain-color 10px, transparent 11px), $map-color;
   background-size: 20px 20px;
+  background: $map-color;
   /* https://www.sitepoint.com/pure-css3-paper-curls/ */
+  border: 1px solid $stain-color;
   position: relative;
-  box-shadow: 0 0 .5rem rgba(0,0,0,.2), inset 0 0 5rem rgba(0,0,0,.1);
+  box-shadow: 0 0 5px rgba(0,0,0,.4), inset 0 0 50px rgba(0,0,0,.3);
 }
 .paper:before, .paper:after {
   /* https://www.sitepoint.com/pure-css3-paper-curls/ */
   position: absolute;
   width: 40%;
-  height: 1rem;
+  height: 10px;
   content: ' ';
-  left: 1.2rem;
-  bottom: 1.2rem;
+  left: 12px;
+  bottom: 12px;
   background: transparent;
   transform: skew(-5deg) rotate(-5deg);
-  box-shadow: 0 .6rem 1.2rem rgba(0,0,0,.3);
+  box-shadow: 0 6px 12px rgba(0,0,0,.5);
   z-index: -1;
 }
 .paper:after {
   left: auto;
-  right: 1rem;
+  right: 10px;
   transform: skew(5deg) rotate(5deg);
 }
 

@@ -242,7 +242,7 @@ const Loot = (function loot() {
   function getWhere(name) {
     if (nightPlaces.length <= 0) {
       nightPlaces = [
-        'submle through the darkened forest',
+        'stumble through the darkened forest',
         'push your way through tangled branches',
       ];
       PRNG.shuffle(nightPlaces);
