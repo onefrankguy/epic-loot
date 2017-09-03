@@ -190,7 +190,7 @@ const Loot = (function loot() {
   function getVariation(name) {
     const card = Decktet.get(name);
     if (!card || card.suits.length <= 0 || card.value <= 0) {
-      return { type: 'mushrooms', variety: 0, title: 'mushrooms', article: 'some', pronoun: 'them' };
+      return { type: 'mushrooms', variety: '', title: 'mushrooms', article: 'some', pronoun: 'them' };
     }
 
     let type = card.suits[1];
@@ -1121,7 +1121,7 @@ const Renderer = (function renderer() {
       html += `<div class="${klass} ${card.title}">`;
       html += `<span class="value">${card.value}</span>`;
       html += '<div class="body">';
-      html += `<span class="pixelated monster portrait ${card.title}"></span>`;
+      html += `<span class="pixelated portrait ${card.title}"></span>`;
       html += '<span class="text">';
       html += `<span class="iconic title">${card.title}</span>`;
       html += card.text;
