@@ -81,8 +81,6 @@ a, a:visited {
 }
 
 .picker {
-  display: flex;
-  flex-direction: row;
   justify-content: space-around;
   padding: .5rem;
   margin-bottom: 4rem;
@@ -165,8 +163,6 @@ a, a:visited {
 .sword4 { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
 
 .stats {
-  display: flex;
-  flex-direction: row;
   font-size: 1rem;
   font-variant: small-caps;
   text-transform: capitalize;
@@ -252,8 +248,6 @@ a, a:visited {
 
 /* PLAYER */
 .player {
-  display: flex;
-  flex-direction: row;
   align-items: center;
   padding: .5rem;
   border-bottom: 1px solid $ink-color;
@@ -291,8 +285,6 @@ a, a:visited {
 }
 
 .experience > .points {
-  display: flex;
-  flex-direction: row;
   justify-content: center;
 }
 
@@ -301,8 +293,6 @@ a, a:visited {
 }
 
 .experience > .levels {
-  display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
@@ -324,8 +314,6 @@ a, a:visited {
 
 /* ITEMS */
 .collection {
-  display: flex;
-  flex-direction: row;
   flex-grow: 1;
 }
 
@@ -338,8 +326,6 @@ a, a:visited {
 }
 
 #used-items {
-  display: flex;
-  flex-direction: row;
   align-items: flex-start;
   flex-grow: 1;
   flex-wrap: wrap;
@@ -363,8 +349,6 @@ a, a:visited {
 
 /* SIGNS */
 #signpost {
-  display: flex;
-  flex-direction: row;
   justify-content: space-around;
   padding: .5rem;
   margin-bottom: 4rem;
@@ -451,8 +435,6 @@ a, a:visited {
 
 /* GEMS */
 #gems {
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: .5rem;
 }

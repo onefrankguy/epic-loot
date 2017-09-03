@@ -12,8 +12,8 @@
 </head>
 <body class="unselectable">
 <div id="world" class="day">
-  <div class="player">
-    <div class="in-game stats">
+  <div class="row player">
+    <div class="row in-game stats">
       <div id="in-game-portrait"></div>
       <div><span>str</span><span>bdy</span><span>Qck</span></div>
       <div><span id="in-game-suns"></span><span id="in-game-leaves"></span><span id="in-game-waves"></span></div>
@@ -22,18 +22,18 @@
     </div>
     <div class="experience">
       <div class="celestial"></div>
-      <div class="points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
-      <div class="levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
+      <div class="row points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
+      <div class="row levels"><span id="this-level"></span><span class="progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
     </div>
   </div>
   <div class="narrative row">
     <div id="narrative" class="flavor"></div>
     <div id="button" class="hitbox iconic button">Start</div>
   </div>
-  <div id="collection" class="collection">
-    <div id="used-items"></div>
+  <div id="collection" class="row collection">
+    <div id="used-items" class="row"></div>
   </div>
-  <div id="level-up" class="stats level-up hidden">
+  <div id="level-up" class="row stats level-up hidden">
     <div>
       <span id="level-suns" class="sign mini loot">
         <span class="value">1</span>
@@ -69,14 +69,14 @@
       </span>
     </div>
   </div>
-  <div id="buttons" class="picker">
+  <div id="buttons" class="row picker">
     <div id="reroll" class="hitbox iconic button">Reroll</div>
   </div>
-  <div id="signpost">
+  <div id="signpost" class="row">
     <div id="sign1"></div>
     <div id="sign2"></div>
   </div>
-  <div id="gems">
+  <div id="gems" class="row">
     <div id="gems-suns"></div>
     <div id="gems-leaves"></div>
     <div id="gems-waves"></div>
