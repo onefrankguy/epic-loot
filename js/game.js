@@ -1211,7 +1211,7 @@ const Renderer = (function renderer() {
         } else if (obstacles[0].title === 'mushrooms') {
           html = 'You find some mushrooms growing in the forest.';
         } else {
-          html = `A ${obstacles[0].title} appears!`;
+          html = `A wild ${obstacles[0].title} appears!`;
         }
         break;
 
@@ -1227,7 +1227,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'level-up':
-        html = 'You have gained experience. Level up!';
+        html = 'You have gained in experience.';
         break;
 
       case 'victory':
@@ -1235,7 +1235,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'madness':
-        html += 'The monsters eat your dreams and you descend into madness.';
+        html = 'The monsters eat your dreams and you descend into madness.';
         break;
 
       default:
@@ -1266,6 +1266,11 @@ const Renderer = (function renderer() {
         } else {
           html = 'next';
         }
+        break;
+
+      case 'victory':
+      case 'madness':
+        html = 'next';
         break;
 
       default:
