@@ -448,11 +448,11 @@ const Obstacles = (function obstacles() {
   let challenger;
 
   function get() {
+    let results = active;
     if (challenger) {
-      return [challenger];
+      results = [challenger];
     }
-
-    return active;
+    return results.map(o => Object.assign({}, o));
   }
 
   function deal() {
@@ -1038,7 +1038,6 @@ const Renderer = (function renderer() {
 
   function renderUsedItems() {
     const $ = window.jQuery;
-    const obstacles = Obstacles.get();
     let html;
     let card;
     let loot;
@@ -1073,19 +1072,6 @@ const Renderer = (function renderer() {
         break;
 
       case 'loot':
-        html = '';
-        if (Obstacles.stage() === 1) {
-          card = Decktet.get(obstacles[0].name);
-          loot = Loot.get(obstacles[0].name);
-          if (card && loot) {
-            html += '<div class="spell">';
-            html += renderCard(card, loot);
-            html += '</div>';
-          }
-        }
-        $('#used-items').remove('hidden').html(html);
-        break;
-
       case 'victory':
       case 'madness':
         $('#used-items').remove('hidden').html('');
@@ -1142,22 +1128,50 @@ const Renderer = (function renderer() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
     const mini = obstacles.length > 1;
+    let sign1;
+    let sign2;
+    let card;
+    let loot;
 
     switch (Stage.get()) {
       case 'choice':
       case 'combat':
+        sign1 = renderObstacle(obstacles[0], mini);
+        if (mini && Obstacles.stage() === 1) {
+          sign2 = renderObstacle(obstacles[1], mini);
+        }
+        break;
+
       case 'loot':
-        $('#signpost').remove('hidden');
-        $('#sign1').html(renderObstacle(obstacles[0], mini)).remove('hidden');
-        $('#sign2').html(renderObstacle(obstacles[1], mini)).remove('hidden');
-        if (!mini || Obstacles.stage() === 2) {
-          $('#sign2').add('hidden');
+        if (Obstacles.stage() === 1) {
+          card = Decktet.get(obstacles[0].name);
+          loot = Loot.get(obstacles[0].name);
+          sign1 = renderCard(card, loot);
+        } else {
+          sign1 = renderObstacle(obstacles[0], true);
         }
         break;
 
       default:
-        $('#signpost').add('hidden');
         break;
+    }
+
+    if (sign1 || sign2) {
+      $('#signpost').remove('hidden');
+    } else {
+      $('#signpost').add('hidden');
+    }
+
+    if (sign1) {
+      $('#sign1').html(sign1).remove('hidden');
+    } else {
+      $('#sign1').html('').add('hidden');
+    }
+
+    if (sign2) {
+      $('#sign2').html(sign2).remove('hidden');
+    } else {
+      $('#sign2').html('').add('hidden');
     }
   }
 
