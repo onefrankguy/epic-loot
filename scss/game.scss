@@ -334,6 +334,11 @@ a, a:visited {
   justify-content: space-around;
 }
 
+.level-up > .col {
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
 /* FLAVOR */
 .flavor.title {
   display: flex;

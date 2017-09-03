@@ -1005,14 +1005,6 @@ const Renderer = (function renderer() {
     $('#this-level').html(deck.attributes.length + 1);
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
-
-    if (Stage.get() === 'level-up') {
-      $('#level-up').remove('hidden');
-      $('#collection').add('hidden');
-    } else {
-      $('#collection').remove('hidden');
-      $('#level-up').add('hidden');
-    }
   }
 
   function renderItem(card, loot, mini) {
@@ -1048,6 +1040,32 @@ const Renderer = (function renderer() {
       html += '</div>';
     }
     return html;
+  }
+
+  function renderLevelUp() {
+    const $ = window.jQuery;
+
+    let html;
+    let card;
+    let loot;
+
+    switch (Stage.get()) {
+      case 'level-up':
+        Decktet.attributes().forEach((name) => {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          html = renderItem(card, loot, true);
+          $(`#level-${name}`).html(html);
+        });
+        $('#level-up').remove('hidden');
+        $('#collection').add('hidden');
+        break;
+
+      default:
+        $('#collection').remove('hidden');
+        $('#level-up').add('hidden');
+        break;
+    }
   }
 
   function renderUsedItems() {
@@ -1309,6 +1327,7 @@ const Renderer = (function renderer() {
       renderObstacles();
       renderGems();
       renderExperience();
+      renderLevelUp();
       renderNarrative();
       renderButton();
       renderButtons();
@@ -1411,25 +1430,15 @@ const Game = (function game() {
   function play() {
     const $ = window.jQuery;
 
-    $('#gems-moons').touch(undefined, onGems);
-    $('#gems-suns').touch(undefined, onGems);
-    $('#gems-waves').touch(undefined, onGems);
-    $('#gems-leaves').touch(undefined, onGems);
-    $('#gems-wyrms').touch(undefined, onGems);
-    $('#gems-knots').touch(undefined, onGems);
+    Decktet.attributes().forEach((name) => {
+      $(`#gems-${name}`).touch(undefined, onGems);
+      $(`#level-${name}`).touch(undefined, onLevelUp);
+    });
 
     $('#button').touch(undefined, onButton);
     $('#sign1').touch(undefined, onChoice);
     $('#sign2').touch(undefined, onChoice);
-
     $('#reroll').touch(undefined, onReroll);
-
-    $('#level-moons').touch(undefined, onLevelUp);
-    $('#level-suns').touch(undefined, onLevelUp);
-    $('#level-waves').touch(undefined, onLevelUp);
-    $('#level-leaves').touch(undefined, onLevelUp);
-    $('#level-wyrms').touch(undefined, onLevelUp);
-    $('#level-knots').touch(undefined, onLevelUp);
 
     $(window).on('hashchange', onHashChange);
 
