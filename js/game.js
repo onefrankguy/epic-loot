@@ -1417,7 +1417,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'madness':
-        html = 'The monsters chew a hole in your bag and take all your <span class="iconic">epic loot</span>. But that&rsquo;s okay. You where starting to feel like&hellip;';
+        html = 'The monsters chew a hole in your bag and take some of your <span class="iconic">epic loot</span>. But that&rsquo;s okay. You where starting to feel like&hellip;';
         break;
 
       default:
