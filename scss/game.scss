@@ -23,7 +23,7 @@ http://pixeljoint.com/forum/forum_posts.asp?TID=12795
 */
 $map-color: rgb(241, 233, 210);
 $stain-color: rgb(139, 113, 80);
-$ink-color: rgb(20, 12, 28);
+$ink-color: rgb(29, 0, 41);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
 $suns-color: rgb(210, 125, 44);
@@ -539,6 +539,27 @@ a, a:visited {
   font-weight: bold;
   font-size: 1.8rem;
   line-height: 1.8rem;
+}
+
+/* FEEDBACK */
+.pickable.button,
+.pickable .d1,
+.pickable .d2,
+.pickable .d3,
+.pickable .d4,
+.pickable .value,
+.pickable .gem {
+  box-shadow: .2rem .2rem .5rem rgba(0,0,0,.3);
+}
+
+.picked.button,
+.picked .d1,
+.picked .d2,
+.picked .d3,
+.picked .d4,
+.picked .value,
+.picked .gem {
+  box-shadow: none !important;
 }
 
 /* PATTERNS */

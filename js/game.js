@@ -252,7 +252,7 @@ const Loot = (function loot() {
       dayPlaces = [
         'come to a clearing in the forest',
         'find a glade in the forest',
-        'arrive at a fork in the path',
+        'arrive at a fork in the road',
       ];
       PRNG.shuffle(dayPlaces);
     }
@@ -1363,9 +1363,9 @@ const Renderer = (function renderer() {
       case 'choice':
         loot = Loot.get(obstacles[0].name);
         if (Obstacles.stage() === 1) {
-          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare one of them away. Pick an animal.`;
+          html = `You ${loot.where}. Wild animals block your path. You&rsquo;ll have to scare one of them away. Pick an animal or roll the dice.`;
         } else {
-          html = `You ${loot.where}. A monster blocks your way. You&rsquo;ll have to scare it away. Pick the monster.`;
+          html = `You ${loot.where}. A monster blocks your path. You&rsquo;ll have to scare it away. Pick the monster or roll the dice.`;
         }
         break;
 
@@ -1382,7 +1382,7 @@ const Renderer = (function renderer() {
           if (loot.how) {
             html += ` If you are ${loot.how}, you may be able to scare it away.`;
           }
-          html += ' Pick a gem.';
+          html += ' Pick a gem or roll the dice.';
         }
         break;
 
@@ -1458,6 +1458,42 @@ const Renderer = (function renderer() {
     }
   }
 
+  function renderPickable() {
+    const $ = window.jQuery;
+    const pickable = new Set(['#button', '#d6']);
+    const gems = Decktet.attributes().map(name => `#gems-${name}`);
+    const levels = Decktet.attributes().map(name => `#level-${name}`);
+
+    switch (Stage.get()) {
+      case 'choice':
+        pickable.add('#sign1');
+        pickable.add('#sign2');
+        break;
+
+      case 'combat':
+        if (!Obstacles.defeated()) {
+          gems.forEach(id => pickable.add(id));
+        }
+        break;
+
+      case 'level-up':
+        levels.forEach(id => pickable.add(id));
+        break;
+
+      default:
+        break;
+    }
+
+    const controls = new Set(['#d6', '#button', '#sign1', '#sign2'].concat(gems, levels));
+    pickable.forEach((id) => {
+      $(id).add('pickable');
+      controls.delete(id);
+    });
+    controls.forEach((id) => {
+      $(id).remove('pickable');
+    });
+  }
+
   function render() {
     if (dirty) {
       renderHero();
@@ -1470,6 +1506,7 @@ const Renderer = (function renderer() {
       renderLevelUp();
       renderNarrative();
       renderButton();
+      renderPickable();
       dirty = false;
     }
 
@@ -1502,16 +1539,31 @@ const Game = (function game() {
   }
 
   function onGems(element) {
+    element.add('picked');
+  }
+
+  function offGems(element) {
+    element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
   }
 
-  function onButton() {
+  function onButton(element) {
+    element.add('picked');
+  }
+
+  function offButton(element) {
+    element.remove('picked');
     Stage.next('items');
     Renderer.invalidate();
   }
 
   function onChoice(element) {
+    element.add('picked');
+  }
+
+  function offChoice(element) {
+    element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
   }
@@ -1524,17 +1576,25 @@ const Game = (function game() {
     return dice.pop();
   }
 
-  function onD6() {
-    const $ = window.jQuery;
+  function onD6(element) {
+    element.add('picked');
+  }
+
+  function offD6(element) {
     let html = '';
     html += `<span class="${rollDice()}"></span>`;
     html += `<span class="${rollDice()}"></span>`;
-    $('#d6').html(html);
+    element.html(html).remove('picked');
     Stage.next('d6');
     Renderer.invalidate();
   }
 
   function onLevelUp(element) {
+    element.add('picked');
+  }
+
+  function offLevelUp(element) {
+    element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
   }
@@ -1584,14 +1644,14 @@ const Game = (function game() {
     const $ = window.jQuery;
 
     Decktet.attributes().forEach((name) => {
-      $(`#gems-${name}`).touch(undefined, onGems);
-      $(`#level-${name}`).touch(undefined, onLevelUp);
+      $(`#gems-${name}`).touch(onGems, offGems);
+      $(`#level-${name}`).touch(onLevelUp, offLevelUp);
     });
 
-    $('#button').touch(undefined, onButton);
-    $('#sign1').touch(undefined, onChoice);
-    $('#sign2').touch(undefined, onChoice);
-    $('#d6').touch(undefined, onD6);
+    $('#button').touch(onButton, offButton);
+    $('#sign1').touch(onChoice, offChoice);
+    $('#sign2').touch(onChoice, offChoice);
+    $('#d6').touch(onD6, offD6);
 
     $(window).on('hashchange', onHashChange);
 
