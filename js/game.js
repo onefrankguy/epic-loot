@@ -748,7 +748,7 @@ const Deck = (function deck() {
 
 const Gems = (function gems() {
   const has = Object.prototype.hasOwnProperty;
-  const max = 9;
+  const cap = 9;
   let counts = {};
 
   function get() {
@@ -759,7 +759,7 @@ const Gems = (function gems() {
     counts = {};
 
     Decktet.attributes().forEach((attribute) => {
-      counts[attribute] = max;
+      counts[attribute] = cap;
     });
   }
 
@@ -778,9 +778,13 @@ const Gems = (function gems() {
   }
 
   function add(name) {
-    if (has.call(counts, name) && counts[name] < max) {
+    if (has.call(counts, name) && counts[name] < cap) {
       counts[name] += 1;
     }
+  }
+
+  function max() {
+    return cap;
   }
 
   function size() {
@@ -792,6 +796,7 @@ const Gems = (function gems() {
     count,
     spend,
     add,
+    max,
     reset,
     size,
   };
@@ -1043,15 +1048,21 @@ const Renderer = (function renderer() {
   function renderHero() {
     const $ = window.jQuery;
     const hero = 'watchman';
-    const attributes = Deck.get().attributes;
 
-    Decktet.attributes().forEach((attr) => {
-      const value = 1 + attributes.filter(name => name === attr).length;
+    Decktet.attributes().forEach((name) => {
+      const max = Gems.max();
+      let value = max - Gems.count(name);
+      if (value < 1) {
+        value = 1;
+      }
+      if (value > max) {
+        value = max;
+      }
       let html = '';
       html += `<span class="stat">${value}`;
-      html += `<span class="${attr} gem"></span>`;
+      html += `<span class="${name} gem"></span>`;
       html += '</span>';
-      $(`#in-game-${attr}`).html(html.trim());
+      $(`#in-game-${name}`).html(html.trim());
     });
 
     $('#in-game-portrait').klass(`pixelated portrait ${hero}`);
