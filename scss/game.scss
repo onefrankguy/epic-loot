@@ -449,7 +449,7 @@ a, a:visited {
   justify-content: space-between;
 }
 
-#gems > * {
+#gems .set {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -592,6 +592,62 @@ a, a:visited {
   right: 10px;
   transform: skew(5deg) rotate(5deg);
 }
+
+/* DICE */
+.d1, .d2, .d3, .d4 {
+  position: relative;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: white;
+  color: $ink-color;
+  border: 1px solid currentColor;
+  opacity: .8;
+}
+.d1:before,
+.d2:before,
+.d2:after,
+.d3:before,
+.d3:after,
+.d4:before,
+.d4:after {
+  position: absolute;
+  content: ' ';
+  display: block;
+  width: .5rem;
+  height: .5rem;
+  background: currentColor;
+  border-radius: 50%;
+}
+.d1:before {
+  top: 1rem;
+  left: 1rem;
+}
+.d2:before,
+.d3:before,
+.d4:before {
+  top: .375rem;
+  right: .375rem;
+}
+.d2:after,
+.d3:after,
+.d4:after {
+  bottom: .375rem;
+  left: .375rem;
+}
+.d3:after {
+  box-shadow: .55rem -.55rem 0 $ink-color;
+}
+.d4:before {
+  box-shadow: -1.1rem 0 0 $ink-color;
+}
+.d4:after {
+  box-shadow: 1.1rem 0 0 $ink-color;
+}
+.d1 { transform: rotate(7deg); }
+.d2 { transform: rotate(-14deg); }
+.d3 { transform: rotate(14deg); }
+.d4 { transform: rotate(-7deg); }
 
 /* UTILITY */
 .hidden {

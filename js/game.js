@@ -833,6 +833,12 @@ const Stage = (function stage() {
       return this;
     }
 
+    if (message === 'd6') {
+      const index = Math.floor(PRNG.random() * 2);
+      Obstacles.pick(obstacles[index].name);
+      state = 'combat';
+    }
+
     if (message === 'sign1') {
       Obstacles.pick(obstacles[0].name);
       state = 'combat';
@@ -848,6 +854,13 @@ const Stage = (function stage() {
 
   function onCombat(message) {
     const part = message.split('-');
+
+    if (message === 'd6') {
+      const attributes = Decktet.attributes();
+      const index = Math.floor(PRNG.random() * attributes.length);
+      part[0] = 'gems';
+      part[1] = attributes[index];
+    }
 
     if (part[0] === 'gems') {
       const type = part[1];
@@ -924,6 +937,14 @@ const Stage = (function stage() {
 
   function onLevelUp(message) {
     const part = message.split('-');
+
+    if (message === 'd6') {
+      const attributes = Decktet.attributes();
+      const index = Math.floor(PRNG.random() * attributes.length);
+      part[0] = 'level';
+      part[1] = attributes[index];
+    }
+
     if (part[0] !== 'level') {
       return this;
     }
@@ -1403,6 +1424,7 @@ const Renderer = (function renderer() {
 
 const Game = (function game() {
   let color;
+  let dice = [];
 
   function newColor() {
     let hash = color;
@@ -1432,6 +1454,24 @@ const Game = (function game() {
 
   function onReroll() {
     Stage.next('reroll');
+    Renderer.invalidate();
+  }
+
+  function rollDice() {
+    if (dice.length <= 0) {
+      dice = ['d1', 'd2', 'd3', 'd4'];
+      PRNG.shuffle(dice);
+    }
+    return dice.pop();
+  }
+
+  function onD6() {
+    const $ = window.jQuery;
+    let html = '';
+    html += `<span class="${rollDice()}"></span>`;
+    html += `<span class="${rollDice()}"></span>`;
+    $('#d6').html(html);
+    Stage.next('d6');
     Renderer.invalidate();
   }
 
@@ -1493,6 +1533,7 @@ const Game = (function game() {
     $('#sign1').touch(undefined, onChoice);
     $('#sign2').touch(undefined, onChoice);
     $('#reroll').touch(undefined, onReroll);
+    $('#d6').touch(undefined, onD6);
 
     $(window).on('hashchange', onHashChange);
 
