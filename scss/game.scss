@@ -259,8 +259,9 @@ a, a:visited {
 }
 
 #celestial-progress {
-  display: inline-block;
-  width: 0%;
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
 }
 
 .celestial {

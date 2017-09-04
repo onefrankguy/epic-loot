@@ -1118,7 +1118,6 @@ const Renderer = (function renderer() {
   function renderExperience() {
     const $ = window.jQuery;
     const deck = Deck.get();
-    const day = Obstacles.stage() === 1;
     const stage = Stage.get();
     let points = deck.discards;
     let needed = deck.discards + deck.cards;
@@ -1130,14 +1129,6 @@ const Renderer = (function renderer() {
       percent = 100;
     }
 
-    if (day) {
-      $('#world').add('day');
-      $('#world').remove('night');
-    } else {
-      $('#world').add('night');
-      $('#world').remove('day');
-    }
-
     $('#xp-points').html(points);
     $('#xp-needed').html(needed);
     $('#this-level').html(deck.attributes.length + 1);
@@ -1145,17 +1136,21 @@ const Renderer = (function renderer() {
     $('#xp-progress').style('width', `${percent}%`);
 
     if (stage === 'encumbered' || stage === 'choice') {
-      if (day) {
-        needed = Decktet.events().length - 1;
+      if (Obstacles.stage() === 1) {
+        $('#world').add('day');
+        $('#world').remove('night');
+        needed = Decktet.events().length;
         points = needed - Events.size();
       } else {
-        needed = Decktet.locations().length - 1;
+        $('#world').add('night');
+        $('#world').remove('day');
+        needed = Decktet.locations().length;
         points = needed - Locations.size();
       }
-      percent = (points * 100) / needed;
       if (stage === 'encumbered') {
-        percent = 0;
+        points = 1;
       }
+      percent = (points * 100) / needed;
       $('#celestial-progress').style('width', `${percent}%`);
     }
   }
