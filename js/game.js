@@ -1164,9 +1164,9 @@ const Renderer = (function renderer() {
       klass += ' loot';
     }
 
-    let portrait = card.title;
+    let icon = card.title;
     if (loot) {
-      portrait = `${loot.type}${loot.variety}`;
+      icon = `${loot.type}${loot.variety}`;
     }
 
     let html;
@@ -1175,7 +1175,7 @@ const Renderer = (function renderer() {
       html += `<div class="${klass}">`;
       html += `<span class="value">${card.value}</span>`;
       html += '<div class="row">';
-      html += `<span class="pixelated portrait ${portrait}"></span>`;
+      html += `<span class="pixelated icon ${icon}"></span>`;
       html += '<span class="text">';
       html += `<span class="iconic title">${card.title}</span>`;
       html += '</span>';
