@@ -1628,12 +1628,9 @@ const Game = (function game() {
 
   function startGame() {
     const hash = window.location.hash.substring(1);
-    let reloaded = true;
 
     if (/^[0-9A-F]{6}$/i.test(hash)) {
-      if (color === hash) {
-        reloaded = true;
-      } else {
+      if (color !== hash) {
         color = hash;
         PRNG.seed(parseInt(color, 16));
       }
@@ -1644,7 +1641,7 @@ const Game = (function game() {
 
     if (window.location.hash.substring(1) !== color) {
       window.location.hash = color;
-    } else if (reloaded) {
+    } else {
       resetGame();
     }
 
