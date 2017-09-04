@@ -274,6 +274,53 @@ const Loot = (function loot() {
     return actions.pop();
   }
 
+  function getHow(name) {
+    const card = Decktet.get(name);
+    if (card) {
+      const how = [];
+      card.suits.forEach((suit) => {
+        switch (suit) {
+          case 'moons':
+            how.push('strong');
+            break;
+          case 'leaves':
+            how.push('bold');
+            break;
+          case 'waves':
+            how.push('quick');
+            break;
+          case 'knots':
+            how.push('intelligent');
+            break;
+          case 'moons':
+            how.push('wilful');
+            break;
+          case 'wyrms':
+            how.push('charming');
+            break;
+          default:
+            break;
+        }
+      });
+
+      let text = '';
+      how.reverse();
+      while (how.length > 0) {
+        text += ` ${how.pop()}`;
+        if (how.length > 1) {
+          text += ',';
+        }
+        if (how.length === 1) {
+          text += ' and';
+        }
+      }
+
+      return text.trim();
+    }
+
+    return undefined;
+  }
+
   function getHelmet() {
     if (helmets.length <= 0) {
       helmets = ['coif', 'helmet', 'helm'];
@@ -338,6 +385,7 @@ const Loot = (function loot() {
 
     item.where = getWhere(name);
     item.what = getWhat();
+    item.how = getHow(name);
 
     if (item.title) {
       return item;
@@ -1315,9 +1363,9 @@ const Renderer = (function renderer() {
       case 'choice':
         loot = Loot.get(obstacles[0].name);
         if (Obstacles.stage() === 1) {
-          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare one of them away.`;
+          html = `You ${loot.where}. Wild animals block your way. You&rsquo;ll have to scare one of them away. Pick an animal.`;
         } else {
-          html = `You ${loot.where}. A monster blocks your way. You&rsquo;ll have to scare it away.`;
+          html = `You ${loot.where}. A monster blocks your way. You&rsquo;ll have to scare it away. Pick the monster.`;
         }
         break;
 
@@ -1331,6 +1379,10 @@ const Renderer = (function renderer() {
         } else {
           loot = Loot.get(obstacles[0].name);
           html = `The ${obstacles[0].title} ${loot.what} at you.`;
+          if (loot.how) {
+            html += ` If you are ${loot.how}, you may be able to scare it away.`;
+          }
+          html += ' Pick a gem.';
         }
         break;
 
