@@ -615,6 +615,34 @@ a, a:visited {
 .d3 { transform: rotate(14deg); }
 .d4 { transform: rotate(-7deg); }
 
+/* COLOPHON */
+.colophon {
+  width: 32rem;
+  margin: 0 auto;
+  padding: .5rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  color: $ink-color;
+  margin-top: 1.6rem;
+  text-align: right;
+}
+
+.colophon > a:hover {
+  cursor: auto;
+  text-decoration: underline;
+}
+
+abbr[title="and"] {
+  text-decoration: none;
+  font-style: italic;
+  font-size: 110%;
+  cursor: auto;
+  /* Prevents `abbr` affecting the `line-height`. */
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
 /* UTILITY */
 .hidden {
   display: none !important;
