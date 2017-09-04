@@ -104,10 +104,6 @@ a, a:visited {
   background-position: 0 0;
 }
 
-.portrait.watchman {
-  background-position: ($sprite-cols * 0) ($sprite-rows * 0);
-}
-
 /* DAY MONSTERS */
 .rat       { background-position: ($sprite-cols * 0) ($sprite-rows * 1); }
 .rabbit    { background-position: ($sprite-cols * 1) ($sprite-rows * 1); }
@@ -590,6 +586,9 @@ a, a:visited {
 }
 
 /* DICE */
+.dice {
+  margin-left: .5rem;
+}
 .d1, .d2, .d3, .d4 {
   position: relative;
   display: block;

@@ -1095,7 +1095,6 @@ const Renderer = (function renderer() {
 
   function renderHero() {
     const $ = window.jQuery;
-    const hero = 'watchman';
 
     Decktet.attributes().forEach((name) => {
       const max = Gems.max();
@@ -1112,8 +1111,6 @@ const Renderer = (function renderer() {
       html += '</span>';
       $(`#in-game-${name}`).html(html.trim());
     });
-
-    $('#in-game-portrait').klass(`pixelated portrait ${hero}`);
   }
 
   function renderExperience() {
@@ -1398,7 +1395,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'level-up':
-        html = 'You have gained experience. Level up!';
+        html = 'You have gained in experience. Level up! Pick a bottle or roll the dice.';
         break;
 
       case 'victory':
