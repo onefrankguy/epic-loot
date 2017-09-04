@@ -511,23 +511,8 @@ const Locations = (function locations() {
   }
 
   function reset() {
-    let index = -1;
-
     cards = Decktet.locations();
-
-    index = cards.indexOf('origin');
-    if (index > -1) {
-      cards.splice(index, 1);
-    }
-
-    index = cards.indexOf('end');
-    if (index > -1) {
-      cards.splice(index, 1);
-    }
-
     PRNG.shuffle(cards);
-    cards.push('origin');
-    cards.unshift('end');
   }
 
   return {
@@ -1413,7 +1398,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'victory':
-        html = 'You are victorious! You heft your bag of <span class="iconic">epic loot</span> and realize&hellip...;';
+        html = 'You are victorious! You heft your bag of <span class="iconic">epic loot</span> and realize&hellip;';
         break;
 
       case 'madness':
