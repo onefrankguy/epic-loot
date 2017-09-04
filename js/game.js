@@ -251,7 +251,7 @@ const Loot = (function loot() {
     if (dayPlaces.length <= 0) {
       dayPlaces = [
         'come to a clearing in the forest',
-        'find a glade in the forest',
+        'halt at a glade in the forest',
         'arrive at a fork in the road',
       ];
       PRNG.shuffle(dayPlaces);
@@ -1369,7 +1369,12 @@ const Renderer = (function renderer() {
         items = Stage.items();
         if (items.length > 0) {
           loot = Loot.get(items.slice(-1)[0]);
-          html = `You pull ${loot.article} ${loot.title} from your bag and throw ${loot.pronoun} at the ${obstacles[0].title}.`;
+          html = `You pull ${loot.article} ${loot.title} from your bag and throw ${loot.pronoun} at the ${obstacles[0].title}, which`;
+          if (Obstacles.defeated()) {
+            html += ' flees.';
+          } else {
+            html += ` ${loot.what} at you.`;
+          }
         } else if (obstacles[0].title === 'mushrooms') {
           html = 'You find some mushrooms growing in the forest.';
         } else {
@@ -1387,9 +1392,9 @@ const Renderer = (function renderer() {
         if (loot.type === 'mushrooms') {
           html = 'The mushrooms look delicious.';
         } else if (Obstacles.stage() === 1) {
-          html = `The ${obstacles[0].title} flees, leaving behind ${loot.article} ${loot.title}.`;
+          html = `You find ${loot.article} ${loot.title}!`;
         } else {
-          html = `The ${obstacles[0].title} flees. It&rsquo;s too dark to find any loot.`;
+          html = 'It&rsquo;s too dark to find any loot.';
         }
         break;
 
