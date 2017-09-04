@@ -748,6 +748,7 @@ const Deck = (function deck() {
 
 const Gems = (function gems() {
   const has = Object.prototype.hasOwnProperty;
+  const max = 9;
   let counts = {};
 
   function get() {
@@ -758,7 +759,7 @@ const Gems = (function gems() {
     counts = {};
 
     Decktet.attributes().forEach((attribute) => {
-      counts[attribute] = 9;
+      counts[attribute] = max;
     });
   }
 
@@ -776,6 +777,12 @@ const Gems = (function gems() {
     }
   }
 
+  function add(name) {
+    if (has.call(counts, name) && counts[name] < max) {
+      counts[name] += 1;
+    }
+  }
+
   function size() {
     return Object.values(counts).reduce((total, num) => total + num, 0);
   }
@@ -784,6 +791,7 @@ const Gems = (function gems() {
     get,
     count,
     spend,
+    add,
     reset,
     size,
   };
@@ -960,6 +968,7 @@ const Stage = (function stage() {
       return this;
     }
 
+    Gems.add(part[1]);
     Deck.add(part[1]);
     Deck.shuffle();
     state = 'choice';

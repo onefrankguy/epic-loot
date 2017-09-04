@@ -335,11 +335,11 @@ a, a:visited {
 .level-up {
   justify-content: space-around;
   flex-grow: 1;
+  margin-bottom: 4rem;
 }
 
-.level-up > .col {
-  justify-content: space-between;
-  padding-bottom: 2rem;
+.level-up > .row {
+  justify-content: space-around;
 }
 
 /* SIGNS */
