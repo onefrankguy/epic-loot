@@ -187,7 +187,7 @@ a, a:visited {
 .world {
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
-  margin: 0 auto;
+  margin: 0 auto 1.6rem auto;
 }
 
 .quest {
@@ -617,13 +617,11 @@ a, a:visited {
 
 /* COLOPHON */
 .colophon {
-  width: 32rem;
-  margin: 0 auto;
-  padding: .5rem;
+  margin: 1.6rem 0 .8rem 0;
+  padding: 0 .5rem;
   font-size: 1rem;
   line-height: 1rem;
-  color: $ink-color;
-  margin-top: 1.6rem;
+  color: rgba(0,0,0,.55);
   text-align: right;
 }
 
