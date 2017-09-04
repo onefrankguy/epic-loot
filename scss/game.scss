@@ -205,7 +205,7 @@ a, a:visited {
   padding: .5rem;
 }
 
-.backpack {
+.bag {
   flex-grow: 1;
   min-width: 0;
   color: $ink-color;
@@ -213,7 +213,7 @@ a, a:visited {
   padding: .5rem;
 }
 
-.backpack .icon {
+.bag .icon {
   width: $base-font-size * 1.5;
   height: $base-font-size * 1.5;
   max-width: 32px;
@@ -221,7 +221,7 @@ a, a:visited {
   margin-right: .5rem;
 }
 
-.backpack .name {
+.bag .name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

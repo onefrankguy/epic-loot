@@ -685,12 +685,12 @@ const Deck = (function deck() {
   let cards = [];
   let discards = [];
   let hand = [];
-  let backpack = [];
+  let bag = [];
   let maxed = false;
 
   function get() {
     const attributes = [];
-    const swag = [].concat(backpack).reverse();
+    const swag = [].concat(bag).reverse();
 
     [].concat(cards, discards).forEach((card) => {
       if (Decktet.attributes().indexOf(card) > -1) {
@@ -698,7 +698,7 @@ const Deck = (function deck() {
       }
     });
 
-    return { cards: cards.length, discards: discards.length, attributes, backpack: swag };
+    return { cards: cards.length, discards: discards.length, attributes, bag: swag };
   }
 
   function empty() {
@@ -729,7 +729,7 @@ const Deck = (function deck() {
   function add(card) {
     if (card && Decktet.locations().indexOf(card) < 0) {
       hand.push(card);
-      backpack.push(card);
+      bag.push(card);
       if (Decktet.attributes().indexOf(card) > -1) {
         maxed = false;
       }
@@ -782,7 +782,7 @@ const Deck = (function deck() {
     cards = starting.pop();
     discards = [];
     hand = [];
-    backpack = [].concat(cards, discards);
+    bag = [].concat(cards, discards);
     maxed = false;
   }
 
@@ -878,7 +878,7 @@ const Stage = (function stage() {
     }
 
     if (message === 'items') {
-      Deck.get().backpack.forEach((name) => {
+      Deck.get().bag.forEach((name) => {
         Personalities.remove(name);
       });
       Deck.shuffle();
@@ -1080,11 +1080,11 @@ const Stage = (function stage() {
 const Renderer = (function renderer() {
   let dirty = true;
 
-  function renderBackpack() {
+  function renderBag() {
     const $ = window.jQuery;
     let html = '';
 
-    Deck.get().backpack.forEach((name) => {
+    Deck.get().bag.forEach((name) => {
       const loot = Loot.get(name);
       html += '<div class="row item">';
       html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
@@ -1092,7 +1092,7 @@ const Renderer = (function renderer() {
       html += '</div>';
     });
 
-    $('#backpack').html(html);
+    $('#bag').html(html);
   }
 
   function renderHero() {
@@ -1225,7 +1225,7 @@ const Renderer = (function renderer() {
     switch (Stage.get()) {
       case 'encumbered':
         html = '';
-        Deck.get().backpack.forEach((name) => {
+        Deck.get().bag.forEach((name) => {
           card = Decktet.get(name);
           loot = Loot.get(name);
           if (card && loot) {
@@ -1508,7 +1508,7 @@ const Renderer = (function renderer() {
   function render() {
     if (dirty) {
       renderHero();
-      renderBackpack();
+      renderBag();
       renderUsedItems();
       renderUsedGems();
       renderObstacles();
