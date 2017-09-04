@@ -155,18 +155,10 @@ a, a:visited {
 .sword3 { background-position: ($sprite-cols * 4) ($sprite-rows * 3); }
 .sword4 { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
 
-.stats {
-  font-size: 1rem;
-  font-variant: small-caps;
-  text-transform: capitalize;
-}
-
 .stats > * {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  font-size: 1.4rem;
-  line-height: 1.6rem;
 }
 
 .stats .stat {
@@ -249,6 +241,10 @@ a, a:visited {
 
 /* PLAYER */
 .player {
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-variant: small-caps;
+  text-transform: capitalize;
   padding: .5rem;
   border-bottom: 1px solid $stain-color;
 }
@@ -266,7 +262,8 @@ a, a:visited {
 
 .celestial {
   color: $ink-color;
-  line-height: 1;
+  font-size: 1.6rem;
+  line-height: 1.6rem;
 }
 
 .day .celestial:before {
@@ -275,11 +272,6 @@ a, a:visited {
 
 .night .celestial:before {
   content: '\00263e';
-}
-
-.in-game.stats {
-  margin: 0;
-  padding: 0;
 }
 
 .experience {
@@ -365,14 +357,6 @@ a, a:visited {
 }
 
 .sign .title {
-  font-weight: normal;
-  font-size: 1.5rem;
-  display: block;
-}
-
-.sign .title {
-  font-weight: normal;
-  font-size: 1.5rem;
   display: block;
 }
 
