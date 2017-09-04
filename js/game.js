@@ -280,7 +280,7 @@ const Loot = (function loot() {
       const how = [];
       card.suits.forEach((suit) => {
         switch (suit) {
-          case 'moons':
+          case 'suns':
             how.push('strong');
             break;
           case 'leaves':
