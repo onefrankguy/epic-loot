@@ -810,7 +810,7 @@ const Stage = (function stage() {
   }
 
   function onEncumbered(message) {
-    if (message === 'reroll') {
+    if (message === 'd6') {
       Deck.reset();
     }
 
@@ -1207,6 +1207,10 @@ const Renderer = (function renderer() {
     let loot;
 
     switch (Stage.get()) {
+      case 'encumbered':
+        sign1 = '<div class="sign"></div>';
+        break;
+
       case 'choice':
       case 'combat':
         sign1 = renderItem(obstacles[0], undefined, mini);
@@ -1382,20 +1386,6 @@ const Renderer = (function renderer() {
     }
   }
 
-  function renderButtons() {
-    const $ = window.jQuery;
-
-    switch (Stage.get()) {
-      case 'encumbered':
-        $('#buttons').remove('hidden');
-        break;
-
-      default:
-        $('#buttons').add('hidden');
-        break;
-    }
-  }
-
   function render() {
     if (dirty) {
       renderHero();
@@ -1408,7 +1398,6 @@ const Renderer = (function renderer() {
       renderLevelUp();
       renderNarrative();
       renderButton();
-      renderButtons();
       dirty = false;
     }
 
@@ -1452,11 +1441,6 @@ const Game = (function game() {
 
   function onChoice(element) {
     Stage.next(element.unwrap().id);
-    Renderer.invalidate();
-  }
-
-  function onReroll() {
-    Stage.next('reroll');
     Renderer.invalidate();
   }
 
@@ -1535,7 +1519,6 @@ const Game = (function game() {
     $('#button').touch(undefined, onButton);
     $('#sign1').touch(undefined, onChoice);
     $('#sign2').touch(undefined, onChoice);
-    $('#reroll').touch(undefined, onReroll);
     $('#d6').touch(undefined, onD6);
 
     $(window).on('hashchange', onHashChange);
