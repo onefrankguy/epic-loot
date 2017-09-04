@@ -857,9 +857,12 @@ const Stage = (function stage() {
 
     if (message === 'd6') {
       const attributes = Decktet.attributes();
-      const index = Math.floor(PRNG.random() * attributes.length);
+      PRNG.shuffle(attributes);
       part[0] = 'gems';
-      part[1] = attributes[index];
+      part[1] = attributes.pop();
+      while (part[1] && Gems.count(part[1]) <= 0) {
+        part[1] = attributes.pop();
+      }
     }
 
     if (part[0] === 'gems') {
@@ -1347,11 +1350,11 @@ const Renderer = (function renderer() {
         break;
 
       case 'combat':
-        if (Obstacles.defeated()) {
-          html = 'loot';
-        }
         if (Gems.size() <= 0) {
           html = 'flee';
+        }
+        if (Obstacles.defeated()) {
+          html = 'loot';
         }
         break;
 
