@@ -1289,7 +1289,7 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for epic loot.';
+        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for <span class="iconic">epic loot</span>.';
         break;
 
       case 'choice':
@@ -1326,15 +1326,15 @@ const Renderer = (function renderer() {
         break;
 
       case 'level-up':
-        html = 'You have gained in experience.';
+        html = 'You have gained experience. Level up!';
         break;
 
       case 'victory':
-        html = 'You are victorious.';
+        html = 'You are victorious! You heft your bag of <span class="iconic">epic loot</span> and realize&hellip...;';
         break;
 
       case 'madness':
-        html = 'The monsters eat your dreams and you descend into madness.';
+        html = 'The monsters chew a hole in your bag and take all your <span class="iconic">epic loot</span>. But that&rsquo;s okay. You where starting to feel like&hellip;';
         break;
 
       default:

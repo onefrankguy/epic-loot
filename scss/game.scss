@@ -342,15 +342,6 @@ a, a:visited {
   padding-bottom: 2rem;
 }
 
-/* FLAVOR */
-.flavor.title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-variant: small-caps;
-  text-transform: capitalize;
-}
-
 /* SIGNS */
 #signpost {
   justify-content: space-around;
@@ -542,6 +533,12 @@ a, a:visited {
   padding: .5rem;
   color: $ink-color;
   border: 4px double currentColor;
+}
+
+.flavor .iconic {
+  font-weight: bold;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
 }
 
 /* PATTERNS */
