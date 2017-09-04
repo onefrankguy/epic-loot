@@ -545,27 +545,9 @@ a, a:visited {
 }
 
 /* PATTERNS */
-
-.stars {
-  /* http://lea.verou.me/css3patterns/#starry-night */
-  background-color:black;
-  background-image:
-  radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-  radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-  radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-  radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
-  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-}
-
 .paper {
-  /* http://lea.verou.me/css3patterns/#microbial-mat */
-  background:
-  radial-gradient(circle at 0% 50%, transparent  9px, $stain-color 10px, transparent 11px) 0px 10px,
-  radial-gradient(at 100% 100%, transparent 9px, $stain-color 10px, transparent 11px), $map-color;
-  background-size: 20px 20px;
-  background: $map-color;
   /* https://www.sitepoint.com/pure-css3-paper-curls/ */
+  background: $map-color;
   border: 1px solid $stain-color;
   position: relative;
   box-shadow: 0 0 5px rgba(0,0,0,.4), inset 0 0 50px rgba(0,0,0,.3);
