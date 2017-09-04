@@ -164,7 +164,7 @@ a, a:visited {
 .stats > * {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-end;
   font-size: 1.4rem;
   line-height: 1.6rem;
 }
@@ -249,9 +249,13 @@ a, a:visited {
 
 /* PLAYER */
 .player {
-  align-items: center;
   padding: .5rem;
   border-bottom: 1px solid $stain-color;
+}
+
+.tracker {
+  flex-grow: 1;
+  margin-left: 1rem;
 }
 
 #celestial-progress {
@@ -261,7 +265,7 @@ a, a:visited {
 
 .celestial {
   color: $ink-color;
-  align-self: flex-end;
+  line-height: 1;
 }
 
 .day .celestial:before {
@@ -278,9 +282,7 @@ a, a:visited {
 }
 
 .experience {
-  justify-content: space-around;
   flex-grow: 1;
-  margin-left: 1rem;
 }
 
 .experience > .points {
@@ -592,11 +594,13 @@ a, a:visited {
 
 /* DICE */
 .dice {
+  display: flex;
+  align-items: center;
   margin-left: .5rem;
 }
 .d1, .d2, .d3, .d4 {
   position: relative;
-  display: block;
+  display: inline-block;
   width: 2.5rem;
   height: 2.5rem;
   background: white;
