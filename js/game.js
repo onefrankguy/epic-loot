@@ -465,9 +465,6 @@ const Personalities = (function personalities() {
 
   function reset() {
     cards = Decktet.personalities();
-    remove('sailor');
-    remove('soldier');
-    remove('diplomat');
     PRNG.shuffle(cards);
   }
 
@@ -486,6 +483,10 @@ const Events = (function events() {
     return cards.pop();
   }
 
+  function size() {
+    return cards.length;
+  }
+
   function reset() {
     cards = Decktet.events();
     PRNG.shuffle(cards);
@@ -493,6 +494,7 @@ const Events = (function events() {
 
   return {
     deal,
+    size,
     reset,
   };
 }());
@@ -1116,6 +1118,8 @@ const Renderer = (function renderer() {
   function renderExperience() {
     const $ = window.jQuery;
     const deck = Deck.get();
+    const day = Obstacles.stage() === 1;
+    const stage = Stage.get();
     let points = deck.discards;
     let needed = deck.discards + deck.cards;
     let percent = (points * 100) / needed;
@@ -1126,7 +1130,7 @@ const Renderer = (function renderer() {
       percent = 100;
     }
 
-    if (Obstacles.stage() === 1) {
+    if (day) {
       $('#world').add('day');
       $('#world').remove('night');
     } else {
@@ -1139,6 +1143,21 @@ const Renderer = (function renderer() {
     $('#this-level').html(deck.attributes.length + 1);
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
+
+    if (stage === 'encumbered' || stage === 'choice') {
+      if (day) {
+        needed = Decktet.events().length - 1;
+        points = needed - Events.size();
+      } else {
+        needed = Decktet.locations().length - 1;
+        points = needed - Locations.size();
+      }
+      percent = (points * 100) / needed;
+      if (stage === 'encumbered') {
+        percent = 0;
+      }
+      $('#celestial-progress').style('width', `${percent}%`);
+    }
   }
 
   function renderItem(card, loot, mini) {
