@@ -1549,31 +1549,23 @@ const Game = (function game() {
     color = hash;
   }
 
-  function onGems(element) {
+  function setPicked(element) {
     element.add('picked');
   }
 
-  function offGems(element) {
+  function onGems(element) {
     element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
   }
 
   function onButton(element) {
-    element.add('picked');
-  }
-
-  function offButton(element) {
     element.remove('picked');
     Stage.next('items');
     Renderer.invalidate();
   }
 
   function onChoice(element) {
-    element.add('picked');
-  }
-
-  function offChoice(element) {
     element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
@@ -1588,10 +1580,6 @@ const Game = (function game() {
   }
 
   function onD6(element) {
-    element.add('picked');
-  }
-
-  function offD6(element) {
     let html = '';
     html += `<span class="${rollDice()}"></span>`;
     html += `<span class="${rollDice()}"></span>`;
@@ -1601,10 +1589,6 @@ const Game = (function game() {
   }
 
   function onLevelUp(element) {
-    element.add('picked');
-  }
-
-  function offLevelUp(element) {
     element.remove('picked');
     Stage.next(element.unwrap().id);
     Renderer.invalidate();
@@ -1652,14 +1636,14 @@ const Game = (function game() {
     const $ = window.jQuery;
 
     Decktet.attributes().forEach((name) => {
-      $(`#gems-${name}`).touch(onGems, offGems);
-      $(`#level-${name}`).touch(onLevelUp, offLevelUp);
+      $(`#gems-${name}`).touch(setPicked, onGems);
+      $(`#level-${name}`).touch(setPicked, onLevelUp);
     });
 
-    $('#button').touch(onButton, offButton);
-    $('#sign1').touch(onChoice, offChoice);
-    $('#sign2').touch(onChoice, offChoice);
-    $('#d6').touch(onD6, offD6);
+    $('#button').touch(setPicked, onButton);
+    $('#sign1').touch(setPicked, onChoice);
+    $('#sign2').touch(setPicked, onChoice);
+    $('#d6').touch(setPicked, onD6);
 
     $(window).on('hashchange', onHashChange);
 
