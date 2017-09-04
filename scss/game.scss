@@ -22,7 +22,7 @@ white       - rgb(222, 238, 214)
 http://pixeljoint.com/forum/forum_posts.asp?TID=12795
 */
 $map-color: rgb(241, 233, 210);
-$stain-color: rgb(139, 113, 80);
+$stain-color: rgb(133, 104, 43);
 $ink-color: rgb(29, 0, 41);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
@@ -137,7 +137,7 @@ a, a:visited {
 .bow1 { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
 /* HELMETS */
 .helmet0 { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
-.helmet1 { background-position: ($sprite-cols * 5) ($sprite-rows * 1); }
+.helmet1 { background-position: ($sprite-cols * 6) ($sprite-rows * 1); }
 .helmet2 { background-position: ($sprite-cols * 6) ($sprite-rows * 2); }
 .helmet3 { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
 .helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 4); }
