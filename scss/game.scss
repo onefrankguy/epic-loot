@@ -113,6 +113,7 @@ a, a:visited {
 .armour1 { background-position: ($sprite-cols * 1) ($sprite-rows * 0); }
 .armour2 { background-position: ($sprite-cols * 2) ($sprite-rows * 0); }
 .armour3 { background-position: ($sprite-cols * 3) ($sprite-rows * 0); }
+
 /* BOTTLES */
 .bottle0 { background-position: ($sprite-cols * 0) ($sprite-rows * 4); }
 .bottle1 { background-position: ($sprite-cols * 1) ($sprite-rows * 4); }
@@ -120,22 +121,27 @@ a, a:visited {
 .bottle3 { background-position: ($sprite-cols * 3) ($sprite-rows * 4); }
 .bottle4 { background-position: ($sprite-cols * 4) ($sprite-rows * 4); }
 .bottle5 { background-position: ($sprite-cols * 5) ($sprite-rows * 4); }
+
 /* BOWS */
 .bow0 { background-position: ($sprite-cols * 4) ($sprite-rows * 0); }
 .bow1 { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
+
 /* HELMETS */
 .helmet0 { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
 .helmet1 { background-position: ($sprite-cols * 6) ($sprite-rows * 1); }
 .helmet2 { background-position: ($sprite-cols * 6) ($sprite-rows * 2); }
 .helmet3 { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
 .helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 4); }
+
 /* MUSHROOMS */
 .mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
+
 /* STAVES */
 .staff0 { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
 .staff1 { background-position: ($sprite-cols * 7) ($sprite-rows * 1); }
 .staff2 { background-position: ($sprite-cols * 7) ($sprite-rows * 2); }
 .staff3 { background-position: ($sprite-cols * 7) ($sprite-rows * 3); }
+
 /* SWORDS */
 .sword0 { background-position: ($sprite-cols * 1) ($sprite-rows * 3); }
 .sword1 { background-position: ($sprite-cols * 2) ($sprite-rows * 3); }
@@ -143,20 +149,19 @@ a, a:visited {
 .sword3 { background-position: ($sprite-cols * 4) ($sprite-rows * 3); }
 .sword4 { background-position: ($sprite-cols * 5) ($sprite-rows * 3); }
 
-.stats > * {
-  display: flex;
-  flex-direction: column;
+.stats .col  {
   justify-content: flex-end;
+}
+
+.stats .gem,
+.stats .col + .col {
+  margin-left: 1rem;
 }
 
 .stats .stat {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.stats div + div {
-  margin-left: 1rem;
 }
 
 .gem {
@@ -166,10 +171,6 @@ a, a:visited {
   border: 1px solid $ink-color;
   border-radius: 50%;
   background: currentColor;
-}
-
-.stats .gem {
-  margin-left: 1rem;
 }
 
 /* GAME */
@@ -212,23 +213,18 @@ a, a:visited {
   padding: .5rem;
 }
 
-.backpack .item {
-  color: $ink-color;
-  align-items: center;
-}
-
-.backpack .name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .backpack .icon {
   width: $base-font-size * 1.5;
   height: $base-font-size * 1.5;
   max-width: 32px;
   max-height: 32px;
   margin-right: .5rem;
+}
+
+.backpack .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* PLAYER */
@@ -252,7 +248,6 @@ a, a:visited {
 }
 
 .celestial {
-  color: $ink-color;
   font-size: 1.6rem;
   line-height: 1.6rem;
 }
@@ -279,12 +274,10 @@ a, a:visited {
 }
 
 .experience > .levels {
-  justify-content: center;
   align-items: center;
 }
 
 .experience > .levels > .progress {
-  display: flex;
   flex-grow: 1;
   border: 1px solid $ink-color;
   margin: 0 1rem;
@@ -303,7 +296,6 @@ a, a:visited {
 #used-gems {
   display: flex;
   flex-flow: row wrap;
-  align-content: flex-start;
   width: $touch-size;
   margin-top: .5rem;
 }
@@ -315,7 +307,6 @@ a, a:visited {
 }
 
 #used-items {
-  align-items: center;
   min-height: $touch-size;
 }
 
@@ -337,8 +328,6 @@ a, a:visited {
 
 .sign {
   position: relative;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
 }
@@ -360,9 +349,6 @@ a, a:visited {
   position: absolute;
   right: 0;
   bottom: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
 }
 
 .mini.sign .gems {
@@ -383,12 +369,12 @@ a, a:visited {
   border: 1px solid $metal-color;
   border-bottom-right-radius: 33%;
   border-top-left-radius: 33%;
+  opacity: .8;
 }
 
 .mini.sign .value {
   left: 0;
   right: auto;
-  opacity: .8;
 }
 
 .mini.sign.loot .value, {

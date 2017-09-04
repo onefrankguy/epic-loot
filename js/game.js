@@ -1156,7 +1156,7 @@ const Renderer = (function renderer() {
   }
 
   function renderItem(card, loot, mini) {
-    let klass = 'sign';
+    let klass = 'col sign';
     if (mini || loot) {
       klass += ' mini';
     }
@@ -1180,7 +1180,7 @@ const Renderer = (function renderer() {
       html += `<span class="iconic title">${card.title}</span>`;
       html += '</span>';
       html += '</div>';
-      html += '<div class="gems">';
+      html += '<div class="row gems">';
       card.suits.forEach((suit) => {
         html += `<span class="${suit} gem"></span>`;
       });
@@ -1287,7 +1287,7 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        sign1 = '<div class="sign"></div>';
+        sign1 = '<div class="col sign"></div>';
         break;
 
       case 'choice':
