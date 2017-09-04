@@ -255,9 +255,8 @@ a, a:visited {
 }
 
 #celestial-progress {
-  display: flex;
-  justify-content: flex-end;
-  overflow: hidden;
+  display: block;
+  text-align: end;
 }
 
 .celestial {
@@ -275,6 +274,7 @@ a, a:visited {
 }
 
 .experience {
+  justify-content: flex-end;
   flex-grow: 1;
 }
 
@@ -579,8 +579,7 @@ a, a:visited {
 
 /* DICE */
 .dice {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-left: .5rem;
 }
 .d1, .d2, .d3, .d4 {
