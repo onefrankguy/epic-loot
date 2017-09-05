@@ -181,8 +181,7 @@ const PRNG = (function prng() {
 
 const Loot = (function loot() {
   const has = Object.prototype.hasOwnProperty;
-  let dayPlaces = [];
-  let nightPlaces = [];
+  let places = [];
   let actions = [];
   let helmets = [];
   let armour = [];
@@ -243,28 +242,19 @@ const Loot = (function loot() {
     return things[index];
   }
 
-  function getWhere(name) {
-    if (nightPlaces.length <= 0) {
-      nightPlaces = [
-        'stumble through the darkened forest',
-        'push your way through tangled branches',
-      ];
-      PRNG.shuffle(nightPlaces);
-    }
-
-    if (dayPlaces.length <= 0) {
-      dayPlaces = [
+  function getWhere() {
+    if (places.length <= 0) {
+      places = [
+        'wonder through the forest',
         'come to a clearing in the forest',
         'halt at a glade in the forest',
         'arrive at a fork in the road',
+        'push your way through tangled branches',
       ];
-      PRNG.shuffle(dayPlaces);
+      PRNG.shuffle(places);
     }
 
-    if (Decktet.locations().indexOf(name) > -1) {
-      return nightPlaces.pop();
-    }
-    return dayPlaces.pop();
+    return places.pop();
   }
 
   function getWhat() {
@@ -387,7 +377,7 @@ const Loot = (function loot() {
   function generate(name) {
     const item = getVariation(name);
 
-    item.where = getWhere(name);
+    item.where = getWhere();
     item.what = getWhat();
     item.how = getHow(name);
 
@@ -433,8 +423,7 @@ const Loot = (function loot() {
   }
 
   function reset() {
-    dayPlaces = [];
-    nightPlaces = [];
+    places = [];
     actions = [];
     helmets = [];
     armour = [];
