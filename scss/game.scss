@@ -133,8 +133,9 @@ a, a:visited {
 .helmet3 { background-position: ($sprite-cols * 6) ($sprite-rows * 3); }
 .helmet4 { background-position: ($sprite-cols * 6) ($sprite-rows * 4); }
 
-/* MUSHROOMS */
+/* LOOT */
 .mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 3); }
+.gold { background-position: ($sprite-cols * 7) ($sprite-rows * 4); }
 
 /* STAVES */
 .staff0 { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
@@ -355,6 +356,10 @@ a, a:visited {
   left: 0;
   right: auto;
   opacity: .8;
+}
+
+.mini.sign .gems.gold {
+  display: none;
 }
 
 .sign .value {

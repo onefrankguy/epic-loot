@@ -196,6 +196,10 @@ const Loot = (function loot() {
       return { type: 'mushrooms', variety: '', title: 'mushrooms', article: 'some', pronoun: 'them' };
     }
 
+    if (Decktet.locations().indexOf(name) > -1) {
+      return { type: 'gold', variety: '', title: 'gold', article: 'some', pronoun: 'it' };
+    }
+
     let type = card.suits[1];
     if (!type) {
       type = card.suits[0];
@@ -1154,6 +1158,11 @@ const Renderer = (function renderer() {
       icon = `${loot.type}${loot.variety}`;
     }
 
+    let type = 'gems';
+    if (loot && loot.type === 'gold') {
+      type += ' gold';
+    }
+
     let html;
     if (card) {
       html = '';
@@ -1165,7 +1174,7 @@ const Renderer = (function renderer() {
       html += `<span class="iconic title">${card.title}</span>`;
       html += '</span>';
       html += '</div>';
-      html += '<div class="row gems">';
+      html += `<div class="row ${type}">`;
       card.suits.forEach((suit) => {
         html += `<span class="${suit} gem"></span>`;
       });
@@ -1284,13 +1293,9 @@ const Renderer = (function renderer() {
         break;
 
       case 'loot':
-        if (Obstacles.stage() === 1) {
-          card = Decktet.get(obstacles[0].name);
-          loot = Loot.get(obstacles[0].name);
-          sign1 = renderItem(card, loot, true);
-        } else {
-          sign1 = renderItem(obstacles[0], undefined, true);
-        }
+        card = Decktet.get(obstacles[0].name);
+        loot = Loot.get(obstacles[0].name);
+        sign1 = renderItem(card, loot, true);
         break;
 
       default:
@@ -1391,10 +1396,8 @@ const Renderer = (function renderer() {
         loot = Loot.get(obstacles[0].name);
         if (loot.type === 'mushrooms') {
           html = 'The mushrooms look delicious.';
-        } else if (Obstacles.stage() === 1) {
-          html = `You find ${loot.article} ${loot.title}!`;
         } else {
-          html = 'It&rsquo;s too dark to find any loot.';
+          html = `You find ${loot.article} ${loot.title}!`;
         }
         break;
 
@@ -1407,7 +1410,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'madness':
-        html = 'The monsters chew a hole in your bag and take some of your <span class="iconic">epic loot</span>. But that&rsquo;s okay. You where starting to feel like&hellip;';
+        html = 'The monsters chew a hole in your bag and take some of your <span class="iconic">epic loot</span>. But that&rsquo;s okay. You were starting to feel like&hellip;';
         break;
 
       default:
@@ -1436,11 +1439,7 @@ const Renderer = (function renderer() {
         break;
 
       case 'loot':
-        if (Obstacles.stage() === 1) {
-          html = 'take';
-        } else {
-          html = 'walk';
-        }
+        html = 'take';
         break;
 
       case 'victory':
