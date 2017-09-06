@@ -196,7 +196,7 @@ const Loot = (function loot() {
     }
 
     if (Decktet.locations().indexOf(name) > -1) {
-      return { type: 'gold', variety: '', title: 'gold', article: 'some', pronoun: 'it' };
+      return { type: 'gold', variety: '', title: 'some gold', article: '', pronoun: '' };
     }
 
     let type = card.suits[1];
@@ -1053,9 +1053,10 @@ const Renderer = (function renderer() {
 
   function renderBag() {
     const $ = window.jQuery;
+    const swag = Deck.get().bag.concat(['origin']);
     let html = '';
 
-    Deck.get().bag.forEach((name) => {
+    swag.forEach((name) => {
       const loot = Loot.get(name);
       html += '<div class="row item">';
       html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
