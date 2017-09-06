@@ -833,6 +833,11 @@ const Stage = (function stage() {
     Gems.reset();
 
     usedGems = [];
+    for (let i = 0; i < Gems.max(); i += 1) {
+      usedGems = usedGems.concat(Decktet.attributes());
+    }
+    PRNG.shuffle(usedGems);
+
     usedItems = [];
     state = 'encumbered';
   }
@@ -846,6 +851,7 @@ const Stage = (function stage() {
       Deck.get().bag.forEach((name) => {
         Personalities.remove(name);
       });
+      usedGems = [];
       Deck.shuffle();
       Obstacles.deal();
       state = 'choice';
@@ -1300,6 +1306,12 @@ const Renderer = (function renderer() {
   function renderGems() {
     const $ = window.jQuery;
     const gems = Gems.get();
+
+    if (Stage.get() === 'encumbered') {
+      $('#gems').add('invisible');
+    } else {
+      $('#gems').remove('invisible');
+    }
 
     Object.keys(gems).forEach((type) => {
       let html = '';

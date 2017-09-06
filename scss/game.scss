@@ -649,6 +649,9 @@ abbr[title="and"] {
 .hidden {
   display: none !important;
 }
+.invisible {
+  visibility: hidden !important;
+}
 
 .pixelated {
   image-rendering: optimizeSpeed;
