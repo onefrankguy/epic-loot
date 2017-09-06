@@ -48,68 +48,68 @@ const Decktet = (function decktet() {
 
   function personalities() {
     return [
-      'excuse', 'author', 'painter', 'savage', 'sailor', 'soldier', 'lunatic',
-      'penitent', 'diplomat', 'merchant', 'watchman', 'light keeper', 'consul',
-      'bard', 'huntress',
+      'exc', 'aut', 'pai', 'sav', 'sai', 'sol', 'lun',
+      'pen', 'dip', 'mer', 'wat', 'lgt', 'con',
+      'bar', 'hun',
     ];
   }
 
-  cards.excuse = { value: 0, suits: [] };
-  cards.author = { value: 2, suits: ['moons', 'knots'] };
-  cards.painter = { value: 3, suits: ['suns', 'knots'] };
-  cards.savage = { value: 3, suits: ['leaves', 'wyrms'] };
-  cards.sailor = { value: 4, suits: ['waves', 'leaves'] };
-  cards.soldier = { value: 5, suits: ['wyrms', 'knots'] };
-  cards.lunatic = { value: 6, suits: ['moons', 'waves'] };
-  cards.penitent = { value: 6, suits: ['suns', 'wyrms'] };
-  cards.diplomat = { value: 8, suits: ['moons', 'suns'] };
-  cards.merchant = { value: 9, suits: ['leaves', 'knots'] };
-  cards.watchman = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
-  cards['light keeper'] = { value: 10, suits: ['suns', 'waves', 'knots'] };
-  cards.consul = { value: 11, suits: ['moons', 'waves', 'knots'] };
-  cards.bard = { value: 12, suits: ['suns'] };
-  cards.huntress = { value: 12, suits: ['moons'] };
+  cards.exc = { value: 0, suits: [] };
+  cards.aut = { value: 2, suits: ['moons', 'knots'] };
+  cards.pai = { value: 3, suits: ['suns', 'knots'] };
+  cards.sav = { value: 3, suits: ['leaves', 'wyrms'] };
+  cards.sai = { value: 4, suits: ['waves', 'leaves'] };
+  cards.sol = { value: 5, suits: ['wyrms', 'knots'] };
+  cards.lun = { value: 6, suits: ['moons', 'waves'] };
+  cards.pen = { value: 6, suits: ['suns', 'wyrms'] };
+  cards.dip = { value: 8, suits: ['moons', 'suns'] };
+  cards.mer = { value: 9, suits: ['leaves', 'knots'] };
+  cards.wat = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
+  cards.lgt = { value: 10, suits: ['suns', 'waves', 'knots'] };
+  cards.con = { value: 11, suits: ['moons', 'waves', 'knots'] };
+  cards.bar = { value: 12, suits: ['suns'] };
+  cards.hun = { value: 12, suits: ['moons'] };
 
   // If you don't persuade the personality you encouter...
   function events() {
     return [
-      'journey', 'battle', 'discovery', 'market', 'chance meeting', 'betrayal',
-      'pact', 'harvest', 'rite', 'calamity', 'windfall',
+      'jou', 'bat', 'dis', 'mar', 'cha', 'bet',
+      'pac', 'har', 'rit', 'cal', 'win',
     ];
   }
 
-  cards.journey = { value: 3, suits: ['moons', 'waves'] };
-  cards.battle = { value: 4, suits: ['wyrms', 'knots'] };
-  cards.discovery = { value: 5, suits: ['suns', 'waves'] };
-  cards.market = { value: 6, suits: ['leaves', 'knots'] };
-  cards['chance meeting'] = { value: 7, suits: ['moons', 'leaves'] };
-  cards.betrayal = { value: 8, suits: ['wyrms', 'knots'] };
-  cards.pact = { value: 9, suits: ['moons', 'suns'] };
-  cards.harvest = { value: 10, suits: ['moons', 'suns', 'leaves'] };
-  cards.rite = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
-  cards.calamity = { value: 12, suits: ['wyrms'] };
-  cards.windfall = { value: 12, suits: ['knots'] };
+  cards.jou = { value: 3, suits: ['moons', 'waves'] };
+  cards.bat = { value: 4, suits: ['wyrms', 'knots'] };
+  cards.dis = { value: 5, suits: ['suns', 'waves'] };
+  cards.mar = { value: 6, suits: ['leaves', 'knots'] };
+  cards.cha = { value: 7, suits: ['moons', 'leaves'] };
+  cards.bet = { value: 8, suits: ['wyrms', 'knots'] };
+  cards.pac = { value: 9, suits: ['moons', 'suns'] };
+  cards.har = { value: 10, suits: ['moons', 'suns', 'leaves'] };
+  cards.rit = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
+  cards.cal = { value: 12, suits: ['wyrms'] };
+  cards.win = { value: 12, suits: ['knots'] };
 
   // Any personality you choose not to persuade or event you choose not to
   // assist is consumed by the ???. It mixes with the locations to become an
   // obstacle you must face in the second half of the game.
   function locations() {
     return [
-      'desert', 'mountain', 'forest', 'castle', 'cave', 'mill', 'darkness',
-      'borderland', 'island', 'window', 'sea', 'end',
+      'des', 'mou', 'for', 'cas', 'cav', 'mil', 'drk',
+      'bor', 'isl', 'dow', 'sea', 'end',
     ];
   }
 
-  cards.desert = { value: 2, suits: ['suns', 'wyrms'] };
-  cards.mountain = { value: 4, suits: ['moons', 'suns'] };
-  cards.forest = { value: 5, suits: ['moons', 'leaves'] };
-  cards.castle = { value: 7, suits: ['suns', 'knots'] };
-  cards.cave = { value: 7, suits: ['waves', 'wyrms'] };
-  cards.mill = { value: 8, suits: ['waves', 'leaves'] };
-  cards.darkness = { value: 9, suits: ['waves', 'wyrms'] };
-  cards.borderland = { value: 10, suits: ['waves', 'leaves', 'wyrms'] };
-  cards.island = { value: 11, suits: ['suns', 'waves', 'wyrms'] };
-  cards.window = { value: 11, suits: ['suns', 'leaves', 'knots'] };
+  cards.des = { value: 2, suits: ['suns', 'wyrms'] };
+  cards.mou = { value: 4, suits: ['moons', 'suns'] };
+  cards.for = { value: 5, suits: ['moons', 'leaves'] };
+  cards.cas = { value: 7, suits: ['suns', 'knots'] };
+  cards.cav = { value: 7, suits: ['waves', 'wyrms'] };
+  cards.mil = { value: 8, suits: ['waves', 'leaves'] };
+  cards.drk = { value: 9, suits: ['waves', 'wyrms'] };
+  cards.bor = { value: 10, suits: ['waves', 'leaves', 'wyrms'] };
+  cards.isl = { value: 11, suits: ['suns', 'waves', 'wyrms'] };
+  cards.dow = { value: 11, suits: ['suns', 'leaves', 'knots'] };
   cards.sea = { value: 12, suits: ['waves'] };
   cards.end = { value: 12, suits: ['leaves'] };
 
