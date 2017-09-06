@@ -624,17 +624,6 @@ const Obstacles = (function obstacles() {
     return challenger && challenger.value <= 0;
   }
 
-  function remaining() {
-    const last = active.length > 0 ? 1 : 0;
-    if (phase === 1) {
-      return Personalities.size() + Locations.size() + last;
-    }
-    if (phase === 2) {
-      return Locations.size() + last;
-    }
-    return last;
-  }
-
   function stage() {
     return phase;
   }
@@ -655,7 +644,6 @@ const Obstacles = (function obstacles() {
     pick,
     use,
     defeated,
-    remaining,
     stage,
     reset,
   };
