@@ -577,22 +577,21 @@ const Obstacles = (function obstacles() {
   }
 
   function pick(name) {
-    if (challenger) {
+    if (challenger || active.length < 2) {
       return;
     }
 
-    let index;
-    for (index = 0; index < active.length; index += 1) {
-      if (active[index].name === name) {
-        break;
-      }
+    if (active[0].name === name) {
+      Locations.add(active[1].name);
+      challenger = active[0];
     }
 
-    if (index < active.length) {
-      challenger = active[index];
-      active = active.splice(index, 1);
+    if (active[1].name === name) {
       Locations.add(active[0].name);
+      challenger = active[1];
     }
+
+    active = [challenger];
   }
 
   function use(name) {
