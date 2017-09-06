@@ -127,9 +127,7 @@ const PRNG = (function prng() {
   let state;
 
   function seed(value) {
-    if (value !== undefined) {
-      state = parseInt(value, 10);
-    }
+    state = parseInt(value, 10);
 
     if (isNaN(state)) {
       state = Math.floor(Math.random() * max);
@@ -523,7 +521,7 @@ const Obstacles = (function obstacles() {
 
   function deal() {
     active = [];
-    challenger = undefined;
+    challenger;
 
     if (phase === 1) {
       const per = Personalities.deal();
