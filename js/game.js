@@ -521,7 +521,7 @@ const Obstacles = (function obstacles() {
 
   function deal() {
     active = [];
-    challenger;
+    challenger = undefined;
 
     if (phase === 1) {
       const per = Personalities.deal();
