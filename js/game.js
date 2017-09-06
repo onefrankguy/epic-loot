@@ -198,21 +198,17 @@ const Loot = (function loot() {
       type = card.suits[0];
     }
 
-    if (type === 'wyrms' || type === 'moons') {
-      type = 'helmet';
-    } else if (type === 'suns') {
-      type = 'armour';
-    } else if (type === 'knots') {
-      type = 'sword';
-    } else if (type === 'leaves') {
-      type = 'bow';
-    } else if (type === 'waves') {
-      type = 'staff';
-    } else {
-      type = 'bottle';
-    }
+    const loots = {
+      suns: 'armour',
+      knots: 'sword',
+      leaves: 'bow',
+      waves: 'staff',
+      wyrms: 'helmet',
+      moons: 'helmet',
+    };
 
-    if (card.value <= 1) {
+    type = loots[type];
+    if (!type || card.value <= 1) {
       type = 'bottle';
     }
 
