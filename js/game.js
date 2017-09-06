@@ -96,7 +96,7 @@ const Decktet = (function decktet() {
   function locations() {
     return [
       'desert', 'mountain', 'forest', 'castle', 'cave', 'mill', 'darkness',
-      'borderland', 'island', 'window', 'sea', 'origin', 'end',
+      'borderland', 'island', 'window', 'sea', 'end',
     ];
   }
 
@@ -111,12 +111,6 @@ const Decktet = (function decktet() {
   cards.island = { value: 11, suits: ['suns', 'waves', 'wyrms'] };
   cards.window = { value: 11, suits: ['suns', 'leaves', 'knots'] };
   cards.sea = { value: 12, suits: ['waves'] };
-
-  // The Origin marks the transition from the first half of the game to the
-  // second.
-  cards.origin = { value: 2, suits: ['waves', 'leaves'] };
-
-  // The End marks the end of the game.
   cards.end = { value: 12, suits: ['leaves'] };
 
   return {
@@ -481,21 +475,37 @@ const Events = (function events() {
 
 const Locations = (function locations() {
   let cards = [];
+  let discards = [];
+
+  function add(name) {
+    if (Decktet.locations().indexOf(name) > -1) {
+      discards.push(name);
+    }
+  }
+
+  function shuffle() {
+    cards = cards.concat(discards);
+    discards = [];
+    PRNG.shuffle(cards);
+  }
 
   function deal() {
     return cards.pop();
   }
 
   function size() {
-    return cards.length;
+    return cards.length + discards.length;
   }
 
   function reset() {
     cards = Decktet.locations();
+    discards = [];
     PRNG.shuffle(cards);
   }
 
   return {
+    add,
+    shuffle,
     deal,
     size,
     reset,
@@ -530,9 +540,20 @@ const Obstacles = (function obstacles() {
     }
 
     if (phase === 2) {
-      const loc = Locations.deal();
-      if (loc) {
-        active = [loc, loc];
+      let loc1 = Locations.deal();
+      if (!loc1) {
+        Locations.shuffle();
+        loc1 = Locations.deal();
+      }
+
+      let loc2 = Locations.deal();
+      if (!loc2) {
+        Locations.shuffle();
+        loc2 = Locations.deal();
+      }
+
+      if (loc1 && loc2) {
+        active = [loc1, loc2];
       }
     }
 
@@ -566,7 +587,7 @@ const Obstacles = (function obstacles() {
       return;
     }
 
-    let index = 0;
+    let index;
     for (index = 0; index < active.length; index += 1) {
       if (active[index].name === name) {
         break;
@@ -576,6 +597,7 @@ const Obstacles = (function obstacles() {
     if (index < active.length) {
       challenger = active[index];
       active = active.splice(index, 1);
+      Locations.add(active[0].name);
     }
   }
 
@@ -1053,7 +1075,7 @@ const Renderer = (function renderer() {
 
   function renderBag() {
     const $ = window.jQuery;
-    const swag = Deck.get().bag.concat(['origin']);
+    const swag = Deck.get().bag.concat(['end']);
     let html = '';
 
     swag.forEach((name) => {
@@ -1270,7 +1292,7 @@ const Renderer = (function renderer() {
       case 'choice':
       case 'combat':
         sign1 = renderItem(obstacles[0], undefined, mini);
-        if (mini && Obstacles.stage() === 1) {
+        if (mini) {
           sign2 = renderItem(obstacles[1], undefined, mini);
         }
         break;
@@ -1355,7 +1377,7 @@ const Renderer = (function renderer() {
         if (Obstacles.stage() === 1) {
           html = `You ${loot.where}. Wild animals block your path. You&rsquo;ll have to scare one of them away. Pick an animal or roll the dice.`;
         } else {
-          html = `You ${loot.where}. A monster blocks your path. You&rsquo;ll have to scare it away. Pick the monster or roll the dice.`;
+          html = `You ${loot.where}. Monsters block your path. You&rsquo;ll have to scare once of them away. Pick a monster or roll the dice.`;
         }
         break;
 
