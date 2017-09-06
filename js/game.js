@@ -271,41 +271,28 @@ const Loot = (function loot() {
   function getHow(name) {
     const card = Decktet.get(name);
     if (card) {
-      const how = [];
-      card.suits.forEach((suit) => {
-        switch (suit) {
-          case 'suns':
-            how.push('strong');
-            break;
-          case 'leaves':
-            how.push('bold');
-            break;
-          case 'waves':
-            how.push('quick');
-            break;
-          case 'knots':
-            how.push('intelligent');
-            break;
-          case 'moons':
-            how.push('wilful');
-            break;
-          case 'wyrms':
-            how.push('charming');
-            break;
-          default:
-            break;
-        }
-      });
+      const verbs = {
+        suns: 'strong',
+        leaves: 'bold',
+        waves: 'quick',
+        knots: 'intelligent',
+        moons: 'wilful',
+        wyrms: 'charming',
+      };
 
+      const how = card.suits.map(suit => verbs[suit]);
       let text = '';
-      how.reverse();
+
       while (how.length > 0) {
-        text += ` ${how.pop()}`;
-        if (how.length > 1) {
-          text += ',';
-        }
-        if (how.length === 1) {
-          text += ' and';
+        const verb = how.shift();
+        if (verb) {
+          text += ` ${verb}`;
+          if (how.length > 1) {
+            text += ',';
+          }
+          if (how.length === 1) {
+            text += ' and';
+          }
         }
       }
 
