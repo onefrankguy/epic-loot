@@ -125,33 +125,15 @@ const Decktet = (function decktet() {
 
 const PRNG = (function prng() {
   const max = 2 ** 32;
-  let state;
-
-  function seed(value) {
-    state = parseInt(value, 10);
-
-    if (isNaN(state)) {
-      state = Math.floor(Math.random() * max);
-    }
-
-    return state;
-  }
+  let state = Math.floor(Math.random() * max);
 
   function random() {
-    if (state === undefined) {
-      seed();
-    }
-
     state += (state * state) | 5;
     return (state >>> 32) / max;
   }
 
   // https://bost.ocks.org/mike/shuffle/
   function shuffle(array) {
-    if (state === undefined) {
-      seed();
-    }
-
     let m = array.length;
     let t;
     let i;
@@ -166,7 +148,6 @@ const PRNG = (function prng() {
   }
 
   return {
-    seed,
     random,
     shuffle,
   };
