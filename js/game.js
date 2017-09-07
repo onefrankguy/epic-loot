@@ -1670,10 +1670,6 @@ const Game = (function game() {
 
   Fn.prototype.html = function html(value) {
     if (this.element) {
-      if (value === undefined) {
-        return this.element.innerHTML;
-      }
-
       this.element.innerHTML = value;
     }
 
