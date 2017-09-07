@@ -569,7 +569,7 @@ const Obstacles = (function obstacles() {
         active[i].title = animals.pop();
       } else {
         if (monsters.length <= 0) {
-          monsters = ['vampire bat', 'scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
+          monsters = ['vampire bat', 'mummy', 'ghost', 'skeleton', 'eye', 'octo'];
           PRNG.shuffle(monsters);
         }
         active[i].title = monsters.pop();
