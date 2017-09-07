@@ -95,11 +95,12 @@ const Decktet = (function decktet() {
   // obstacle you must face in the second half of the game.
   function locations() {
     return [
-      'des', 'mou', 'for', 'cas', 'cav', 'mil', 'drk',
-      'bor', 'isl', 'dow', 'sea', 'end',
+      'ori', 'des', 'mou', 'for', 'cas', 'cav', 'mil',
+      'drk', 'bor', 'isl', 'dow', 'sea', 'end',
     ];
   }
 
+  cards.ori = { value: 2, suits: ['waves', 'leaves'] };
   cards.des = { value: 2, suits: ['suns', 'wyrms'] };
   cards.mou = { value: 4, suits: ['moons', 'suns'] };
   cards.for = { value: 5, suits: ['moons', 'leaves'] };
@@ -539,15 +540,17 @@ const Obstacles = (function obstacles() {
         Locations.shuffle();
         loc1 = Locations.deal();
       }
+      if (loc1) {
+        active.push(loc1);
+      }
 
       let loc2 = Locations.deal();
       if (!loc2) {
         Locations.shuffle();
         loc2 = Locations.deal();
       }
-
-      if (loc1 && loc2) {
-        active = [loc1, loc2];
+      if (loc2) {
+        active.push(loc2);
       }
     }
 
@@ -577,7 +580,12 @@ const Obstacles = (function obstacles() {
   }
 
   function pick(name) {
-    if (challenger || active.length < 2) {
+    if (challenger || active.length < 1) {
+      return;
+    }
+
+    if (active.length < 2) {
+      challenger = active[0];
       return;
     }
 
@@ -865,27 +873,29 @@ const Stage = (function stage() {
 
   function onChoice(message) {
     const obstacles = Obstacles.get();
-
-    if (obstacles.length < 2) {
+    if (obstacles.length < 1) {
       return this;
     }
 
+    let index;
     if (message === 'd6') {
-      const index = Math.floor(PRNG.random() * 2);
-      Obstacles.pick(obstacles[index].name);
-      state = 'combat';
+      index = Math.floor(PRNG.random() * obstacles.length);
     }
-
     if (message === 'sign1') {
-      Obstacles.pick(obstacles[0].name);
-      state = 'combat';
+      index = 0;
     }
-
     if (message === 'sign2') {
-      Obstacles.pick(obstacles[1].name);
-      state = 'combat';
+      index = 1;
+    }
+    if (index === undefined) {
+      return this;
+    }
+    if (index >= obstacles.length) {
+      index = 0;
     }
 
+    Obstacles.pick(obstacles[index].name);
+    state = 'combat';
     return this;
   }
 
@@ -1131,26 +1141,27 @@ const Renderer = (function renderer() {
   }
 
   function renderItem(card, loot, mini) {
-    let klass = 'col sign';
-    if (mini || loot) {
-      klass += ' mini';
-    }
-    if (loot) {
-      klass += ' loot';
-    }
-
-    let icon = card.title;
-    if (loot) {
-      icon = `${loot.type}${loot.variety}`;
-    }
-
-    let type = 'gems';
-    if (loot && loot.type === 'gold') {
-      type += ' gold';
-    }
-
     let html;
+
     if (card) {
+      let klass = 'col sign';
+      if (mini || loot) {
+        klass += ' mini';
+      }
+      if (loot) {
+        klass += ' loot';
+      }
+
+      let icon = card.title;
+      if (loot) {
+        icon = `${loot.type}${loot.variety}`;
+      }
+
+      let type = 'gems';
+      if (loot && loot.type === 'gold') {
+        type += ' gold';
+      }
+
       html = '';
       html += `<div class="${klass}">`;
       html += `<span class="value">${card.value}</span>`;
@@ -1167,6 +1178,7 @@ const Renderer = (function renderer() {
       html += '</div>';
       html += '</div>';
     }
+
     return html;
   }
 
@@ -1270,11 +1282,20 @@ const Renderer = (function renderer() {
         sign1 = '<div class="col sign"></div>';
         break;
 
-      case 'choice':
       case 'combat':
         sign1 = renderItem(obstacles[0], undefined, mini);
         if (mini) {
           sign2 = renderItem(obstacles[1], undefined, mini);
+        }
+        break;
+
+      case 'choice':
+        sign1 = renderItem(obstacles[0], undefined, mini);
+        if (mini) {
+          sign2 = renderItem(obstacles[1], undefined, mini);
+        }
+        if (obstacles.length === 1) {
+          sign2 = sign1;
         }
         break;
 
