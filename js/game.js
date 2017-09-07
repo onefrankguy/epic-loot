@@ -1271,7 +1271,6 @@ const Renderer = (function renderer() {
   function renderObstacles() {
     const $ = window.jQuery;
     const obstacles = Obstacles.get();
-    const mini = obstacles.length > 1;
     let sign1;
     let sign2;
     let card;
@@ -1283,17 +1282,12 @@ const Renderer = (function renderer() {
         break;
 
       case 'combat':
-        sign1 = renderItem(obstacles[0], undefined, mini);
-        if (mini) {
-          sign2 = renderItem(obstacles[1], undefined, mini);
-        }
+        sign1 = renderItem(obstacles[0], undefined, false);
         break;
 
       case 'choice':
-        sign1 = renderItem(obstacles[0], undefined, mini);
-        if (mini) {
-          sign2 = renderItem(obstacles[1], undefined, mini);
-        }
+        sign1 = renderItem(obstacles[0], undefined, true);
+        sign2 = renderItem(obstacles[1], undefined, true);
         if (obstacles.length === 1) {
           sign2 = sign1;
         }
