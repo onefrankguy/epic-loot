@@ -22,8 +22,9 @@ white       - rgb(222, 238, 214)
 http://pixeljoint.com/forum/forum_posts.asp?TID=12795
 */
 $map-color: rgb(241, 233, 210);
-$stain-color: rgb(133, 104, 43);
+$stain-color: rgb(55, 30, 0);
 $ink-color: rgb(29, 0, 41);
+$progress-color: rgb(116, 86, 23);
 $metal-color: rgb(117, 113, 97);
 $moons-color: rgb(133, 149, 161);
 $suns-color: rgb(210, 125, 44);
@@ -140,7 +141,7 @@ a, a:visited {
   display: inline-block;
   height: 1.2rem;
   width: 1.2rem;
-  border: 1px solid $ink-color;
+  border: 1px solid $stain-color;
   border-radius: 50%;
   background: currentColor;
 }
@@ -180,7 +181,6 @@ a, a:visited {
 .bag {
   flex-grow: 1;
   min-width: 0;
-  color: $ink-color;
   border: 1px solid $stain-color;
   padding: .5rem;
 }
@@ -251,7 +251,7 @@ a, a:visited {
 
 .experience > .levels > .progress {
   flex-grow: 1;
-  border: 1px solid $ink-color;
+  border: 1px solid $stain-color;
   margin: 0 1rem;
   height: 1rem;
   border-radius: (1rem / 2);
@@ -260,7 +260,7 @@ a, a:visited {
 #xp-progress {
   width: 0%;
   display: inline-block;
-  background: $metal-color;
+  background: $progress-color;
   border-radius: (1rem / 2);
 }
 
@@ -341,7 +341,7 @@ a, a:visited {
   align-items: center;
   height: 2.4rem;
   width: 2.4rem;
-  border: 1px solid $metal-color;
+  border: 1px solid $stain-color;
   border-bottom-right-radius: 33%;
   border-top-left-radius: 33%;
   opacity: .8;
@@ -541,7 +541,7 @@ a, a:visited {
   width: 2.5rem;
   height: 2.5rem;
   background: white;
-  color: $ink-color;
+  color: $stain-color;
   border: 1px solid currentColor;
   opacity: .8;
 }
@@ -577,13 +577,13 @@ a, a:visited {
   left: .375rem;
 }
 .d3:after {
-  box-shadow: .55rem -.55rem 0 $ink-color;
+  box-shadow: .55rem -.55rem 0 currentColor;
 }
 .d4:before {
-  box-shadow: -1.1rem 0 0 $ink-color;
+  box-shadow: -1.1rem 0 0 currentColor;
 }
 .d4:after {
-  box-shadow: 1.1rem 0 0 $ink-color;
+  box-shadow: 1.1rem 0 0 currentColor;
 }
 .d1 { transform: rotate(7deg); }
 .d2 { transform: rotate(-14deg); }
