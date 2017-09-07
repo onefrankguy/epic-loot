@@ -238,7 +238,6 @@ const Loot = (function loot() {
         'come to a clearing in the forest',
         'halt at a glade in the forest',
         'arrive at a fork in the road',
-        'push your way through tangled branches',
       ];
       PRNG.shuffle(places);
     }
@@ -509,6 +508,8 @@ const Locations = (function locations() {
 
 const Obstacles = (function obstacles() {
   let phase = 1;
+  let animals = [];
+  let monsters = [];
   let active = [];
   let challenger;
 
@@ -557,24 +558,23 @@ const Obstacles = (function obstacles() {
     PRNG.shuffle(active);
     active = active.map(name => Decktet.get(name));
 
-    const low = (phase === 1) ? ['rat', 'rabbit'] : ['vampire bat', 'scorpion'];
-    PRNG.shuffle(low);
-
-    const med = (phase === 1) ? ['arachnid', 'bat'] : ['ghost', 'skeleton'];
-    PRNG.shuffle(med);
-
-    const high = (phase === 1) ? ['snake', 'boar'] : ['eye', 'octo'];
-    PRNG.shuffle(high);
-
     for (let i = 0; i < active.length; i += 1) {
       if (active[i].value <= 0) {
         active[i].title = 'mushrooms';
-      } else if (active[i].value <= 4) {
-        active[i].title = low.pop();
-      } else if (active[i].value <= 8) {
-        active[i].title = med.pop();
       } else {
-        active[i].title = high.pop();
+        if (phase === 1) {
+          if (animals.length <= 0) {
+            animals = ['rat', 'rabbit', 'arachnid', 'bat', 'snake', 'boar'];
+            PRNG.shuffle(animals);
+          }
+          active[i].title = animals.pop();
+        } else {
+          if (monsters.length <= 0) {
+            monsters = ['vampire bat', 'scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
+            PRNG.shuffle(monsters);
+          }
+          active[i].title = monsters.pop();
+        }
       }
     }
   }
@@ -641,6 +641,8 @@ const Obstacles = (function obstacles() {
     Locations.reset();
 
     phase = 1;
+    animals = [];
+    monsters = [];
     active = [];
     challenger = undefined;
   }
