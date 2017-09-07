@@ -1531,19 +1531,7 @@ const Renderer = (function renderer() {
 }());
 
 const Game = (function game() {
-  let color;
   let dice = [];
-
-  function newColor() {
-    let hash = color;
-
-    do {
-      hash = Math.floor(Math.random() * 16777216);
-      hash = (`000000${hash.toString(16)}`).substr(-6);
-    } while (hash === color);
-
-    color = hash;
-  }
 
   function setPicked(element) {
     element.add('picked');
@@ -1590,44 +1578,6 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function resetGame() {
-    Stage.reset();
-    Renderer.invalidate();
-  }
-
-  function onHashChange() {
-    const hash = window.location.hash.substring(1);
-
-    if (/^[0-9A-F]{6}$/i.test(hash)) {
-      color = hash;
-      PRNG.seed(parseInt(color, 16));
-    }
-
-    resetGame();
-  }
-
-  function startGame() {
-    const hash = window.location.hash.substring(1);
-
-    if (/^[0-9A-F]{6}$/i.test(hash)) {
-      if (color !== hash) {
-        color = hash;
-        PRNG.seed(parseInt(color, 16));
-      }
-    } else {
-      newColor();
-      PRNG.seed(parseInt(color, 16));
-    }
-
-    if (window.location.hash.substring(1) !== color) {
-      window.location.hash = color;
-    } else {
-      resetGame();
-    }
-
-    Renderer.render();
-  }
-
   function play() {
     const $ = window.jQuery;
 
@@ -1641,9 +1591,9 @@ const Game = (function game() {
     $('#sign2').touch(setPicked, onChoice);
     $('#d6').touch(setPicked, onD6);
 
-    $(window).on('hashchange', onHashChange);
-
-    startGame();
+    Stage.reset();
+    Renderer.invalidate();
+    Renderer.render();
   }
 
   return {
@@ -1671,14 +1621,6 @@ const Game = (function game() {
   Fn.prototype.html = function html(value) {
     if (this.element) {
       this.element.innerHTML = value;
-    }
-
-    return this;
-  };
-
-  Fn.prototype.on = function on(message, callback) {
-    if (this.element) {
-      this.element.addEventListener(message, callback, false);
     }
 
     return this;
