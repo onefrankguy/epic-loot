@@ -561,20 +561,18 @@ const Obstacles = (function obstacles() {
     for (let i = 0; i < active.length; i += 1) {
       if (active[i].value <= 0) {
         active[i].title = 'mushrooms';
-      } else {
-        if (phase === 1) {
-          if (animals.length <= 0) {
-            animals = ['rat', 'rabbit', 'arachnid', 'bat', 'snake', 'boar'];
-            PRNG.shuffle(animals);
-          }
-          active[i].title = animals.pop();
-        } else {
-          if (monsters.length <= 0) {
-            monsters = ['vampire bat', 'scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
-            PRNG.shuffle(monsters);
-          }
-          active[i].title = monsters.pop();
+      } else if (phase === 1) {
+        if (animals.length <= 0) {
+          animals = ['rat', 'rabbit', 'arachnid', 'bat', 'snake', 'boar'];
+          PRNG.shuffle(animals);
         }
+        active[i].title = animals.pop();
+      } else {
+        if (monsters.length <= 0) {
+          monsters = ['vampire bat', 'scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
+          PRNG.shuffle(monsters);
+        }
+        active[i].title = monsters.pop();
       }
     }
   }
@@ -1707,14 +1705,6 @@ const Game = (function game() {
   Fn.prototype.remove = function remove(klass) {
     if (this.element && this.element.classList) {
       this.element.classList.remove(klass);
-    }
-
-    return this;
-  };
-
-  Fn.prototype.klass = function klass(value) {
-    if (this.element) {
-      this.element.className = value;
     }
 
     return this;
