@@ -211,7 +211,7 @@ const Loot = (function loot() {
       type = 'bottle';
     }
 
-    const max = { helmet: 5, armour: 4, sword: 5, staff: 4, bow: 2, bottle: 6 };
+    const max = { helmet: 3, armour: 3, sword: 3, bow: 2, staff: 3, bottle: 1 };
     if (!has.call(variations, type)) {
       variations[type] = 0;
     } else {
@@ -563,13 +563,13 @@ const Obstacles = (function obstacles() {
         active[i].title = 'mushrooms';
       } else if (phase === 1) {
         if (animals.length <= 0) {
-          animals = ['rat', 'rabbit', 'arachnid', 'bat', 'snake', 'boar'];
+          animals = ['rabbit', 'arachnid', 'bat', 'snake', 'boar'];
           PRNG.shuffle(animals);
         }
         active[i].title = animals.pop();
       } else {
         if (monsters.length <= 0) {
-          monsters = ['vampire bat', 'scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
+          monsters = ['scorpion', 'ghost', 'skeleton', 'eye', 'octo'];
           PRNG.shuffle(monsters);
         }
         active[i].title = monsters.pop();
