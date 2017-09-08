@@ -1,6 +1,5 @@
 /* COLORS */
 $map-color: rgb(241, 233, 210);
-$stain-color: rgb(55, 30, 0);
 $ink-color: rgb(29, 0, 41);
 $progress-color: rgb(116, 86, 23);
 $metal-color: rgb(117, 113, 97);
@@ -25,7 +24,7 @@ $touch-size: 4.8rem;
 }
 
 html {
-  font-family: Gerogia,Times,serif;
+  font-family: Cochin,Baskerville,Georgia,Times,serif;
   font-size: 62.5%;
 }
 
@@ -119,7 +118,7 @@ a, a:visited {
   display: inline-block;
   height: 1.2rem;
   width: 1.2rem;
-  border: 1px solid $stain-color;
+  border: 1px solid $ink-color;
   border-radius: 50%;
   background: currentColor;
   box-shadow: inset rgba(0,0,0,.5) 0 -1px 3px;
@@ -223,7 +222,7 @@ a, a:visited {
 
 .experience > .levels > .progress {
   flex-grow: 1;
-  border: 1px solid $stain-color;
+  border: 1px solid $ink-color;
   margin: 0 1rem;
   height: 1rem;
   border-radius: (1rem / 2);
@@ -315,7 +314,7 @@ a, a:visited {
   align-items: center;
   height: 2.4rem;
   width: 2.4rem;
-  border: 1px solid $stain-color;
+  border: 1px solid $ink-color;
   border-bottom-right-radius: 33%;
   border-top-left-radius: 33%;
   opacity: .8;
@@ -460,16 +459,16 @@ a, a:visited {
   justify-content: space-between;
   align-items: center;
   margin: 0 1rem;
-  border-top: 1px solid $stain-color;
-  border-bottom: 1px solid $stain-color;
+  border-top: 1px solid $ink-color;
+  border-bottom: 1px solid $ink-color;
   max-height: .3rem;
 }
 
 .vr {
   justify-content: space-between;
   align-items: center;
-  border-left: 1px solid $stain-color;
-  border-right: 1px solid $stain-color;
+  border-left: 1px solid $ink-color;
+  border-right: 1px solid $ink-color;
   max-width: .3rem;
 }
 
@@ -479,7 +478,7 @@ a, a:visited {
   display: block;
   width: .4rem;
   height: .4rem;
-  border: 1px solid $stain-color;
+  border: 1px solid $ink-color;
   transform: rotate(45deg);
 }
 
@@ -530,7 +529,7 @@ a, a:visited {
 .paper {
   /* https://www.sitepoint.com/pure-css3-paper-curls/ */
   background: $map-color;
-  border: 1px solid $stain-color;
+  border: 1px solid $ink-color;
   position: relative;
   box-shadow: 0 0 5px rgba(0,0,0,.4), inset 0 0 50px rgba(0,0,0,.3);
 }
@@ -564,7 +563,7 @@ a, a:visited {
   width: 2.5rem;
   height: 2.5rem;
   background: white;
-  color: $stain-color;
+  color: $ink-color;
   border: 1px solid currentColor;
   opacity: .8;
 }
@@ -628,6 +627,7 @@ a, a:visited {
 }
 
 abbr[title="and"] {
+  font-style: italic;
   text-decoration: none;
   font-size: 110%;
   cursor: auto;
