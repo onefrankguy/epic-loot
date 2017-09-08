@@ -165,23 +165,17 @@ a, a:visited {
 
 .quest {
   height: 37.2rem;
-  overflow: hidden;
 }
 
 .ui {
   justify-content: space-between;
   flex-grow: 1;
-  padding: .5rem;
-}
-
-.map {
-  padding: .5rem;
+  padding: 1rem .5rem;
 }
 
 .bag {
   flex-grow: 1;
   min-width: 0;
-  border: 1px solid $stain-color;
   padding: .5rem;
 }
 
@@ -205,8 +199,7 @@ a, a:visited {
   line-height: 1.6rem;
   font-variant: small-caps;
   text-transform: capitalize;
-  padding: .5rem;
-  border-bottom: 1px solid $stain-color;
+  padding: .5rem .5rem 1rem .5rem;
 }
 
 .tracker {
@@ -273,9 +266,11 @@ a, a:visited {
 }
 
 .used-gems {
-  padding: .5rem;
-  border: 1px solid $stain-color;
-  margin-left: .5rem;
+  padding: .5rem 0 .5rem 1rem;
+}
+
+.used-gems .title {
+  margin-left: -.18rem;
 }
 
 #used-items {
@@ -482,6 +477,52 @@ a, a:visited {
   line-height: 1.8rem;
 }
 
+.hr {
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 1rem;
+  border-top: 1px solid $stain-color;
+  border-bottom: 1px solid $stain-color;
+  max-height: .3rem;
+}
+
+.vr {
+  justify-content: space-between;
+  align-items: center;
+  border-left: 1px solid $stain-color;
+  border-right: 1px solid $stain-color;
+  max-width: .3rem;
+}
+
+.hr:before,
+.hr:after {
+  content: '\0027e1';
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.vr:before,
+.vr:after {
+  content: '';
+  width: 1rem;
+}
+
+.hr:before {
+  margin-left: -(1rem / 2);
+}
+
+.hr:after {
+  margin-right: -(1rem / 2);
+}
+
+.vr:before {
+  margin-top: -(1rem / 2);
+}
+
+.vr:after {
+  margin-bottom: -(1rem / 2);
+}
+
 /* FEEDBACK */
 .pickable.button,
 .pickable .d1,
@@ -592,8 +633,7 @@ a, a:visited {
 
 /* COLOPHON */
 .colophon {
-  margin: 1.6rem 0 .8rem 0;
-  padding: 0 .5rem;
+  margin: 1.6rem .5rem .8rem .5rem;
   font-size: 1rem;
   line-height: 1rem;
   color: rgba(0,0,0,.55);
