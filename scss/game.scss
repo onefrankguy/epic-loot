@@ -1,37 +1,15 @@
 /* COLORS */
-/*
-DawnBringer's 16 Color Palette v1.0
-
-black       - rgb(20, 12, 28)
-dark purple - rgb(68, 36, 52)
-purple      - rgb(48, 52, 109)
-dark gray   - rgb(78, 74, 78)
-brown       - rgb(133, 76, 48)
-dark green  - rgb(52, 101, 36)
-red         - rgb(208, 70, 72)
-gray        - rgb(117, 113, 97)
-blue        - rgb(89, 125, 206)
-orange      - rgb(210, 125, 44)
-silver      - rgb(133, 149, 161)
-light green - rgb(109, 170, 44)
-pink        - rgb(210, 170, 153)
-light blue  - rgb(109, 194, 202)
-yellow      - rgb(218, 212, 94)
-white       - rgb(222, 238, 214)
-
-http://pixeljoint.com/forum/forum_posts.asp?TID=12795
-*/
 $map-color: rgb(241, 233, 210);
 $stain-color: rgb(55, 30, 0);
 $ink-color: rgb(29, 0, 41);
 $progress-color: rgb(116, 86, 23);
 $metal-color: rgb(117, 113, 97);
-$moons-color: rgb(133, 149, 161);
-$suns-color: rgb(210, 125, 44);
-$waves-color: rgb(109, 194, 202);
-$leaves-color: rgb(210, 170, 153);
-$wyrms-color: rgb(109, 170, 44);
-$knots-color: rgb(218, 212, 94);
+$moons-color: rgb(213, 94, 0);
+$suns-color: rgb(230, 159, 0);
+$waves-color: rgb(240, 228, 66);
+$leaves-color: rgb(0, 158, 115);
+$wyrms-color: rgb(0, 144, 178);
+$knots-color: rgb(204, 121, 167);
 $base-font-size: 1.6rem;
 $sprite-width: 100% * 27;
 $sprite-cols: 100% / (27 - 1);
@@ -144,6 +122,7 @@ a, a:visited {
   border: 1px solid $stain-color;
   border-radius: 50%;
   background: currentColor;
+  box-shadow: inset rgba(0,0,0,.5) 0 -1px 3px;
 }
 
 /* GAME */
