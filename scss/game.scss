@@ -496,9 +496,12 @@ a, a:visited {
 
 .hr:before,
 .hr:after {
-  content: '\0027e1';
-  font-size: 1rem;
-  line-height: 1rem;
+  content: '';
+  display: block;
+  width: .4rem;
+  height: .4rem;
+  border: 1px solid $stain-color;
+  transform: rotate(45deg);
 }
 
 .vr:before,
