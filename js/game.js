@@ -1342,7 +1342,7 @@ const Renderer = (function renderer() {
         if (Obstacles.stage() === 1) {
           html = `You ${loot.where}. Wild animals block your path. You&rsquo;ll have to scare one of them away. Pick an animal or roll the dice.`;
         } else {
-          html = `You ${loot.where}. Monsters block your path. You&rsquo;ll have to scare once of them away. Pick a monster or roll the dice.`;
+          html = `You ${loot.where}. Monsters block your path. You&rsquo;ll have to scare one of them away. Pick a monster or roll the dice.`;
         }
         break;
 
