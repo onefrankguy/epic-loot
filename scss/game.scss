@@ -185,9 +185,23 @@ a, a:visited {
   margin-left: 1rem;
 }
 
-#celestial-progress {
+#game-progress {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.diamond {
   display: block;
-  text-align: end;
+  width: .6rem;
+  height: .6rem;
+  border: 1px solid $ink-color;
+  background: transparent;
+  transform: rotate(45deg);
+}
+
+.diamond.filled {
+  background: $progress-color;
 }
 
 .celestial {

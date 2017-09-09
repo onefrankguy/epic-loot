@@ -13,21 +13,23 @@
 <body class="unselectable">
 <div id="world" class="col paper world">
   <div class="col quest">
-    <div class="row player">
-      <div class="row stats">
-        <div class="col"><span>str</span><span>bld</span><span>Qck</span></div>
-        <div class="col"><span id="in-game-suns"></span><span id="in-game-leaves"></span><span id="in-game-waves"></span></div>
-        <div class="col"><span>int</span><span>wil</span><span>chr</span></div>
-        <div class="col"><span id="in-game-knots"></span><span id="in-game-moons"></span><span id="in-game-wyrms"></span></div>
-      </div>
-      <div class="col tracker">
-        <div id="celestial-progress"><span class="celestial"></span></div>
-        <div class="row">
-          <div class="col experience">
-            <div class="row points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
-            <div class="row levels"><span id="this-level"></span><span class="row progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
+    <div class="col player">
+      <div id="game-progress" class="row"></div>
+      <div class="row">
+        <div class="row stats">
+          <div class="col"><span>str</span><span>bld</span><span>Qck</span></div>
+          <div class="col"><span id="in-game-suns"></span><span id="in-game-leaves"></span><span id="in-game-waves"></span></div>
+          <div class="col"><span>int</span><span>wil</span><span>chr</span></div>
+          <div class="col"><span id="in-game-knots"></span><span id="in-game-moons"></span><span id="in-game-wyrms"></span></div>
+        </div>
+        <div class="col tracker">
+          <div class="row">
+            <div class="col experience">
+              <div class="row points"><span id="xp-points"></span>/<span id="xp-needed"></span>XP</div>
+              <div class="row levels"><span id="this-level"></span><span class="row progress"><span id="xp-progress"></span></span><span id="next-level"></span></div>
+            </div>
+            <div id="d6" class="hitbox dice"><span class="d2"></span><span class="d4"></span></div>
           </div>
-          <div id="d6" class="hitbox dice"><span class="d2"></span><span class="d4"></span></div>
         </div>
       </div>
     </div>

@@ -1105,19 +1105,22 @@ const Renderer = (function renderer() {
       if (Obstacles.stage() === 1) {
         $('#world').add('day');
         $('#world').remove('night');
-        needed = Decktet.events().length;
-        points = needed - Events.size();
       } else {
         $('#world').add('night');
         $('#world').remove('day');
-        needed = Decktet.locations().length;
-        points = needed - Locations.size();
       }
-      if (stage === 'encumbered') {
-        points = 1;
+
+      let html = '<span class="celestial"></span>';
+      let i = 0;
+      needed = Decktet.events().length + Decktet.locations().length;
+      points = needed - Events.size() - Locations.size() - 1;
+      for (i = 0; i < points; i += 1) {
+        html += '<span class="filled diamond"></span>';
       }
-      percent = (points * 100) / needed;
-      $('#celestial-progress').style('width', `${percent}%`);
+      for (i = points; i < needed; i += 1) {
+        html += '<span class="diamond"></span>';
+      }
+      $('#game-progress').html(html);
     }
   }
 
