@@ -44,18 +44,18 @@ const Decktet = (function decktet() {
   }
 
   cards.exc = { value: 0, suits: [] };
-  cards.aut = { value: 2, suits: ['wil', 'int'] };
+  cards.aut = { value: 2, suits: ['int', 'wil'] };
   cards.pai = { value: 3, suits: ['str', 'int'] };
   cards.sav = { value: 3, suits: ['bld', 'chr'] };
-  cards.sai = { value: 4, suits: ['qck', 'bld'] };
-  cards.sol = { value: 5, suits: ['chr', 'int'] };
-  cards.lun = { value: 6, suits: ['wil', 'qck'] };
+  cards.sai = { value: 4, suits: ['bld', 'qck'] };
+  cards.sol = { value: 5, suits: ['int', 'chr'] };
+  cards.lun = { value: 6, suits: ['qck', 'wil'] };
   cards.pen = { value: 6, suits: ['str', 'chr'] };
-  cards.dip = { value: 8, suits: ['wil', 'str'] };
+  cards.dip = { value: 8, suits: ['str', 'wil'] };
   cards.mer = { value: 9, suits: ['bld', 'int'] };
-  cards.wat = { value: 10, suits: ['wil', 'chr', 'int'] };
+  cards.wat = { value: 10, suits: ['int', 'wil', 'chr'] };
   cards.lgt = { value: 10, suits: ['str', 'qck', 'int'] };
-  cards.con = { value: 11, suits: ['wil', 'qck', 'int'] };
+  cards.con = { value: 11, suits: ['qck', 'int', 'wil'] };
   cards.bar = { value: 12, suits: ['str'] };
   cards.hun = { value: 12, suits: ['wil'] };
 
@@ -67,15 +67,15 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.jou = { value: 3, suits: ['wil', 'qck'] };
-  cards.bat = { value: 4, suits: ['chr', 'int'] };
+  cards.jou = { value: 3, suits: ['qck', 'wil'] };
+  cards.bat = { value: 4, suits: ['int', 'chr'] };
   cards.dis = { value: 5, suits: ['str', 'qck'] };
   cards.mar = { value: 6, suits: ['bld', 'int'] };
-  cards.cha = { value: 7, suits: ['wil', 'bld'] };
-  cards.bet = { value: 8, suits: ['chr', 'int'] };
-  cards.pac = { value: 9, suits: ['wil', 'str'] };
-  cards.har = { value: 10, suits: ['wil', 'str', 'bld'] };
-  cards.rit = { value: 11, suits: ['wil', 'bld', 'chr'] };
+  cards.cha = { value: 7, suits: ['bld', 'wil'] };
+  cards.bet = { value: 8, suits: ['int', 'chr'] };
+  cards.pac = { value: 9, suits: ['str', 'wil'] };
+  cards.har = { value: 10, suits: ['str', 'bld', 'wil'] };
+  cards.rit = { value: 11, suits: ['bld', 'wil', 'chr'] };
   cards.cal = { value: 12, suits: ['chr'] };
   cards.win = { value: 12, suits: ['int'] };
 
@@ -89,15 +89,15 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.ori = { value: 2, suits: ['qck', 'bld'] };
+  cards.ori = { value: 2, suits: ['bld', 'qck'] };
   cards.des = { value: 2, suits: ['str', 'chr'] };
-  cards.mou = { value: 4, suits: ['wil', 'str'] };
-  cards.for = { value: 5, suits: ['wil', 'bld'] };
+  cards.mou = { value: 4, suits: ['str', 'wil'] };
+  cards.for = { value: 5, suits: ['bld', 'wil'] };
   cards.cas = { value: 7, suits: ['str', 'int'] };
   cards.cav = { value: 7, suits: ['qck', 'chr'] };
-  cards.mil = { value: 8, suits: ['qck', 'bld'] };
+  cards.mil = { value: 8, suits: ['bld', 'qck'] };
   cards.drk = { value: 9, suits: ['qck', 'chr'] };
-  cards.bor = { value: 10, suits: ['qck', 'bld', 'chr'] };
+  cards.bor = { value: 10, suits: ['bld', 'qck', 'chr'] };
   cards.isl = { value: 11, suits: ['str', 'qck', 'chr'] };
   cards.dow = { value: 11, suits: ['str', 'bld', 'int'] };
   cards.sea = { value: 12, suits: ['qck'] };
