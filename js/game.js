@@ -1091,19 +1091,19 @@ const Renderer = (function renderer() {
     $('#next-level').html(deck.attributes.length + 2);
     $('#xp-progress').style('width', `${percent}%`);
 
-    if (stage === 'encumbered' || stage === 'choice') {
-      if (Obstacles.stage() === 1) {
-        $('#world').add('day');
-        $('#world').remove('night');
-      } else {
-        $('#world').add('night');
-        $('#world').remove('day');
-      }
+    if (Obstacles.stage() === 1) {
+      $('#world').add('day');
+      $('#world').remove('night');
+    } else {
+      $('#world').add('night');
+      $('#world').remove('day');
+    }
 
+    if (stage === 'encumbered' || stage === 'loot') {
       let html = '<span class="celestial"></span>';
       let i = 0;
       needed = Decktet.events().length + Decktet.locations().length;
-      points = needed - Events.size() - Locations.size() - 1;
+      points = needed - Events.size() - Locations.size();
       for (i = 0; i < points; i += 1) {
         html += '<span class="filled diamond"></span>';
       }
