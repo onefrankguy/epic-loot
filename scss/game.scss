@@ -510,8 +510,7 @@ a, a:visited {
 .pickable .d2,
 .pickable .d3,
 .pickable .d4,
-.pickable .value,
-.pickable .gem {
+.pickable .value {
   box-shadow: .2rem .2rem .5rem rgba(0,0,0,.3);
 }
 
@@ -520,8 +519,7 @@ a, a:visited {
 .picked .d2,
 .picked .d3,
 .picked .d4,
-.picked .value,
-.picked .gem {
+.picked .value {
   box-shadow: none !important;
 }
 

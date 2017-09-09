@@ -1202,9 +1202,7 @@ const Renderer = (function renderer() {
           card = Decktet.get(name);
           loot = Loot.get(name);
           if (card && loot) {
-            html += '<div class="spell">';
             html += renderItem(card, loot, true);
-            html += '</div>';
           }
         });
         $('#used-items').remove('hidden').html(html);
@@ -1216,9 +1214,7 @@ const Renderer = (function renderer() {
           card = Decktet.get(name);
           loot = Loot.get(name);
           if (card && loot) {
-            html += '<div class="spell">';
             html += renderItem(card, loot, true);
-            html += '</div>';
           }
         });
         $('#used-items').remove('hidden').html(html);
