@@ -972,7 +972,6 @@ const Stage = (function stage() {
 
     Gems.add(part[1]);
     Deck.add(part[1]);
-    Deck.shuffle();
     state = 'choice';
     return this;
   }
@@ -1409,7 +1408,7 @@ const Renderer = (function renderer() {
 
       case 'victory':
       case 'madness':
-        html = 'end';
+        html = 'rest';
         break;
 
       default:
