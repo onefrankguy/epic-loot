@@ -136,9 +136,15 @@ const PRNG = (function prng() {
     }
   }
 
+  function pick(array) {
+    const index = Math.floor(random() * array.length);
+    return array[index];
+  }
+
   return {
     random,
     shuffle,
+    pick,
   };
 }());
 
@@ -190,15 +196,6 @@ const Loot = (function loot() {
     }
 
     return { type, variety: variations[type], article: 'a', pronoun: 'it' };
-  }
-
-  function randomRangeInclusive(min, max) {
-    return Math.floor(PRNG.random() * (max + -min + 1)) + min;
-  }
-
-  function maybeOneOf(things) {
-    const index = randomRangeInclusive(0, things.length);
-    return things[index];
   }
 
   function getWhere() {
@@ -268,7 +265,7 @@ const Loot = (function loot() {
 
     let title = helmets.pop();
 
-    const material = maybeOneOf(['plate', 'mail', 'leather']);
+    const material = PRNG.pick(['plate', 'mail', 'leather', undefined]);
     if (material) {
       title = `${material} ${title}`;
     }
@@ -284,7 +281,7 @@ const Loot = (function loot() {
 
     let title = armour.pop();
 
-    const material = maybeOneOf(['plate', 'mail', 'leather']);
+    const material = PRNG.pick(['plate', 'mail', 'leather', undefined]);
     if (material) {
       title = `${material} ${title}`;
     }
@@ -295,7 +292,7 @@ const Loot = (function loot() {
   function getWeapon(type) {
     let title = type;
 
-    const material = maybeOneOf(['metal', 'glass', 'bone']);
+    const material = PRNG.pick(['metal', 'glass', 'bone', undefined]);
     if (material) {
       title = `${material} ${title}`;
     }
@@ -311,7 +308,7 @@ const Loot = (function loot() {
 
     let title = bottles.pop();
 
-    const attribute = maybeOneOf(['sticky', 'noxious', 'fragrent']);
+    const attribute = PRNG.pick(['sticky', 'noxious', 'fragrent', undefined]);
     if (attribute) {
       title = `${attribute} ${title}`;
     }
@@ -340,7 +337,7 @@ const Loot = (function loot() {
       item.title = getWeapon(item.type);
     }
 
-    const rarity = maybeOneOf(['epic', 'greater', 'lesser']);
+    const rarity = PRNG.pick(['epic', 'greater', 'lesser', undefined]);
     if (rarity) {
       item.title = `${rarity} ${item.title}`;
     }
@@ -348,9 +345,9 @@ const Loot = (function loot() {
       item.article = 'an';
     }
 
-    const bonus = maybeOneOf([
+    const bonus = PRNG.pick([
       'healing', 'casting', 'shocking', 'poisoning', 'burning', 'freezing',
-      'archery', 'smiting', 'wondering',
+      'archery', 'smiting', 'wondering', undefined,
     ]);
     if (bonus) {
       item.title = `${item.title} of ${bonus}`;
