@@ -3,12 +3,12 @@ $map-color: rgb(241, 233, 210);
 $ink-color: rgb(29, 0, 41);
 $progress-color: rgb(116, 86, 23);
 $metal-color: rgb(117, 113, 97);
-$moons-color: rgb(213, 94, 0);
-$suns-color: rgb(230, 159, 0);
-$waves-color: rgb(240, 228, 66);
-$leaves-color: rgb(0, 158, 115);
-$wyrms-color: rgb(0, 144, 178);
-$knots-color: rgb(204, 121, 167);
+$wil-color: rgb(213, 94, 0);
+$str-color: rgb(230, 159, 0);
+$qck-color: rgb(240, 228, 66);
+$bld-color: rgb(0, 158, 115);
+$chr-color: rgb(0, 144, 178);
+$int-color: rgb(204, 121, 167);
 $base-font-size: 1.6rem;
 $sprite-width: 100% * 27;
 $sprite-cols: 100% / (27 - 1);
@@ -408,28 +408,28 @@ a, a:visited {
 }
 
 /* SUITS */
-.moons {
-  color: $moons-color;
+.wil {
+  color: $wil-color;
 }
 
-.suns {
-  color: $suns-color;
+.str {
+  color: $str-color;
 }
 
-.waves {
-  color: $waves-color;
+.qck {
+  color: $qck-color;
 }
 
-.leaves {
-  color: $leaves-color;
+.bld {
+  color: $bld-color;
 }
 
-.wyrms {
-  color: $wyrms-color;
+.chr {
+  color: $chr-color;
 }
 
-.knots {
-  color: $knots-color;
+.int {
+  color: $int-color;
 }
 
 /* CONTROLS */

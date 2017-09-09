@@ -24,27 +24,16 @@ const Decktet = (function decktet() {
   // **GAME** is a RPG at heart.
   function attributes() {
     return [
-      'suns', 'leaves', 'waves', 'knots', 'moons', 'wyrms',
+      'str', 'bld', 'qck', 'int', 'wil', 'chr',
     ];
   }
 
-  // The suit of Suns is strength.
-  cards.suns = { value: 1, suits: ['suns'] };
-
-  // The suit of Leaves is body.
-  cards.leaves = { value: 1, suits: ['leaves'] };
-
-  // The suit of Waves is quickness.
-  cards.waves = { value: 1, suits: ['waves'] };
-
-  // The suit of Knots is intellect.
-  cards.knots = { value: 1, suits: ['knots'] };
-
-  // The suit of Moons is will.
-  cards.moons = { value: 1, suits: ['moons'] };
-
-  // The suit of Wyrms is charm.
-  cards.wyrms = { value: 1, suits: ['wyrms'] };
+  cards.str = { value: 1, suits: ['str'] };
+  cards.bld = { value: 1, suits: ['bld'] };
+  cards.qck = { value: 1, suits: ['qck'] };
+  cards.int = { value: 1, suits: ['int'] };
+  cards.wil = { value: 1, suits: ['wil'] };
+  cards.chr = { value: 1, suits: ['chr'] };
 
   function personalities() {
     return [
@@ -55,20 +44,20 @@ const Decktet = (function decktet() {
   }
 
   cards.exc = { value: 0, suits: [] };
-  cards.aut = { value: 2, suits: ['moons', 'knots'] };
-  cards.pai = { value: 3, suits: ['suns', 'knots'] };
-  cards.sav = { value: 3, suits: ['leaves', 'wyrms'] };
-  cards.sai = { value: 4, suits: ['waves', 'leaves'] };
-  cards.sol = { value: 5, suits: ['wyrms', 'knots'] };
-  cards.lun = { value: 6, suits: ['moons', 'waves'] };
-  cards.pen = { value: 6, suits: ['suns', 'wyrms'] };
-  cards.dip = { value: 8, suits: ['moons', 'suns'] };
-  cards.mer = { value: 9, suits: ['leaves', 'knots'] };
-  cards.wat = { value: 10, suits: ['moons', 'wyrms', 'knots'] };
-  cards.lgt = { value: 10, suits: ['suns', 'waves', 'knots'] };
-  cards.con = { value: 11, suits: ['moons', 'waves', 'knots'] };
-  cards.bar = { value: 12, suits: ['suns'] };
-  cards.hun = { value: 12, suits: ['moons'] };
+  cards.aut = { value: 2, suits: ['wil', 'int'] };
+  cards.pai = { value: 3, suits: ['str', 'int'] };
+  cards.sav = { value: 3, suits: ['bld', 'chr'] };
+  cards.sai = { value: 4, suits: ['qck', 'bld'] };
+  cards.sol = { value: 5, suits: ['chr', 'int'] };
+  cards.lun = { value: 6, suits: ['wil', 'qck'] };
+  cards.pen = { value: 6, suits: ['str', 'chr'] };
+  cards.dip = { value: 8, suits: ['wil', 'str'] };
+  cards.mer = { value: 9, suits: ['bld', 'int'] };
+  cards.wat = { value: 10, suits: ['wil', 'chr', 'int'] };
+  cards.lgt = { value: 10, suits: ['str', 'qck', 'int'] };
+  cards.con = { value: 11, suits: ['wil', 'qck', 'int'] };
+  cards.bar = { value: 12, suits: ['str'] };
+  cards.hun = { value: 12, suits: ['wil'] };
 
   // If you don't persuade the personality you encouter...
   function events() {
@@ -78,17 +67,17 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.jou = { value: 3, suits: ['moons', 'waves'] };
-  cards.bat = { value: 4, suits: ['wyrms', 'knots'] };
-  cards.dis = { value: 5, suits: ['suns', 'waves'] };
-  cards.mar = { value: 6, suits: ['leaves', 'knots'] };
-  cards.cha = { value: 7, suits: ['moons', 'leaves'] };
-  cards.bet = { value: 8, suits: ['wyrms', 'knots'] };
-  cards.pac = { value: 9, suits: ['moons', 'suns'] };
-  cards.har = { value: 10, suits: ['moons', 'suns', 'leaves'] };
-  cards.rit = { value: 11, suits: ['moons', 'leaves', 'wyrms'] };
-  cards.cal = { value: 12, suits: ['wyrms'] };
-  cards.win = { value: 12, suits: ['knots'] };
+  cards.jou = { value: 3, suits: ['wil', 'qck'] };
+  cards.bat = { value: 4, suits: ['chr', 'int'] };
+  cards.dis = { value: 5, suits: ['str', 'qck'] };
+  cards.mar = { value: 6, suits: ['bld', 'int'] };
+  cards.cha = { value: 7, suits: ['wil', 'bld'] };
+  cards.bet = { value: 8, suits: ['chr', 'int'] };
+  cards.pac = { value: 9, suits: ['wil', 'str'] };
+  cards.har = { value: 10, suits: ['wil', 'str', 'bld'] };
+  cards.rit = { value: 11, suits: ['wil', 'bld', 'chr'] };
+  cards.cal = { value: 12, suits: ['chr'] };
+  cards.win = { value: 12, suits: ['int'] };
 
   // Any personality you choose not to persuade or event you choose not to
   // assist is consumed by the ???. It mixes with the locations to become an
@@ -100,19 +89,19 @@ const Decktet = (function decktet() {
     ];
   }
 
-  cards.ori = { value: 2, suits: ['waves', 'leaves'] };
-  cards.des = { value: 2, suits: ['suns', 'wyrms'] };
-  cards.mou = { value: 4, suits: ['moons', 'suns'] };
-  cards.for = { value: 5, suits: ['moons', 'leaves'] };
-  cards.cas = { value: 7, suits: ['suns', 'knots'] };
-  cards.cav = { value: 7, suits: ['waves', 'wyrms'] };
-  cards.mil = { value: 8, suits: ['waves', 'leaves'] };
-  cards.drk = { value: 9, suits: ['waves', 'wyrms'] };
-  cards.bor = { value: 10, suits: ['waves', 'leaves', 'wyrms'] };
-  cards.isl = { value: 11, suits: ['suns', 'waves', 'wyrms'] };
-  cards.dow = { value: 11, suits: ['suns', 'leaves', 'knots'] };
-  cards.sea = { value: 12, suits: ['waves'] };
-  cards.end = { value: 12, suits: ['leaves'] };
+  cards.ori = { value: 2, suits: ['qck', 'bld'] };
+  cards.des = { value: 2, suits: ['str', 'chr'] };
+  cards.mou = { value: 4, suits: ['wil', 'str'] };
+  cards.for = { value: 5, suits: ['wil', 'bld'] };
+  cards.cas = { value: 7, suits: ['str', 'int'] };
+  cards.cav = { value: 7, suits: ['qck', 'chr'] };
+  cards.mil = { value: 8, suits: ['qck', 'bld'] };
+  cards.drk = { value: 9, suits: ['qck', 'chr'] };
+  cards.bor = { value: 10, suits: ['qck', 'bld', 'chr'] };
+  cards.isl = { value: 11, suits: ['str', 'qck', 'chr'] };
+  cards.dow = { value: 11, suits: ['str', 'bld', 'int'] };
+  cards.sea = { value: 12, suits: ['qck'] };
+  cards.end = { value: 12, suits: ['bld'] };
 
   return {
     attributes,
@@ -179,12 +168,12 @@ const Loot = (function loot() {
     }
 
     const loots = {
-      suns: 'armour',
-      knots: 'sword',
-      leaves: 'bow',
-      waves: 'staff',
-      wyrms: 'helmet',
-      moons: 'helmet',
+      str: 'armour',
+      bld: 'bow',
+      qck: 'staff',
+      int: 'sword',
+      wil: 'helmet',
+      chr: 'helmet',
     };
 
     type = loots[type];
@@ -241,12 +230,12 @@ const Loot = (function loot() {
     const card = Decktet.get(name);
     if (card) {
       const verbs = {
-        suns: 'strong',
-        leaves: 'bold',
-        waves: 'quick',
-        knots: 'intelligent',
-        moons: 'wilful',
-        wyrms: 'charming',
+        str: 'strong',
+        bld: 'bold',
+        qck: 'quick',
+        int: 'intelligent',
+        wil: 'wilful',
+        chr: 'charming',
       };
 
       const how = card.suits.map(suit => verbs[suit]);
