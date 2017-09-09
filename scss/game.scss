@@ -167,9 +167,18 @@ a, a:visited {
 }
 
 .bag .name {
+  flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.bag .info {
+  align-self: flex-end;
+}
+
+.bag .value {
+  margin-right: .5rem;
 }
 
 /* PLAYER */
@@ -250,21 +259,6 @@ a, a:visited {
 }
 
 /* ITEMS */
-#used-gems {
-  display: flex;
-  flex-flow: row wrap;
-  width: $touch-size;
-  margin-top: .5rem;
-}
-
-.used-gems {
-  padding: .5rem 0 .5rem 1rem;
-}
-
-.used-gems .title {
-  margin-left: -.18rem;
-}
-
 #used-items {
   min-height: $touch-size;
 }
@@ -480,14 +474,6 @@ a, a:visited {
 
 .hr .diamond {
   background: $shaded-map-color;
-}
-
-.vr {
-  justify-content: space-between;
-  align-items: center;
-  border-left: 1px solid $ink-color;
-  border-right: 1px solid $ink-color;
-  width: .3rem;
 }
 
 /* FEEDBACK */

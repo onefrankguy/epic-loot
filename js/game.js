@@ -679,6 +679,10 @@ const Deck = (function deck() {
     }
   }
 
+  function used(name) {
+    return cards.indexOf(name) < 0;
+  }
+
   function combinations(list, k) {
     const result = [];
     let i;
@@ -735,6 +739,7 @@ const Deck = (function deck() {
     shuffle,
     deal,
     add,
+    used,
     reset,
   };
 }());
@@ -796,7 +801,6 @@ const Gems = (function gems() {
 }());
 
 const Stage = (function stage() {
-  let usedGems = [];
   let usedItems = [];
   let state = 'encumbered';
 
@@ -809,12 +813,6 @@ const Stage = (function stage() {
     Obstacles.reset();
     Deck.reset();
     Gems.reset();
-
-    usedGems = [];
-    for (let i = 0; i < Gems.max(); i += 1) {
-      usedGems = usedGems.concat(Decktet.attributes());
-    }
-    PRNG.shuffle(usedGems);
 
     usedItems = [];
     state = 'encumbered';
@@ -829,7 +827,6 @@ const Stage = (function stage() {
       Deck.get().bag.forEach((name) => {
         Personalities.remove(name);
       });
-      usedGems = [];
       Deck.shuffle();
       Obstacles.deal();
       state = 'choice';
@@ -896,7 +893,6 @@ const Stage = (function stage() {
 
       Gems.spend(type);
       Obstacles.use(type);
-      usedGems.push(type);
 
       let card = Deck.deal();
       if (!card) {
@@ -1011,10 +1007,6 @@ const Stage = (function stage() {
     return this;
   }
 
-  function gems() {
-    return [].concat(usedGems);
-  }
-
   function items() {
     return [].concat(usedItems);
   }
@@ -1022,7 +1014,6 @@ const Stage = (function stage() {
   return {
     get,
     next,
-    gems,
     items,
     reset,
   };
@@ -1033,14 +1024,28 @@ const Renderer = (function renderer() {
 
   function renderBag() {
     const $ = window.jQuery;
-    const swag = Deck.get().bag.concat(['end']);
-    let html = '';
+    const swag = Deck.get().bag;
+    const used = swag.filter(name => Deck.used(name));
+    const unused = swag.filter(name => !Deck.used(name));
 
-    swag.forEach((name) => {
+    let html = '';
+    [].concat(unused, ['end'], used).forEach((name) => {
+      const card = Decktet.get(name);
       const loot = Loot.get(name);
       html += '<div class="row item">';
       html += `<span class="pixelated icon loot ${loot.type}${loot.variety}"></span>`;
       html += `<span class="name">${loot.title}</span>`;
+      if (loot.type !== 'gold') {
+        html += '<span class="info">';
+        html += `<span class="value">${card.value}</span>`;
+        card.suits.forEach((type) => {
+          html += `<span class="${type} gem"></span>`;
+        });
+        for (let i = card.suits.length; i < 3; i += 1) {
+          html += '<span class="invisible gem"></span>';
+        }
+      }
+      html += '</span>';
       html += '</div>';
     });
 
@@ -1219,19 +1224,6 @@ const Renderer = (function renderer() {
         $('#used-items').add('hidden').html('');
         break;
     }
-  }
-
-  function renderUsedGems() {
-    const $ = window.jQuery;
-    let html = '';
-
-    Stage.gems().forEach((type) => {
-      html += '<span class="box">';
-      html += `<span class="${type} gem"></span>`;
-      html += '</span>';
-    });
-
-    $('#used-gems').html(html);
   }
 
   function renderObstacles() {
@@ -1472,7 +1464,6 @@ const Renderer = (function renderer() {
       renderHero();
       renderBag();
       renderUsedItems();
-      renderUsedGems();
       renderObstacles();
       renderGems();
       renderExperience();
