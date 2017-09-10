@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>game.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>game.js</h1>
+        
+
+        
+      </div>
+
+      
+        
+        <p><strong>Epic Loot</strong> is a game about wondering through a forest, picking mushrooms,
+and scaring away monsters by throwing loot at them. But not that boring
+junk loot you usually find in a RPG. This is epic loot. The kind of loot
+where your helmet is a Greater Leather Coif of Smiting with +6 Strength and
++6 Charm.</p>
+<p>The way you do all this mushroom picking, monster scaring, and loot throwing
+is through deck-building. The deck you use is a <a href="http://www.decktet.com/" title="P.D. Magnus: The Decktet">Decktet</a>, which is usually
+described as</p>
+<blockquote>
+<p>It is the kind of tarot deck they use in the alternate universe where Charlemange was a badger, if you can imagine such a thing.</p>
+</blockquote>
+<p>Because you are reading developer notes for a RPG called <strong>Epic Loot</strong>, where
+a Greater Leather Coif of Smiting with +6 Strength and +6 Charm is a
+perfectly reasonable staring item, you can probably imagine such a thing.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> Decktet = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">decktet</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> has = <span class="hljs-built_in">Object</span>.prototype.hasOwnProperty;
+  <span class="hljs-keyword">const</span> cards = {};
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (has.call(cards, name)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.assign({ name, <span class="hljs-attr">title</span>: name, <span class="hljs-attr">text</span>: <span class="hljs-string">''</span> }, cards[name]);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  }</pre></div>
+        
+      
+        
+        <p>The Decktet has six suits: suns, leaves, waves, knots, moons, and wyrms.
+<strong>Epic Loot</strong> replaces those with more traditional RPG attributes:
+strength, boldness, quickness, intellect, will, and charm. They’re then
+shortened to three letter abbreviations, becuase this is the kind of game
+where bytes matter.</p>
+<p>As an aside, “boldness” was originally “body”, because I’m overly fond of
+<em>Shadowrun</em> as a RPG. But I couldn’t come up with a verb to describe “body”
+as an attribute, so I settled on “boldness”.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">attributes</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> [
+      <span class="hljs-string">'str'</span>, <span class="hljs-string">'bld'</span>, <span class="hljs-string">'qck'</span>, <span class="hljs-string">'int'</span>, <span class="hljs-string">'wil'</span>, <span class="hljs-string">'chr'</span>,
+    ];
+  }
+
+  cards.str = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>] };
+  cards.bld = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>] };
+  cards.qck = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>] };
+  cards.int = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>] };
+  cards.wil = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'wil'</span>] };
+  cards.chr = { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'chr'</span>] };</pre></div>
+        
+      
+        
+        <p>Like the attributes, the personalities of the Decktet all use abbreviated
+names. So the Bard is “bar”, the Lunatic is “lun”, and the Excuse is “exc”.
+Yes, the Excuse is a personality in <strong>Epic Loot</strong>. Actually, the Excuse is
+mushrooms, but that comes later.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">personalities</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> [
+      <span class="hljs-string">'exc'</span>, <span class="hljs-string">'aut'</span>, <span class="hljs-string">'pai'</span>, <span class="hljs-string">'sav'</span>, <span class="hljs-string">'sai'</span>, <span class="hljs-string">'sol'</span>, <span class="hljs-string">'lun'</span>,
+      <span class="hljs-string">'pen'</span>, <span class="hljs-string">'dip'</span>, <span class="hljs-string">'mer'</span>, <span class="hljs-string">'wat'</span>, <span class="hljs-string">'lgt'</span>, <span class="hljs-string">'con'</span>,
+      <span class="hljs-string">'bar'</span>, <span class="hljs-string">'hun'</span>,
+    ];
+  }
+
+  cards.exc = { <span class="hljs-attr">value</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">suits</span>: [] };
+  cards.aut = { <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.pai = { <span class="hljs-attr">value</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'int'</span>] };
+  cards.sav = { <span class="hljs-attr">value</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.sai = { <span class="hljs-attr">value</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'qck'</span>] };
+  cards.sol = { <span class="hljs-attr">value</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.lun = { <span class="hljs-attr">value</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.pen = { <span class="hljs-attr">value</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.dip = { <span class="hljs-attr">value</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.mer = { <span class="hljs-attr">value</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'int'</span>] };
+  cards.wat = { <span class="hljs-attr">value</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>, <span class="hljs-string">'wil'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.lgt = { <span class="hljs-attr">value</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'qck'</span>, <span class="hljs-string">'int'</span>] };
+  cards.con = { <span class="hljs-attr">value</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>, <span class="hljs-string">'int'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.bar = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>] };
+  cards.hun = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'wil'</span>] };</pre></div>
+        
+      
+        
+        <p>Events are abbreviated too, and the Market counts as an event, instead of a
+location.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">events</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> [
+      <span class="hljs-string">'jou'</span>, <span class="hljs-string">'bat'</span>, <span class="hljs-string">'dis'</span>, <span class="hljs-string">'mar'</span>, <span class="hljs-string">'cha'</span>, <span class="hljs-string">'bet'</span>,
+      <span class="hljs-string">'pac'</span>, <span class="hljs-string">'har'</span>, <span class="hljs-string">'rit'</span>, <span class="hljs-string">'cal'</span>, <span class="hljs-string">'win'</span>,
+    ];
+  }
+
+  cards.jou = { <span class="hljs-attr">value</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.bat = { <span class="hljs-attr">value</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.dis = { <span class="hljs-attr">value</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'qck'</span>] };
+  cards.mar = { <span class="hljs-attr">value</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'int'</span>] };
+  cards.cha = { <span class="hljs-attr">value</span>: <span class="hljs-number">7</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.bet = { <span class="hljs-attr">value</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.pac = { <span class="hljs-attr">value</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.har = { <span class="hljs-attr">value</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'bld'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.rit = { <span class="hljs-attr">value</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'wil'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.cal = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'chr'</span>] };
+  cards.win = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'int'</span>] };</pre></div>
+        
+      
+        
+        <p>Locations are abbreviated likewise, and both the Origin and the End count
+as locatios, instead of events.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">locations</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> [
+      <span class="hljs-string">'ori'</span>, <span class="hljs-string">'des'</span>, <span class="hljs-string">'mou'</span>, <span class="hljs-string">'for'</span>, <span class="hljs-string">'cas'</span>, <span class="hljs-string">'cav'</span>, <span class="hljs-string">'mil'</span>,
+      <span class="hljs-string">'drk'</span>, <span class="hljs-string">'bor'</span>, <span class="hljs-string">'isl'</span>, <span class="hljs-string">'dow'</span>, <span class="hljs-string">'sea'</span>, <span class="hljs-string">'end'</span>,
+    ];
+  }
+
+  cards.ori = { <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'qck'</span>] };
+  cards.des = { <span class="hljs-attr">value</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.mou = { <span class="hljs-attr">value</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.for = { <span class="hljs-attr">value</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'wil'</span>] };
+  cards.cas = { <span class="hljs-attr">value</span>: <span class="hljs-number">7</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'int'</span>] };
+  cards.cav = { <span class="hljs-attr">value</span>: <span class="hljs-number">7</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.mil = { <span class="hljs-attr">value</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'qck'</span>] };
+  cards.drk = { <span class="hljs-attr">value</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.bor = { <span class="hljs-attr">value</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>, <span class="hljs-string">'qck'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.isl = { <span class="hljs-attr">value</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'qck'</span>, <span class="hljs-string">'chr'</span>] };
+  cards.dow = { <span class="hljs-attr">value</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'str'</span>, <span class="hljs-string">'bld'</span>, <span class="hljs-string">'int'</span>] };
+  cards.sea = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'qck'</span>] };
+  cards.end = { <span class="hljs-attr">value</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">suits</span>: [<span class="hljs-string">'bld'</span>] };
+
+  <span class="hljs-keyword">return</span> {
+    attributes,
+    personalities,
+    events,
+    locations,
+    get,
+  };
+}());</pre></div>
+        
+      
+        
+        <p>Random number generators lie at the heart of good RPGs. Dice and decks of
+cards are common in a pen-and-paper world. But the digital world of <strong>Epic
+Loot</strong> uses a mathematical function. It’s the one described in the paper,
+<em>A New Class of Invertible Mappings</em>, by Alexander Klimov and Adi Shamer.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> PRNG = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">prng</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> max = <span class="hljs-number">2</span> ** <span class="hljs-number">32</span>;
+  <span class="hljs-keyword">let</span> state = <span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * max);
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">random</span>(<span class="hljs-params"></span>) </span>{
+    state += (state * state) | <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">return</span> (state &gt;&gt;&gt; <span class="hljs-number">32</span>) / max;
+  }</pre></div>
+        
+      
+        
+        <p>The PRNG provides an in-place shuffle for use with arrays. It’s based on
+the <a href="https://bost.ocks.org/mike/shuffle/" title="Mike Bostock: Fisher-Yates Shuffle">Fisher-Yates shuffle describe by Mike Bostock</a>.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shuffle</span>(<span class="hljs-params">array</span>) </span>{
+    <span class="hljs-keyword">let</span> m = array.length;
+    <span class="hljs-keyword">let</span> t;
+    <span class="hljs-keyword">let</span> i;
+
+    <span class="hljs-keyword">while</span> (m &gt; <span class="hljs-number">0</span>) {
+      i = <span class="hljs-built_in">Math</span>.floor(random() * m);
+      m -= <span class="hljs-number">1</span>;
+      t = array[m];
+      array[m] = array[i]; <span class="hljs-comment">// eslint-disable-line no-param-reassign</span>
+      array[i] = t; <span class="hljs-comment">// eslint-disable-line no-param-reassign</span>
+    }
+  }</pre></div>
+        
+      
+        
+        <p>Randomly picking items out of arrays is usefull too, so the PRNG provies a
+function to do that. <code>Math.floor()</code> is used instead of <code>Math.round()</code> to
+avoid a non-uniform distribution of random numbers.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pick</span>(<span class="hljs-params">array</span>) </span>{
+    <span class="hljs-keyword">const</span> index = <span class="hljs-built_in">Math</span>.floor(random() * array.length);
+    <span class="hljs-keyword">return</span> array[index];
+  }
+
+  <span class="hljs-keyword">return</span> {
+    random,
+    shuffle,
+    pick,
+  };
+}());</pre></div>
+        
+      
+        
+        <p>Loot is what this game is all about. The <code>Loot</code> object handles mapping
+cards from the Decktet onto epic loot. So the Merchant becomes a Metal Sword
+of // Shocking with +9 Boldness and +9 Intellect. The <code>Loot</code> object also
+handles grammatical bits like making sure serial commas aren’t included in
+descriptions.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">const</span> Loot = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loot</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> has = <span class="hljs-built_in">Object</span>.prototype.hasOwnProperty;
+  <span class="hljs-keyword">let</span> places = [];
+  <span class="hljs-keyword">let</span> actions = [];
+  <span class="hljs-keyword">let</span> helmets = [];
+  <span class="hljs-keyword">let</span> armour = [];
+  <span class="hljs-keyword">let</span> bottles = [];
+  <span class="hljs-keyword">let</span> items = {};
+  <span class="hljs-keyword">let</span> variations = {};
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getVariation</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">const</span> card = Decktet.get(name);</pre></div>
+        
+      
+        
+        <p>Any card that’s not found in the Decktet (spelling mistakes happen!) is
+assumed to be a mushroom. The Excuse is also a mushroom because it has
+no suits and no value. Mushrooms are delicious.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!card || card.suits.length &lt;= <span class="hljs-number">0</span> || card.value &lt;= <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">'mushrooms'</span>,
+        <span class="hljs-attr">variety</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">'mushrooms'</span>,
+        <span class="hljs-attr">article</span>: <span class="hljs-string">'some'</span>,
+        <span class="hljs-attr">pronoun</span>: <span class="hljs-string">'them'</span>,
+      };
+    }</pre></div>
+        
+      
+        
+        <p>Monsters in <strong>Epic Loot</strong> drop gold. Gold is useless and the amount you
+collect isn’t tracked. So you always have some gold in your bag.</p>
+<p>This was a design decision to account for the transition from day, when
+animals drop loot, to night when there are monsters. I wanted to keep the
+“end combat, loot critter, take loot” user experience the same for both
+animals and monsters. So I needed to have the monsters drop something.
+Gold seemed like a reasonable RPG element.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">if</span> (Decktet.locations().indexOf(name) &gt; <span class="hljs-number">-1</span>) {
+      <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">'gold'</span>,
+        <span class="hljs-attr">variety</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">title</span>: <span class="hljs-string">'some gold'</span>,
+        <span class="hljs-attr">article</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-attr">pronoun</span>: <span class="hljs-string">''</span>,
+      };
+    }</pre></div>
+        
+      
+        
+        <p>Anything that’s not a mushroom or gold is loot. The attribute to loot
+type distribution was chosen to provide a mostly even range of loot
+types. The second suit on cards with two and three suits was used,
+becuase that had the most even distribution.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">let</span> type = card.suits[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (!type) {
+      type = card.suits[<span class="hljs-number">0</span>];
+    }
+
+    <span class="hljs-keyword">const</span> loots = {
+      <span class="hljs-attr">str</span>: <span class="hljs-string">'armour'</span>,
+      <span class="hljs-attr">bld</span>: <span class="hljs-string">'bow'</span>,
+      <span class="hljs-attr">qck</span>: <span class="hljs-string">'staff'</span>,
+      <span class="hljs-attr">int</span>: <span class="hljs-string">'sword'</span>,
+      <span class="hljs-attr">wil</span>: <span class="hljs-string">'helmet'</span>,
+      <span class="hljs-attr">chr</span>: <span class="hljs-string">'helmet'</span>,
+    };</pre></div>
+        
+      
+        
+        <p>All the aces are bottles, because drinking a potion or tonic is a nice
+metaphor for leveling up.</p>
+
+        
+          <div class='highlight'><pre>    type = loots[type];
+    <span class="hljs-keyword">if</span> (!type || card.value &lt;= <span class="hljs-number">1</span>) {
+      type = <span class="hljs-string">'bottle'</span>;
+    }</pre></div>
+        
+      
+        
+        <p>I originally had eight different types of swords and six different models
+for bottles, but ended up having to cut things to fit the 13kB limit.
+Incrementing through the variations ensures all the models are shown, so
+I get maximum variety from a small set of graphics.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">const</span> max = { <span class="hljs-attr">helmet</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">armour</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">sword</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">bow</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">staff</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">bottle</span>: <span class="hljs-number">1</span> };
+    <span class="hljs-keyword">if</span> (!has.call(variations, type)) {
+      variations[type] = <span class="hljs-number">0</span>;
+    } <span class="hljs-keyword">else</span> {
+      variations[type] += <span class="hljs-number">1</span>;
+      variations[type] %= max[type];
+    }
+
+    <span class="hljs-keyword">return</span> { type, <span class="hljs-attr">variety</span>: variations[type], <span class="hljs-attr">article</span>: <span class="hljs-string">'a'</span>, <span class="hljs-attr">pronoun</span>: <span class="hljs-string">'it'</span> };
+  }</pre></div>
+        
+      
+        
+        <p>I wanted to create the feel of wondering through a forest, so the narrative
+text changes based on the animal or monster you encounter. You get to see
+all the text options before they’re reused, which keeps it feeling fresh.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWhere</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (places.length &lt;= <span class="hljs-number">0</span>) {
+      places = [
+        <span class="hljs-string">'wonder through the forest'</span>,
+        <span class="hljs-string">'come to a clearing in the forest'</span>,
+        <span class="hljs-string">'halt at a glade in the forest'</span>,
+        <span class="hljs-string">'arrive at a fork in the road'</span>,
+      ];
+      PRNG.shuffle(places);
+    }
+
+    <span class="hljs-keyword">return</span> places.pop();
+  }</pre></div>
+        
+      
+        
+        <p>Animals and monsters can make lots of different noises. I didn’t bother to
+map animal names onto noise types, because I found having rabbits that hiss
+was amusing.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWhat</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (actions.length &lt;= <span class="hljs-number">0</span>) {
+      actions = [
+        <span class="hljs-string">'blinks'</span>, <span class="hljs-string">'growls'</span>, <span class="hljs-string">'hisses'</span>, <span class="hljs-string">'howls'</span>, <span class="hljs-string">'glares'</span>,
+      ];
+      PRNG.shuffle(actions);
+    }
+
+    <span class="hljs-keyword">return</span> actions.pop();
+  }</pre></div>
+        
+      
+        
+        <p>I didn’t have enough bytes for lots of help text, but I wanted to hint that
+using gems that match card suits is useful. Saying “The rabbit hisses at
+you. If you are strong, bold and charming, you might be able to scare it
+away” is my attempt at that. There are probably more bytes spent here on
+not including serial commas than is reasonable.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHow</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">const</span> card = Decktet.get(name);
+    <span class="hljs-keyword">if</span> (card) {
+      <span class="hljs-keyword">const</span> verbs = {
+        <span class="hljs-attr">str</span>: <span class="hljs-string">'strong'</span>,
+        <span class="hljs-attr">bld</span>: <span class="hljs-string">'bold'</span>,
+        <span class="hljs-attr">qck</span>: <span class="hljs-string">'quick'</span>,
+        <span class="hljs-attr">int</span>: <span class="hljs-string">'intelligent'</span>,
+        <span class="hljs-attr">wil</span>: <span class="hljs-string">'wilful'</span>,
+        <span class="hljs-attr">chr</span>: <span class="hljs-string">'charming'</span>,
+      };
+
+      <span class="hljs-keyword">const</span> how = card.suits.map(<span class="hljs-function"><span class="hljs-params">suit</span> =&gt;</span> verbs[suit]);
+      <span class="hljs-keyword">let</span> text = <span class="hljs-string">''</span>;
+
+      <span class="hljs-keyword">while</span> (how.length &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">const</span> verb = how.shift();
+        <span class="hljs-keyword">if</span> (verb) {
+          text += <span class="hljs-string">` <span class="hljs-subst">${verb}</span>`</span>;
+          <span class="hljs-keyword">if</span> (how.length &gt; <span class="hljs-number">1</span>) {
+            text += <span class="hljs-string">','</span>;
+          }
+          <span class="hljs-keyword">if</span> (how.length === <span class="hljs-number">1</span>) {
+            text += <span class="hljs-string">' and'</span>;
+          }
+        }
+      }
+
+      <span class="hljs-keyword">return</span> text.trim();
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  }</pre></div>
+        
+      
+        
+        <p>Helmets, armour, weapons, and bottles come in a variety of styles. And
+they all have an optional material or attribute. The randomization cycles
+through all the styles before repeating any, so there’s a lot of variety
+in the names.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHelmet</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (helmets.length &lt;= <span class="hljs-number">0</span>) {
+      helmets = [<span class="hljs-string">'coif'</span>, <span class="hljs-string">'helmet'</span>, <span class="hljs-string">'helm'</span>];
+      PRNG.shuffle(helmets);
+    }
+
+    <span class="hljs-keyword">let</span> title = helmets.pop();
+
+    <span class="hljs-keyword">const</span> material = PRNG.pick([<span class="hljs-string">'plate'</span>, <span class="hljs-string">'mail'</span>, <span class="hljs-string">'leather'</span>, <span class="hljs-literal">undefined</span>]);
+    <span class="hljs-keyword">if</span> (material) {
+      title = <span class="hljs-string">`<span class="hljs-subst">${material}</span> <span class="hljs-subst">${title}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> title;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getArmour</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (armour.length &lt;= <span class="hljs-number">0</span>) {
+      armour = [<span class="hljs-string">'brigandine'</span>, <span class="hljs-string">'hauberk'</span>, <span class="hljs-string">'cuirass'</span>, <span class="hljs-string">'plackart'</span>];
+      PRNG.shuffle(armour);
+    }
+
+    <span class="hljs-keyword">let</span> title = armour.pop();
+
+    <span class="hljs-keyword">const</span> material = PRNG.pick([<span class="hljs-string">'plate'</span>, <span class="hljs-string">'mail'</span>, <span class="hljs-string">'leather'</span>, <span class="hljs-literal">undefined</span>]);
+    <span class="hljs-keyword">if</span> (material) {
+      title = <span class="hljs-string">`<span class="hljs-subst">${material}</span> <span class="hljs-subst">${title}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> title;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getWeapon</span>(<span class="hljs-params">type</span>) </span>{
+    <span class="hljs-keyword">let</span> title = type;
+
+    <span class="hljs-keyword">const</span> material = PRNG.pick([<span class="hljs-string">'metal'</span>, <span class="hljs-string">'glass'</span>, <span class="hljs-string">'bone'</span>, <span class="hljs-literal">undefined</span>]);
+    <span class="hljs-keyword">if</span> (material) {
+      title = <span class="hljs-string">`<span class="hljs-subst">${material}</span> <span class="hljs-subst">${title}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> title;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBottle</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (bottles.length &lt;= <span class="hljs-number">0</span>) {
+      bottles = [<span class="hljs-string">'potion'</span>, <span class="hljs-string">'tonic'</span>, <span class="hljs-string">'salve'</span>];
+      PRNG.shuffle(bottles);
+    }
+
+    <span class="hljs-keyword">let</span> title = bottles.pop();
+
+    <span class="hljs-keyword">const</span> attribute = PRNG.pick([<span class="hljs-string">'sticky'</span>, <span class="hljs-string">'noxious'</span>, <span class="hljs-string">'fragrent'</span>, <span class="hljs-literal">undefined</span>]);
+    <span class="hljs-keyword">if</span> (attribute) {
+      title = <span class="hljs-string">`<span class="hljs-subst">${attribute}</span> <span class="hljs-subst">${title}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> title;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">generate</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">const</span> item = getVariation(name);
+
+    item.where = getWhere();
+    item.what = getWhat();
+    item.how = getHow(name);
+
+    <span class="hljs-keyword">if</span> (item.title) {
+      <span class="hljs-keyword">return</span> item;
+    }
+
+    <span class="hljs-keyword">if</span> (item.type === <span class="hljs-string">'helmet'</span>) {
+      item.title = getHelmet();
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (item.type === <span class="hljs-string">'armour'</span>) {
+      item.title = getArmour();
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (item.type === <span class="hljs-string">'bottle'</span>) {
+      item.title = getBottle();
+    } <span class="hljs-keyword">else</span> {
+      item.title = getWeapon(item.type);
+    }
+
+    <span class="hljs-keyword">const</span> rarity = PRNG.pick([<span class="hljs-string">'epic'</span>, <span class="hljs-string">'greater'</span>, <span class="hljs-string">'lesser'</span>, <span class="hljs-literal">undefined</span>]);
+    <span class="hljs-keyword">if</span> (rarity) {
+      item.title = <span class="hljs-string">`<span class="hljs-subst">${rarity}</span> <span class="hljs-subst">${item.title}</span>`</span>;
+    }
+    <span class="hljs-keyword">if</span> (rarity === <span class="hljs-string">'epic'</span>) {
+      item.article = <span class="hljs-string">'an'</span>;
+    }
+
+    <span class="hljs-keyword">const</span> bonus = PRNG.pick([
+      <span class="hljs-string">'healing'</span>, <span class="hljs-string">'casting'</span>, <span class="hljs-string">'shocking'</span>, <span class="hljs-string">'poisoning'</span>, <span class="hljs-string">'burning'</span>, <span class="hljs-string">'freezing'</span>,
+      <span class="hljs-string">'archery'</span>, <span class="hljs-string">'smiting'</span>, <span class="hljs-string">'wondering'</span>, <span class="hljs-literal">undefined</span>,
+    ]);
+    <span class="hljs-keyword">if</span> (bonus) {
+      item.title = <span class="hljs-string">`<span class="hljs-subst">${item.title}</span> of <span class="hljs-subst">${bonus}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> item;
+  }</pre></div>
+        
+      
+        
+        <p>Loot names are generated as needed, and aren’t regenerated if they already
+exist. That way the Sailor card always maps to a Lesser Glass Staff of
+Healing.</p>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (!has.call(items, name)) {
+      items[name] = generate(name);
+    }
+
+    <span class="hljs-keyword">return</span> items[name];
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    places = [];
+    actions = [];
+    helmets = [];
+    armour = [];
+    bottles = [];
+    items = {};
+    variations = {};
+  }
+
+  <span class="hljs-keyword">return</span> {
+    get,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Personalities = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">personalities</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> cards = [];
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deal</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cards.pop();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">const</span> index = cards.indexOf(name);
+    <span class="hljs-keyword">if</span> (index &gt; <span class="hljs-number">-1</span>) {
+      cards.splice(index, <span class="hljs-number">1</span>);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    cards = Decktet.personalities();
+    PRNG.shuffle(cards);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    deal,
+    remove,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Events = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">events</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> cards = [];
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deal</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cards.pop();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">size</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cards.length;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    cards = Decktet.events();
+    PRNG.shuffle(cards);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    deal,
+    size,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Locations = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">locations</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> cards = [];
+  <span class="hljs-keyword">let</span> discards = [];
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (Decktet.locations().indexOf(name) &gt; <span class="hljs-number">-1</span>) {
+      discards.push(name);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shuffle</span>(<span class="hljs-params"></span>) </span>{
+    cards = cards.concat(discards);
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deal</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cards.pop();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">size</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cards.length + discards.length;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    cards = Decktet.locations();
+    discards = [];
+    PRNG.shuffle(cards);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    add,
+    shuffle,
+    deal,
+    size,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Obstacles = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">obstacles</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> phase = <span class="hljs-number">1</span>;
+  <span class="hljs-keyword">let</span> animals = [];
+  <span class="hljs-keyword">let</span> monsters = [];
+  <span class="hljs-keyword">let</span> active = [];
+  <span class="hljs-keyword">let</span> challenger;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">let</span> results = active;
+    <span class="hljs-keyword">if</span> (challenger) {
+      results = [challenger];
+    }
+    <span class="hljs-keyword">return</span> results.map(<span class="hljs-function"><span class="hljs-params">o</span> =&gt;</span> <span class="hljs-built_in">Object</span>.assign({}, o));
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deal</span>(<span class="hljs-params"></span>) </span>{
+    active = [];
+    challenger = <span class="hljs-literal">undefined</span>;
+
+    <span class="hljs-keyword">if</span> (phase === <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">const</span> per = Personalities.deal();
+      <span class="hljs-keyword">const</span> evt = Events.deal();
+      <span class="hljs-keyword">if</span> (per &amp;&amp; evt) {
+        active = [per, evt];
+      } <span class="hljs-keyword">else</span> {
+        phase = <span class="hljs-number">2</span>;
+      }
+    }
+
+    <span class="hljs-keyword">if</span> (phase === <span class="hljs-number">2</span>) {
+      <span class="hljs-keyword">let</span> loc1 = Locations.deal();
+      <span class="hljs-keyword">if</span> (!loc1) {
+        Locations.shuffle();
+        loc1 = Locations.deal();
+      }
+      <span class="hljs-keyword">if</span> (loc1) {
+        active.push(loc1);
+      }
+
+      <span class="hljs-keyword">let</span> loc2 = Locations.deal();
+      <span class="hljs-keyword">if</span> (!loc2) {
+        Locations.shuffle();
+        loc2 = Locations.deal();
+      }
+      <span class="hljs-keyword">if</span> (loc2) {
+        active.push(loc2);
+      }
+    }
+
+    PRNG.shuffle(active);
+    active = active.map(<span class="hljs-function"><span class="hljs-params">name</span> =&gt;</span> Decktet.get(name));
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; active.length; i += <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">if</span> (active[i].value &lt;= <span class="hljs-number">0</span>) {
+        active[i].title = <span class="hljs-string">'mushrooms'</span>;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (phase === <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">if</span> (animals.length &lt;= <span class="hljs-number">0</span>) {
+          animals = [<span class="hljs-string">'rabbit'</span>, <span class="hljs-string">'arachnid'</span>, <span class="hljs-string">'bat'</span>, <span class="hljs-string">'snake'</span>, <span class="hljs-string">'boar'</span>];
+          PRNG.shuffle(animals);
+        }
+        active[i].title = animals.pop();
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">if</span> (monsters.length &lt;= <span class="hljs-number">0</span>) {
+          monsters = [<span class="hljs-string">'scorpion'</span>, <span class="hljs-string">'ghost'</span>, <span class="hljs-string">'skeleton'</span>, <span class="hljs-string">'eye'</span>, <span class="hljs-string">'octo'</span>];
+          PRNG.shuffle(monsters);
+        }
+        active[i].title = monsters.pop();
+      }
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pick</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (challenger || active.length &lt; <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (active.length &lt; <span class="hljs-number">2</span>) {
+      challenger = active[<span class="hljs-number">0</span>];
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (active[<span class="hljs-number">0</span>].name === name) {
+      Locations.add(active[<span class="hljs-number">1</span>].name);
+      challenger = active[<span class="hljs-number">0</span>];
+    }
+
+    <span class="hljs-keyword">if</span> (active[<span class="hljs-number">1</span>].name === name) {
+      Locations.add(active[<span class="hljs-number">0</span>].name);
+      challenger = active[<span class="hljs-number">1</span>];
+    }
+
+    active = [challenger];
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">use</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (!challenger) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">const</span> card = Decktet.get(name);
+    <span class="hljs-keyword">if</span> (!card) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">let</span> match = <span class="hljs-literal">false</span>;
+    card.suits.forEach(<span class="hljs-function">(<span class="hljs-params">suit</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (challenger.suits.indexOf(suit) &gt; <span class="hljs-number">-1</span>) {
+        match = <span class="hljs-literal">true</span>;
+      }
+    });
+
+    <span class="hljs-keyword">if</span> (match) {
+      challenger.value -= card.value;
+      <span class="hljs-keyword">if</span> (challenger.value &lt; <span class="hljs-number">0</span>) {
+        challenger.value = <span class="hljs-number">0</span>;
+      }
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defeated</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> challenger &amp;&amp; challenger.value &lt;= <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stage</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> phase;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    Personalities.reset();
+    Events.reset();
+    Locations.reset();
+
+    phase = <span class="hljs-number">1</span>;
+    animals = [];
+    monsters = [];
+    active = [];
+    challenger = <span class="hljs-literal">undefined</span>;
+  }
+
+  <span class="hljs-keyword">return</span> {
+    get,
+    deal,
+    pick,
+    use,
+    defeated,
+    stage,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Deck = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deck</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> starting = [];
+  <span class="hljs-keyword">let</span> cards = [];
+  <span class="hljs-keyword">let</span> discards = [];
+  <span class="hljs-keyword">let</span> hand = [];
+  <span class="hljs-keyword">let</span> bag = [];
+  <span class="hljs-keyword">let</span> maxed = <span class="hljs-literal">false</span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> attributes = [];
+    <span class="hljs-keyword">const</span> swag = [].concat(bag).reverse();
+
+    [].concat(cards, discards).forEach(<span class="hljs-function">(<span class="hljs-params">card</span>) =&gt;</span> {
+      <span class="hljs-keyword">if</span> (Decktet.attributes().indexOf(card) &gt; <span class="hljs-number">-1</span>) {
+        attributes.push(card);
+      }
+    });
+
+    <span class="hljs-keyword">return</span> { <span class="hljs-attr">cards</span>: cards.length, <span class="hljs-attr">discards</span>: discards.length, attributes, <span class="hljs-attr">bag</span>: swag };
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">empty</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> maxed;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shuffle</span>(<span class="hljs-params"></span>) </span>{
+    cards = [].concat(cards, discards, hand);
+    discards = [];
+    hand = [];
+    PRNG.shuffle(cards);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deal</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> card = cards.pop();
+
+    <span class="hljs-keyword">if</span> (card) {
+      discards.push(card);
+    }
+
+    <span class="hljs-keyword">if</span> (!card) {
+      maxed = <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-keyword">return</span> card;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">card</span>) </span>{
+    <span class="hljs-keyword">if</span> (card &amp;&amp; Decktet.locations().indexOf(card) &lt; <span class="hljs-number">0</span>) {
+      hand.push(card);
+      bag.push(card);
+      <span class="hljs-keyword">if</span> (Decktet.attributes().indexOf(card) &gt; <span class="hljs-number">-1</span>) {
+        maxed = <span class="hljs-literal">false</span>;
+      }
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">used</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">return</span> cards.indexOf(name) &lt; <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">combinations</span>(<span class="hljs-params">list, k</span>) </span>{
+    <span class="hljs-keyword">const</span> result = [];
+    <span class="hljs-keyword">let</span> i;
+    <span class="hljs-keyword">let</span> j;
+    <span class="hljs-keyword">let</span> sub;
+    <span class="hljs-keyword">let</span> next;
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; list.length; i += <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">if</span> (k === <span class="hljs-number">1</span>) {
+        result.push([list[i]]);
+      } <span class="hljs-keyword">else</span> {
+        sub = combinations(list.slice(i + <span class="hljs-number">1</span>, list.length), k - <span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; sub.length; j += <span class="hljs-number">1</span>) {
+          next = sub[j];
+          next.unshift(list[i]);
+          result.push(next);
+        }
+      }
+    }
+
+    <span class="hljs-keyword">return</span> result;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (starting.length &lt;= <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">const</span> possible = combinations(Decktet.personalities(), <span class="hljs-number">4</span>);
+      possible.forEach(<span class="hljs-function">(<span class="hljs-params">collection</span>) =&gt;</span> {
+        <span class="hljs-keyword">let</span> suits = [];
+
+        collection.forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+          <span class="hljs-keyword">const</span> card = Decktet.get(name);
+          suits = suits.concat(card.suits);
+        });
+
+        suits = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>(suits);
+        <span class="hljs-keyword">if</span> (suits.size === <span class="hljs-number">6</span>) {
+          PRNG.shuffle(collection);
+          starting.push(collection);
+        }
+      });
+      PRNG.shuffle(starting);
+    }
+
+    cards = starting.pop();
+    discards = [];
+    hand = [];
+    bag = [].concat(cards, discards);
+    maxed = <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-keyword">return</span> {
+    get,
+    empty,
+    shuffle,
+    deal,
+    add,
+    used,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Gems = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gems</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> has = <span class="hljs-built_in">Object</span>.prototype.hasOwnProperty;
+  <span class="hljs-keyword">const</span> cap = <span class="hljs-number">9</span>;
+  <span class="hljs-keyword">let</span> counts = {};
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> counts;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    counts = {};
+
+    Decktet.attributes().forEach(<span class="hljs-function">(<span class="hljs-params">attribute</span>) =&gt;</span> {
+      counts[attribute] = cap;
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">count</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (has.call(counts, name)) {
+      <span class="hljs-keyword">return</span> counts[name];
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">spend</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (has.call(counts, name) &amp;&amp; counts[name] &gt; <span class="hljs-number">0</span>) {
+      counts[name] -= <span class="hljs-number">1</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">name</span>) </span>{
+    <span class="hljs-keyword">if</span> (has.call(counts, name) &amp;&amp; counts[name] &lt; cap) {
+      counts[name] += <span class="hljs-number">1</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">max</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> cap;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">size</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.values(counts).reduce(<span class="hljs-function">(<span class="hljs-params">total, num</span>) =&gt;</span> total + num, <span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    get,
+    count,
+    spend,
+    add,
+    max,
+    reset,
+    size,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Stage = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stage</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> usedItems = [];
+  <span class="hljs-keyword">let</span> state = <span class="hljs-string">'encumbered'</span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> state;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reset</span>(<span class="hljs-params"></span>) </span>{
+    Loot.reset();
+    Obstacles.reset();
+    Deck.reset();
+    Gems.reset();
+
+    usedItems = [];
+    state = <span class="hljs-string">'encumbered'</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onEncumbered</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'d6'</span>) {
+      Deck.reset();
+    }
+
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'items'</span>) {
+      Deck.get().bag.forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+        Personalities.remove(name);
+      });
+      Deck.shuffle();
+      Obstacles.deal();
+      state = <span class="hljs-string">'choice'</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChoice</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">const</span> obstacles = Obstacles.get();
+    <span class="hljs-keyword">if</span> (obstacles.length &lt; <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    <span class="hljs-keyword">let</span> index;
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'d6'</span>) {
+      index = <span class="hljs-built_in">Math</span>.floor(PRNG.random() * obstacles.length);
+    }
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'sign1'</span>) {
+      index = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'sign2'</span>) {
+      index = <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">if</span> (index === <span class="hljs-literal">undefined</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+    <span class="hljs-keyword">if</span> (index &gt;= obstacles.length) {
+      index = <span class="hljs-number">0</span>;
+    }
+
+    Obstacles.pick(obstacles[index].name);
+    state = <span class="hljs-string">'combat'</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onCombat</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">const</span> part = message.split(<span class="hljs-string">'-'</span>);
+
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'d6'</span>) {
+      <span class="hljs-keyword">const</span> attributes = Decktet.attributes();
+      PRNG.shuffle(attributes);
+      part[<span class="hljs-number">0</span>] = <span class="hljs-string">'gems'</span>;
+      part[<span class="hljs-number">1</span>] = attributes.pop();
+      <span class="hljs-keyword">while</span> (part[<span class="hljs-number">1</span>] &amp;&amp; Gems.count(part[<span class="hljs-number">1</span>]) &lt;= <span class="hljs-number">0</span>) {
+        part[<span class="hljs-number">1</span>] = attributes.pop();
+      }
+    }
+
+    <span class="hljs-keyword">if</span> (part[<span class="hljs-number">0</span>] === <span class="hljs-string">'gems'</span>) {
+      <span class="hljs-keyword">const</span> type = part[<span class="hljs-number">1</span>];
+
+      <span class="hljs-keyword">if</span> (Gems.count(type) &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      <span class="hljs-keyword">if</span> (Obstacles.defeated()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      <span class="hljs-keyword">if</span> (Obstacles.get().length !== <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      Gems.spend(type);
+      Obstacles.use(type);
+
+      <span class="hljs-keyword">let</span> card = Deck.deal();
+      <span class="hljs-keyword">if</span> (!card) {
+        Deck.shuffle();
+        card = Deck.deal();
+      }
+      Obstacles.use(card);
+      usedItems.push(card);
+    }
+
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'items'</span>) {
+      <span class="hljs-keyword">if</span> (Obstacles.defeated()) {
+        state = <span class="hljs-string">'loot'</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+
+      <span class="hljs-keyword">if</span> (Gems.size() &lt;= <span class="hljs-number">0</span>) {
+        state = <span class="hljs-string">'madness'</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+      }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onLoot</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">if</span> (message !== <span class="hljs-string">'items'</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    <span class="hljs-keyword">let</span> obstacles = Obstacles.get();
+    <span class="hljs-keyword">if</span> (obstacles.length &lt; <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    Deck.add(obstacles[<span class="hljs-number">0</span>].name);
+    Obstacles.deal();
+    obstacles = Obstacles.get();
+
+    usedItems = [];
+
+    <span class="hljs-keyword">if</span> (obstacles.length &lt; <span class="hljs-number">1</span>) {
+      state = <span class="hljs-string">'victory'</span>;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (Deck.empty()) {
+      state = <span class="hljs-string">'level-up'</span>;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    state = <span class="hljs-string">'choice'</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onLevelUp</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">const</span> part = message.split(<span class="hljs-string">'-'</span>);
+
+    <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'d6'</span>) {
+      <span class="hljs-keyword">const</span> attributes = Decktet.attributes();
+      <span class="hljs-keyword">const</span> index = <span class="hljs-built_in">Math</span>.floor(PRNG.random() * attributes.length);
+      part[<span class="hljs-number">0</span>] = <span class="hljs-string">'level'</span>;
+      part[<span class="hljs-number">1</span>] = attributes[index];
+    }
+
+    <span class="hljs-keyword">if</span> (part[<span class="hljs-number">0</span>] !== <span class="hljs-string">'level'</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (Decktet.attributes().indexOf(part[<span class="hljs-number">1</span>]) &lt; <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (!Deck.empty()) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    }
+
+    Gems.add(part[<span class="hljs-number">1</span>]);
+    Deck.add(part[<span class="hljs-number">1</span>]);
+    state = <span class="hljs-string">'choice'</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">next</span>(<span class="hljs-params">message</span>) </span>{
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'encumbered'</span>) {
+      <span class="hljs-keyword">return</span> onEncumbered(message);
+    }
+
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'choice'</span>) {
+      <span class="hljs-keyword">return</span> onChoice(message);
+    }
+
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'combat'</span>) {
+      <span class="hljs-keyword">return</span> onCombat(message);
+    }
+
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'loot'</span>) {
+      <span class="hljs-keyword">return</span> onLoot(message);
+    }
+
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'level-up'</span>) {
+      <span class="hljs-keyword">return</span> onLevelUp(message);
+    }
+
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'victory'</span> || state === <span class="hljs-string">'madness'</span>) {
+      <span class="hljs-keyword">if</span> (message === <span class="hljs-string">'items'</span>) {
+        reset();
+      }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">items</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> [].concat(usedItems);
+  }
+
+  <span class="hljs-keyword">return</span> {
+    get,
+    next,
+    items,
+    reset,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Renderer = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderer</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> dirty = <span class="hljs-literal">true</span>;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderBag</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> swag = Deck.get().bag;
+    <span class="hljs-keyword">const</span> used = swag.filter(<span class="hljs-function"><span class="hljs-params">name</span> =&gt;</span> Deck.used(name));
+    <span class="hljs-keyword">const</span> unused = swag.filter(<span class="hljs-function"><span class="hljs-params">name</span> =&gt;</span> !Deck.used(name));
+
+    <span class="hljs-keyword">let</span> html = <span class="hljs-string">''</span>;
+    [].concat(unused, [<span class="hljs-string">'end'</span>], used).forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> card = Decktet.get(name);
+      <span class="hljs-keyword">const</span> loot = Loot.get(name);
+      html += <span class="hljs-string">'&lt;div class="row item"&gt;'</span>;
+      html += <span class="hljs-string">`&lt;span class="pixelated icon loot <span class="hljs-subst">${loot.type}</span><span class="hljs-subst">${loot.variety}</span>"&gt;&lt;/span&gt;`</span>;
+      html += <span class="hljs-string">`&lt;span class="name"&gt;<span class="hljs-subst">${loot.title}</span>&lt;/span&gt;`</span>;
+      <span class="hljs-keyword">if</span> (loot.type !== <span class="hljs-string">'gold'</span>) {
+        html += <span class="hljs-string">'&lt;span class="info"&gt;'</span>;
+        html += <span class="hljs-string">`&lt;span class="value"&gt;<span class="hljs-subst">${card.value}</span>&lt;/span&gt;`</span>;
+        card.suits.forEach(<span class="hljs-function">(<span class="hljs-params">type</span>) =&gt;</span> {
+          html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${type}</span> gem"&gt;&lt;/span&gt;`</span>;
+        });
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = card.suits.length; i &lt; <span class="hljs-number">3</span>; i += <span class="hljs-number">1</span>) {
+          html += <span class="hljs-string">'&lt;span class="invisible gem"&gt;&lt;/span&gt;'</span>;
+        }
+      }
+      html += <span class="hljs-string">'&lt;/span&gt;'</span>;
+      html += <span class="hljs-string">'&lt;/div&gt;'</span>;
+    });
+
+    $(<span class="hljs-string">'#bag'</span>).html(html);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderHero</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+
+    Decktet.attributes().forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> max = Gems.max();
+      <span class="hljs-keyword">let</span> value = max - Gems.count(name);
+      <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">1</span>) {
+        value = <span class="hljs-number">1</span>;
+      }
+      <span class="hljs-keyword">if</span> (value &gt; max) {
+        value = max;
+      }
+      <span class="hljs-keyword">let</span> html = <span class="hljs-string">''</span>;
+      html += <span class="hljs-string">`&lt;span class="stat"&gt;<span class="hljs-subst">${value}</span>`</span>;
+      html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${name}</span> gem"&gt;&lt;/span&gt;`</span>;
+      html += <span class="hljs-string">'&lt;/span&gt;'</span>;
+      $(<span class="hljs-string">`#stats-<span class="hljs-subst">${name}</span>`</span>).html(html.trim());
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderExperience</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> deck = Deck.get();
+    <span class="hljs-keyword">const</span> stage = Stage.get();
+    <span class="hljs-keyword">let</span> points = deck.discards;
+    <span class="hljs-keyword">let</span> needed = deck.discards + deck.cards;
+    <span class="hljs-keyword">let</span> percent = (points * <span class="hljs-number">100</span>) / needed;
+
+    <span class="hljs-keyword">if</span> (Deck.empty()) {
+      points = <span class="hljs-string">'??'</span>;
+      needed = <span class="hljs-string">'??'</span>;
+      percent = <span class="hljs-number">100</span>;
+    }
+
+    $(<span class="hljs-string">'#xp-points'</span>).html(points);
+    $(<span class="hljs-string">'#xp-needed'</span>).html(needed);
+    $(<span class="hljs-string">'#this-level'</span>).html(deck.attributes.length + <span class="hljs-number">1</span>);
+    $(<span class="hljs-string">'#next-level'</span>).html(deck.attributes.length + <span class="hljs-number">2</span>);
+    $(<span class="hljs-string">'#xp-progress'</span>).style(<span class="hljs-string">'width'</span>, <span class="hljs-string">`<span class="hljs-subst">${percent}</span>%`</span>);
+
+    <span class="hljs-keyword">if</span> (Obstacles.stage() === <span class="hljs-number">1</span>) {
+      $(<span class="hljs-string">'#world'</span>).add(<span class="hljs-string">'day'</span>);
+      $(<span class="hljs-string">'#world'</span>).remove(<span class="hljs-string">'night'</span>);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#world'</span>).add(<span class="hljs-string">'night'</span>);
+      $(<span class="hljs-string">'#world'</span>).remove(<span class="hljs-string">'day'</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (stage === <span class="hljs-string">'encumbered'</span> || stage === <span class="hljs-string">'loot'</span>) {
+      <span class="hljs-keyword">let</span> html = <span class="hljs-string">'&lt;span class="celestial"&gt;&lt;/span&gt;'</span>;
+      <span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>;
+      needed = Decktet.events().length + Decktet.locations().length;
+      points = needed - Events.size() - Locations.size();
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; points; i += <span class="hljs-number">1</span>) {
+        html += <span class="hljs-string">'&lt;span class="filled diamond"&gt;&lt;/span&gt;'</span>;
+      }
+      <span class="hljs-keyword">for</span> (i = points; i &lt; needed; i += <span class="hljs-number">1</span>) {
+        html += <span class="hljs-string">'&lt;span class="diamond"&gt;&lt;/span&gt;'</span>;
+      }
+      $(<span class="hljs-string">'#game-progress'</span>).html(html);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderItem</span>(<span class="hljs-params">card, loot, mini</span>) </span>{
+    <span class="hljs-keyword">let</span> html;
+
+    <span class="hljs-keyword">if</span> (card) {
+      <span class="hljs-keyword">let</span> klass = <span class="hljs-string">'col sign'</span>;
+      <span class="hljs-keyword">if</span> (mini || loot) {
+        klass += <span class="hljs-string">' mini'</span>;
+      }
+      <span class="hljs-keyword">if</span> (loot) {
+        klass += <span class="hljs-string">' loot'</span>;
+      }
+
+      <span class="hljs-keyword">let</span> icon = card.title;
+      <span class="hljs-keyword">if</span> (loot) {
+        icon = <span class="hljs-string">`<span class="hljs-subst">${loot.type}</span><span class="hljs-subst">${loot.variety}</span>`</span>;
+      }
+
+      <span class="hljs-keyword">let</span> type = <span class="hljs-string">'gems'</span>;
+      <span class="hljs-keyword">if</span> (loot &amp;&amp; loot.type === <span class="hljs-string">'gold'</span>) {
+        type += <span class="hljs-string">' gold'</span>;
+      }
+
+      html = <span class="hljs-string">''</span>;
+      html += <span class="hljs-string">`&lt;div class="<span class="hljs-subst">${klass}</span>"&gt;`</span>;
+      html += <span class="hljs-string">`&lt;span class="value"&gt;<span class="hljs-subst">${card.value}</span>&lt;/span&gt;`</span>;
+      html += <span class="hljs-string">'&lt;div class="row"&gt;'</span>;
+      html += <span class="hljs-string">`&lt;span class="pixelated icon <span class="hljs-subst">${icon}</span>"&gt;&lt;/span&gt;`</span>;
+      html += <span class="hljs-string">'&lt;span class="text"&gt;'</span>;
+      html += <span class="hljs-string">`&lt;span class="iconic title"&gt;<span class="hljs-subst">${card.title}</span>&lt;/span&gt;`</span>;
+      html += <span class="hljs-string">'&lt;/span&gt;'</span>;
+      html += <span class="hljs-string">'&lt;/div&gt;'</span>;
+      html += <span class="hljs-string">`&lt;div class="row <span class="hljs-subst">${type}</span>"&gt;`</span>;
+      card.suits.forEach(<span class="hljs-function">(<span class="hljs-params">suit</span>) =&gt;</span> {
+        html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${suit}</span> gem"&gt;&lt;/span&gt;`</span>;
+      });
+      html += <span class="hljs-string">'&lt;/div&gt;'</span>;
+      html += <span class="hljs-string">'&lt;/div&gt;'</span>;
+    }
+
+    <span class="hljs-keyword">return</span> html;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderLevelUp</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+
+    <span class="hljs-keyword">let</span> html;
+    <span class="hljs-keyword">let</span> card;
+    <span class="hljs-keyword">let</span> loot;
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'level-up'</span>:
+        Decktet.attributes().forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          html = renderItem(card, loot, <span class="hljs-literal">true</span>);
+          $(<span class="hljs-string">`#level-<span class="hljs-subst">${name}</span>`</span>).html(html);
+        });
+        $(<span class="hljs-string">'#level-up'</span>).remove(<span class="hljs-string">'hidden'</span>);
+        $(<span class="hljs-string">'#used-items'</span>).add(<span class="hljs-string">'hidden'</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        $(<span class="hljs-string">'#used-items'</span>).remove(<span class="hljs-string">'hidden'</span>);
+        $(<span class="hljs-string">'#level-up'</span>).add(<span class="hljs-string">'hidden'</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderUsedItems</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">let</span> html;
+    <span class="hljs-keyword">let</span> card;
+    <span class="hljs-keyword">let</span> loot;
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'encumbered'</span>:
+        html = <span class="hljs-string">''</span>;
+        Deck.get().bag.forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          <span class="hljs-keyword">if</span> (card &amp;&amp; loot) {
+            html += renderItem(card, loot, <span class="hljs-literal">true</span>);
+          }
+        });
+        $(<span class="hljs-string">'#used-items'</span>).remove(<span class="hljs-string">'hidden'</span>).html(html);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'combat'</span>:
+        html = <span class="hljs-string">''</span>;
+        Stage.items().slice(<span class="hljs-number">-6</span>).forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+          card = Decktet.get(name);
+          loot = Loot.get(name);
+          <span class="hljs-keyword">if</span> (card &amp;&amp; loot) {
+            html += renderItem(card, loot, <span class="hljs-literal">true</span>);
+          }
+        });
+        $(<span class="hljs-string">'#used-items'</span>).remove(<span class="hljs-string">'hidden'</span>).html(html);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'loot'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'victory'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'madness'</span>:
+        $(<span class="hljs-string">'#used-items'</span>).remove(<span class="hljs-string">'hidden'</span>).html(<span class="hljs-string">''</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        $(<span class="hljs-string">'#used-items'</span>).add(<span class="hljs-string">'hidden'</span>).html(<span class="hljs-string">''</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderObstacles</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> obstacles = Obstacles.get();
+    <span class="hljs-keyword">let</span> sign1;
+    <span class="hljs-keyword">let</span> sign2;
+    <span class="hljs-keyword">let</span> card;
+    <span class="hljs-keyword">let</span> loot;
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'encumbered'</span>:
+        sign1 = <span class="hljs-string">'&lt;div class="col sign"&gt;&lt;/div&gt;'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'combat'</span>:
+        sign1 = renderItem(obstacles[<span class="hljs-number">0</span>], <span class="hljs-literal">undefined</span>, <span class="hljs-literal">false</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'choice'</span>:
+        sign1 = renderItem(obstacles[<span class="hljs-number">0</span>], <span class="hljs-literal">undefined</span>, <span class="hljs-literal">true</span>);
+        sign2 = renderItem(obstacles[<span class="hljs-number">1</span>], <span class="hljs-literal">undefined</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">if</span> (obstacles.length === <span class="hljs-number">1</span>) {
+          sign2 = sign1;
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'loot'</span>:
+        card = Decktet.get(obstacles[<span class="hljs-number">0</span>].name);
+        loot = Loot.get(obstacles[<span class="hljs-number">0</span>].name);
+        sign1 = renderItem(card, loot, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (sign1 || sign2) {
+      $(<span class="hljs-string">'#signpost'</span>).remove(<span class="hljs-string">'hidden'</span>);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#signpost'</span>).add(<span class="hljs-string">'hidden'</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (sign1) {
+      $(<span class="hljs-string">'#sign1'</span>).remove(<span class="hljs-string">'hidden'</span>).html(sign1);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#sign1'</span>).add(<span class="hljs-string">'hidden'</span>).html(<span class="hljs-string">''</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (sign2) {
+      $(<span class="hljs-string">'#sign2'</span>).remove(<span class="hljs-string">'hidden'</span>).html(sign2);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#sign2'</span>).add(<span class="hljs-string">'hidden'</span>).html(<span class="hljs-string">''</span>);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderGems</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> gems = Gems.get();
+
+    <span class="hljs-keyword">if</span> (Stage.get() === <span class="hljs-string">'encumbered'</span>) {
+      $(<span class="hljs-string">'#gems'</span>).add(<span class="hljs-string">'invisible'</span>);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#gems'</span>).remove(<span class="hljs-string">'invisible'</span>);
+    }
+
+    <span class="hljs-built_in">Object</span>.keys(gems).forEach(<span class="hljs-function">(<span class="hljs-params">type</span>) =&gt;</span> {
+      <span class="hljs-keyword">let</span> html = <span class="hljs-string">''</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>; i += <span class="hljs-number">1</span>) {
+        html += <span class="hljs-string">'&lt;span class="box"&gt;'</span>;
+        <span class="hljs-keyword">let</span> gem = <span class="hljs-literal">false</span>;
+        gem = gem || (i === <span class="hljs-number">0</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">7</span>);
+        gem = gem || (i === <span class="hljs-number">1</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">6</span>);
+        gem = gem || (i === <span class="hljs-number">2</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">5</span>);
+        gem = gem || (i === <span class="hljs-number">3</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">8</span>);
+        gem = gem || (i === <span class="hljs-number">4</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">1</span>);
+        gem = gem || (i === <span class="hljs-number">5</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">4</span>);
+        gem = gem || (i === <span class="hljs-number">6</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">9</span>);
+        gem = gem || (i === <span class="hljs-number">7</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">2</span>);
+        gem = gem || (i === <span class="hljs-number">8</span> &amp;&amp; gems[type] &gt;= <span class="hljs-number">3</span>);
+        <span class="hljs-keyword">if</span> (gem) {
+          html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${type}</span> gem"&gt;&lt;/span&gt;`</span>;
+        }
+        html += <span class="hljs-string">'&lt;/span&gt;'</span>;
+      }
+      $(<span class="hljs-string">`#gems-<span class="hljs-subst">${type}</span>`</span>).html(html.trim());
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderNarrative</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> obstacles = Obstacles.get();
+
+    <span class="hljs-keyword">let</span> html = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">let</span> loot;
+    <span class="hljs-keyword">let</span> items;
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'encumbered'</span>:
+        html = <span class="hljs-string">'You are encumbered! You empty your bag on the ground and pick through the items you&amp;rsquo;ve collected, looking for &lt;span class="iconic"&gt;epic loot&lt;/span&gt;.'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'choice'</span>:
+        loot = Loot.get(obstacles[<span class="hljs-number">0</span>].name);
+        <span class="hljs-keyword">if</span> (Obstacles.stage() === <span class="hljs-number">1</span>) {
+          html = <span class="hljs-string">`You <span class="hljs-subst">${loot.where}</span>. Wild animals block your path. You&amp;rsquo;ll have to scare one of them away. Pick an animal or roll the dice.`</span>;
+        } <span class="hljs-keyword">else</span> {
+          html = <span class="hljs-string">`You <span class="hljs-subst">${loot.where}</span>. Monsters block your path. You&amp;rsquo;ll have to scare one of them away. Pick a monster or roll the dice.`</span>;
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'combat'</span>:
+        items = Stage.items();
+        <span class="hljs-keyword">if</span> (items.length &gt; <span class="hljs-number">0</span>) {
+          loot = Loot.get(items.slice(<span class="hljs-number">-1</span>)[<span class="hljs-number">0</span>]);
+          html = <span class="hljs-string">`You pull <span class="hljs-subst">${loot.article}</span> <span class="hljs-subst">${loot.title}</span> from your bag and throw <span class="hljs-subst">${loot.pronoun}</span> at the <span class="hljs-subst">${obstacles[<span class="hljs-number">0</span>].title}</span>, which`</span>;
+          <span class="hljs-keyword">if</span> (Obstacles.defeated()) {
+            html += <span class="hljs-string">' flees.'</span>;
+          } <span class="hljs-keyword">else</span> {
+            html += <span class="hljs-string">` <span class="hljs-subst">${loot.what}</span> at you.`</span>;
+          }
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (obstacles[<span class="hljs-number">0</span>].title === <span class="hljs-string">'mushrooms'</span>) {
+          html = <span class="hljs-string">'You find some mushrooms growing in the forest.'</span>;
+        } <span class="hljs-keyword">else</span> {
+          loot = Loot.get(obstacles[<span class="hljs-number">0</span>].name);
+          html = <span class="hljs-string">`The <span class="hljs-subst">${obstacles[<span class="hljs-number">0</span>].title}</span> <span class="hljs-subst">${loot.what}</span> at you.`</span>;
+          <span class="hljs-keyword">if</span> (loot.how) {
+            html += <span class="hljs-string">` If you are <span class="hljs-subst">${loot.how}</span>, you may be able to scare it away.`</span>;
+          }
+          html += <span class="hljs-string">' Pick a gem or roll the dice.'</span>;
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'loot'</span>:
+        loot = Loot.get(obstacles[<span class="hljs-number">0</span>].name);
+        <span class="hljs-keyword">if</span> (loot.type === <span class="hljs-string">'mushrooms'</span>) {
+          html = <span class="hljs-string">'The mushrooms look delicious.'</span>;
+        } <span class="hljs-keyword">else</span> {
+          html = <span class="hljs-string">`You find <span class="hljs-subst">${loot.article}</span> <span class="hljs-subst">${loot.title}</span>!`</span>;
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'level-up'</span>:
+        html = <span class="hljs-string">'You have gained in experience. Level up! Pick a bottle or roll the dice.'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'victory'</span>:
+        html = <span class="hljs-string">'You are victorious! You heft your bag of &lt;span class="iconic"&gt;epic loot&lt;/span&gt; and realize&amp;hellip;'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'madness'</span>:
+        html = <span class="hljs-string">'The monsters chew a hole in your bag and take some of your &lt;span class="iconic"&gt;epic loot&lt;/span&gt;. But that&amp;rsquo;s okay. You were starting to feel like&amp;hellip;'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        <span class="hljs-keyword">break</span>;
+    }
+
+    $(<span class="hljs-string">'#narrative'</span>).html(html);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderButton</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">let</span> html;
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'encumbered'</span>:
+        html = <span class="hljs-string">'take'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'combat'</span>:
+        <span class="hljs-keyword">if</span> (Gems.size() &lt;= <span class="hljs-number">0</span>) {
+          html = <span class="hljs-string">'flee'</span>;
+        }
+        <span class="hljs-keyword">if</span> (Obstacles.defeated()) {
+          html = <span class="hljs-string">'loot'</span>;
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'loot'</span>:
+        html = <span class="hljs-string">'take'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'victory'</span>:
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'madness'</span>:
+        html = <span class="hljs-string">'rest'</span>;
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (html) {
+      $(<span class="hljs-string">'#button'</span>).remove(<span class="hljs-string">'hidden'</span>).html(html);
+    } <span class="hljs-keyword">else</span> {
+      $(<span class="hljs-string">'#button'</span>).add(<span class="hljs-string">'hidden'</span>).html(<span class="hljs-string">''</span>);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderPickable</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    <span class="hljs-keyword">const</span> pickable = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([<span class="hljs-string">'#button'</span>, <span class="hljs-string">'#d6'</span>]);
+    <span class="hljs-keyword">const</span> gems = Decktet.attributes().map(<span class="hljs-function"><span class="hljs-params">name</span> =&gt;</span> <span class="hljs-string">`#gems-<span class="hljs-subst">${name}</span>`</span>);
+    <span class="hljs-keyword">const</span> levels = Decktet.attributes().map(<span class="hljs-function"><span class="hljs-params">name</span> =&gt;</span> <span class="hljs-string">`#level-<span class="hljs-subst">${name}</span>`</span>);
+
+    <span class="hljs-keyword">switch</span> (Stage.get()) {
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'choice'</span>:
+        pickable.add(<span class="hljs-string">'#sign1'</span>);
+        pickable.add(<span class="hljs-string">'#sign2'</span>);
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'combat'</span>:
+        <span class="hljs-keyword">if</span> (!Obstacles.defeated()) {
+          gems.forEach(<span class="hljs-function"><span class="hljs-params">id</span> =&gt;</span> pickable.add(id));
+        }
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">case</span> <span class="hljs-string">'level-up'</span>:
+        levels.forEach(<span class="hljs-function"><span class="hljs-params">id</span> =&gt;</span> pickable.add(id));
+        <span class="hljs-keyword">break</span>;
+
+      <span class="hljs-keyword">default</span>:
+        <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">const</span> controls = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([<span class="hljs-string">'#d6'</span>, <span class="hljs-string">'#button'</span>, <span class="hljs-string">'#sign1'</span>, <span class="hljs-string">'#sign2'</span>].concat(gems, levels));
+    pickable.forEach(<span class="hljs-function">(<span class="hljs-params">id</span>) =&gt;</span> {
+      $(id).add(<span class="hljs-string">'pickable'</span>);
+      controls.delete(id);
+    });
+    controls.forEach(<span class="hljs-function">(<span class="hljs-params">id</span>) =&gt;</span> {
+      $(id).remove(<span class="hljs-string">'pickable'</span>);
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (dirty) {
+      renderHero();
+      renderBag();
+      renderUsedItems();
+      renderObstacles();
+      renderGems();
+      renderExperience();
+      renderLevelUp();
+      renderNarrative();
+      renderButton();
+      renderPickable();
+      dirty = <span class="hljs-literal">false</span>;
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">invalidate</span>(<span class="hljs-params"></span>) </span>{
+    dirty = <span class="hljs-literal">true</span>;
+  }
+
+  <span class="hljs-keyword">return</span> {
+    render,
+    invalidate,
+  };
+}());
+
+<span class="hljs-keyword">const</span> Game = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">game</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">let</span> dice = [];
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setPicked</span>(<span class="hljs-params">element</span>) </span>{
+    element.add(<span class="hljs-string">'picked'</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onGems</span>(<span class="hljs-params">element</span>) </span>{
+    element.remove(<span class="hljs-string">'picked'</span>);
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onLevelUp</span>(<span class="hljs-params">element</span>) </span>{
+    element.remove(<span class="hljs-string">'picked'</span>);
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onButton</span>(<span class="hljs-params">element</span>) </span>{
+    element.remove(<span class="hljs-string">'picked'</span>);
+    Stage.next(<span class="hljs-string">'items'</span>);
+    Renderer.invalidate();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onChoice</span>(<span class="hljs-params">element</span>) </span>{
+    element.remove(<span class="hljs-string">'picked'</span>);
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rollDice</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (dice.length &lt;= <span class="hljs-number">0</span>) {
+      dice = [<span class="hljs-string">'d1'</span>, <span class="hljs-string">'d2'</span>, <span class="hljs-string">'d3'</span>, <span class="hljs-string">'d4'</span>];
+      PRNG.shuffle(dice);
+    }
+    <span class="hljs-keyword">return</span> dice.pop();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onD6</span>(<span class="hljs-params">element</span>) </span>{
+    <span class="hljs-keyword">let</span> html = <span class="hljs-string">''</span>;
+    html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${rollDice()}</span>"&gt;&lt;/span&gt;`</span>;
+    html += <span class="hljs-string">`&lt;span class="<span class="hljs-subst">${rollDice()}</span>"&gt;&lt;/span&gt;`</span>;
+    element.html(html).remove(<span class="hljs-string">'picked'</span>);
+    Stage.next(<span class="hljs-string">'d6'</span>);
+    Renderer.invalidate();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onDW</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+    $(<span class="hljs-string">'#world'</span>).toggle(<span class="hljs-string">'dw'</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">play</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> $ = <span class="hljs-built_in">window</span>.jQuery;
+
+    Decktet.attributes().forEach(<span class="hljs-function">(<span class="hljs-params">name</span>) =&gt;</span> {
+      $(<span class="hljs-string">`#gems-<span class="hljs-subst">${name}</span>`</span>).touch(setPicked, onGems);
+      $(<span class="hljs-string">`#level-<span class="hljs-subst">${name}</span>`</span>).touch(setPicked, onLevelUp);
+    });
+
+    $(<span class="hljs-string">'#button'</span>).touch(setPicked, onButton);
+    $(<span class="hljs-string">'#sign1'</span>).touch(setPicked, onChoice);
+    $(<span class="hljs-string">'#sign2'</span>).touch(setPicked, onChoice);
+    $(<span class="hljs-string">'#d6'</span>).touch(setPicked, onD6);
+    $(<span class="hljs-string">'#dw'</span>).touch(<span class="hljs-literal">undefined</span>, onDW);
+
+    Stage.reset();
+    Renderer.invalidate();
+    Renderer.render();
+  }
+
+  <span class="hljs-keyword">return</span> {
+    play,
+  };
+}());
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">$</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Fn</span>(<span class="hljs-params">selector</span>) </span>{
+    <span class="hljs-keyword">if</span> (selector <span class="hljs-keyword">instanceof</span> Fn) {
+      <span class="hljs-keyword">return</span> selector;
+    }
+
+    <span class="hljs-keyword">this</span>.element = selector;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> selector === <span class="hljs-string">'string'</span>) {
+      <span class="hljs-keyword">if</span> (selector.indexOf(<span class="hljs-string">'#'</span>) === <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">this</span>.element = <span class="hljs-built_in">document</span>.getElementById(selector.slice(<span class="hljs-number">1</span>));
+      }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+
+  Fn.prototype.html = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">html</span>(<span class="hljs-params">value</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element) {
+      <span class="hljs-keyword">this</span>.element.innerHTML = value;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.add = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">klass</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element &amp;&amp; <span class="hljs-keyword">this</span>.element.classList) {
+      <span class="hljs-keyword">this</span>.element.classList.add(klass);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>(<span class="hljs-params">klass</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element &amp;&amp; <span class="hljs-keyword">this</span>.element.classList) {
+      <span class="hljs-keyword">this</span>.element.classList.remove(klass);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.toggle = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toggle</span>(<span class="hljs-params">klass</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element &amp;&amp; <span class="hljs-keyword">this</span>.element.classList) {
+      <span class="hljs-keyword">this</span>.element.classList.toggle(klass);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.style = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">style</span>(<span class="hljs-params">key, value</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element) {
+      <span class="hljs-keyword">if</span> (!value) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element.style[key];
+      }
+
+      <span class="hljs-keyword">this</span>.element.style[key] = value;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.touch = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touch</span>(<span class="hljs-params">start, end</span>) </span>{
+    <span class="hljs-keyword">const</span> self = <span class="hljs-keyword">this</span>;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.element) {
+      <span class="hljs-keyword">if</span> (<span class="hljs-string">'ontouchstart'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>.documentElement === <span class="hljs-literal">false</span>) {
+        <span class="hljs-keyword">this</span>.element.onmousedown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onmousedown</span>(<span class="hljs-params">mouseDownEvent</span>) </span>{
+          <span class="hljs-keyword">if</span> (start) {
+            start(self, mouseDownEvent);
+          }
+          <span class="hljs-built_in">document</span>.onmousemove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onmousemove</span>(<span class="hljs-params">e</span>) </span>{
+            e.preventDefault();
+          };
+          <span class="hljs-built_in">document</span>.onmouseup = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onmouseup</span>(<span class="hljs-params">e</span>) </span>{
+            <span class="hljs-keyword">if</span> (end) {
+              end(self, e);
+            }
+            <span class="hljs-built_in">document</span>.onmousemove = <span class="hljs-literal">undefined</span>;
+            <span class="hljs-built_in">document</span>.onmouseup = <span class="hljs-literal">undefined</span>;
+          };
+        };
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">this</span>.element.ontouchstart = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ontouchstart</span>(<span class="hljs-params">touchStartEvent</span>) </span>{
+          <span class="hljs-keyword">if</span> (start) {
+            start(self, touchStartEvent);
+          }
+          <span class="hljs-built_in">document</span>.ontouchmove = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ontouchmove</span>(<span class="hljs-params">e</span>) </span>{
+            e.preventDefault();
+          };
+          <span class="hljs-built_in">document</span>.ontouchend = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ontouchend</span>(<span class="hljs-params">e</span>) </span>{
+            <span class="hljs-keyword">if</span> (end) {
+              end(self, e);
+            }
+            <span class="hljs-built_in">document</span>.ontouchmove = <span class="hljs-literal">undefined</span>;
+            <span class="hljs-built_in">document</span>.ontouchend = <span class="hljs-literal">undefined</span>;
+          };
+        };
+      }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  };
+
+  Fn.prototype.unwrap = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unwrap</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.element;
+  };
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">root</span>(<span class="hljs-params">selector</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Fn(selector);
+  }
+
+  <span class="hljs-built_in">window</span>.jQuery = root;
+}());
+
+Game.play();</pre></div>
+        
+      
+        
+        <p>Design &amp; dev by Frank Mitchell for <a href="http://2017.js13kgames.com/" title="Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes">Js13kGames 2017</a>.
+<strong>Epic Loot</strong> is based on <a href="http://wiki.decktet.com/game:tinker-sailor-soldier-spy" title="Mike Richey (The Decktet Wiki): Tinker, Sailor, Soldier, Spy"><em>Tinker, Sailor, Soldier, Spy</em></a>, by
+Mike Richey.</p>
+
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

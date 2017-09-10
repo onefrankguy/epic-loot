@@ -2,5 +2,4 @@
 *.zip
 *.log
 public/
-docs/
 node_modules/

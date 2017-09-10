@@ -22,7 +22,7 @@
     "postbuild:gfx": "advpng -z -4 public/img/*.png",
     "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/js13k2017/",
     "lint": "eslint js/*.js test.js",
-    "docs": "rm -rf docs/* && docco -l linear js/*.js"
+    "docs": "rm -rf docs/* && docco -l linear js/*.js && mv docs/game.html docs/index.html"
   },
   "devDependencies": {
     "autoprefixer": "7.1.2",
