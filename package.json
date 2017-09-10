@@ -20,7 +20,8 @@
     "watch:gfx": "onchange 'img/*.png' -- npm run build:gfx",
     "build:gfx": "mkdir -p public && imagemin img/*.png --out-dir=public/",
     "postbuild:gfx": "advpng -z -4 public/*.png",
-    "publish": "cd public && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/epic-loot/",
+    "prepublish": "rm -rf epic-loot/ && unzip epic-loot.zip -d epic-loot",
+    "publish": "cd epic-loot && rsync -avz --delete --files-from=../manifest.txt ./ frankmitchell.org:/home/public/epic-loot/",
     "lint": "eslint js/*.js test.js",
     "docs": "rm -rf docs/* && docco -l linear js/*.js && mv docs/game.html docs/index.html"
   },
