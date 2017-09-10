@@ -1499,6 +1499,12 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
+  function onLevelUp(element) {
+    element.remove('picked');
+    Stage.next(element.unwrap().id);
+    Renderer.invalidate();
+  }
+
   function onButton(element) {
     element.remove('picked');
     Stage.next('items');
@@ -1528,10 +1534,9 @@ const Game = (function game() {
     Renderer.invalidate();
   }
 
-  function onLevelUp(element) {
-    element.remove('picked');
-    Stage.next(element.unwrap().id);
-    Renderer.invalidate();
+  function onDW() {
+    const $ = window.jQuery;
+    $('#world').toggle('dw');
   }
 
   function play() {
@@ -1546,6 +1551,7 @@ const Game = (function game() {
     $('#sign1').touch(setPicked, onChoice);
     $('#sign2').touch(setPicked, onChoice);
     $('#d6').touch(setPicked, onD6);
+    $('#dw').touch(undefined, onDW);
 
     Stage.reset();
     Renderer.invalidate();
@@ -1593,6 +1599,14 @@ const Game = (function game() {
   Fn.prototype.remove = function remove(klass) {
     if (this.element && this.element.classList) {
       this.element.classList.remove(klass);
+    }
+
+    return this;
+  };
+
+  Fn.prototype.toggle = function toggle(klass) {
+    if (this.element && this.element.classList) {
+      this.element.classList.toggle(klass);
     }
 
     return this;

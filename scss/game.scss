@@ -74,11 +74,15 @@ a, a:visited {
   margin-bottom: .5rem;
 }
 
+.check,
 .diamond {
-  display: block;
+  display: inline-block;
   width: .6rem;
   height: .6rem;
   border: 1px solid $ink-color;
+}
+
+.diamond {
   transform: rotate(45deg);
 }
 
@@ -348,6 +352,37 @@ $chr-color: rgb(0, 144, 178);
 
 .bag .value {
   margin-right: .5rem;
+}
+
+/* SKILLS */
+.skills {
+  padding: .5rem;
+}
+
+.skill {
+  align-items: center;
+}
+
+.check {
+  margin: 0 1rem 0 .8rem;
+}
+
+.dw .check {
+  background: $progress-color;
+}
+
+.dw #used-items,
+.dw .narrative,
+.dw .player-info  {
+  flex-direction: row-reverse;
+}
+
+.dw .narrative .button {
+  margin: 0 1rem 0 0;
+}
+
+.dw .experience {
+  margin: 0 1rem 0 .5rem;
 }
 
 /* CONTROLS */
