@@ -1067,7 +1067,7 @@ const Renderer = (function renderer() {
       html += `<span class="stat">${value}`;
       html += `<span class="${name} gem"></span>`;
       html += '</span>';
-      $(`#in-game-${name}`).html(html.trim());
+      $(`#stats-${name}`).html(html.trim());
     });
   }
 

@@ -145,8 +145,11 @@ a, a:visited {
 }
 
 /* NARRATIVE */
+#narrative {
+  flex-grow: 1;
+}
+
 .narrative {
-  justify-content: space-between;
   min-height: 7.25rem;
 }
 
