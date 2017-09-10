@@ -166,6 +166,22 @@ a, a:visited {
   margin-left: .5rem;
 }
 
+/* USED ITEMS */
+#used-items {
+  min-height: $touch-size;
+}
+
+/* LEVEL UP */
+.level-up {
+  justify-content: space-around;
+  flex-grow: 1;
+  margin-bottom: 4rem;
+}
+
+.level-up > .row {
+  justify-content: space-around;
+}
+
 .gem {
   display: inline-block;
   height: 1.2rem;
@@ -202,22 +218,6 @@ a, a:visited {
 
 .bag .value {
   margin-right: .5rem;
-}
-
-/* ITEMS */
-#used-items {
-  min-height: $touch-size;
-}
-
-/* LEVEL UP */
-.level-up {
-  justify-content: space-around;
-  flex-grow: 1;
-  margin-bottom: 4rem;
-}
-
-.level-up > .row {
-  justify-content: space-around;
 }
 
 /* SIGNS */
