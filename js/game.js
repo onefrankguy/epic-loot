@@ -1,10 +1,10 @@
 // **Epic Loot** is a game about wondering through a forest, picking mushrooms,
-// and scaring away wild animals by throwing loot at them. But not that boring
+// and scaring away monsters by throwing loot at them. But not that boring
 // junk loot you usually find in a RPG. This is epic loot. The kind of loot
 // where your helmet is a Greater Leather Coif of Smiting with +6 Strength and
 // +6 Charm.
 //
-// The way you do all this mushroom picking, animal finding, and loot chucking
+// The way you do all this mushroom picking, monster scaring, and loot throwing
 // is through deck-building. The deck you use is a [Decktet][], which is usually
 // described as
 //

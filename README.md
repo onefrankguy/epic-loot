@@ -1,10 +1,33 @@
 # Epic Loot #
 
-Epic Loot is a mobile and desktop game for the [js13kGames][] 2017 competition.
+Epic Loot is a mobile and desktop game for the [2017 js13kGames competition][js13k].
+It's a game about wondering through a forest, picking mushrooms, and scaring
+away monsters by throwing loot at them. But not that boring junk loot you
+usually find in a RPG. This is epic loot. The kind of loot where your helmet is
+a Greater Leather Coif of Smiting with +6 Strength and +6 Charm.
+
+Also, if you're left handed, make sure you pick up the Dual Wielding skill.
 
 ## Credits ##
 
 Epic Loot is based on Mike Richey's [Decktet][] game [Tinker, Sailor, Soldier, Spy][tsss].
+Here's the salient bits that changed:
+
+* You start with nine tokens of each suit instead of six.
+* You get your pick of aces when it's time to add one to your deck.
+* If you exhausted your deck at least once during an encounter, you add an ace to your deck at the end of that encounter.
+* You get a token of the same suit when adding an ace to your deck.
+* You can have a maximum of nine tokens of each suit.
+* Every play from your deck costs a token, even the first one.
+* You can no longer flee from encounters with Personalities or Events.
+* You start your deck with four Personalities of your choice.
+* The four Personalities you start with must have at least one of each suit between them.
+* For purposes of encounters, the Excuse counts as a zero value Personality.
+* Locations start shuffled, so you don't know when the Origin or End will show up.
+* You draw Locations two at a time and pick one to encounter.
+* Unencountered Locations are shuffled back into the Locations pile once it's exhausted.
+* You can look at the cards in your deck at any time.
+* You must shuffle your deck after looking at the cards in it.
 
 ### Technology ###
 
