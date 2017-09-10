@@ -117,6 +117,40 @@ a, a:visited {
   align-items: center;
 }
 
+/* PLAYER - EXPERIENCE  */
+#xp-progress {
+  width: 0%;
+  display: inline-block;
+  background: $progress-color;
+  border-radius: (1rem / 2);
+}
+
+.experience {
+  justify-content: flex-end;
+  flex-grow: 1;
+  margin: 0 .5rem 0 1rem;
+}
+
+.experience > .points {
+  justify-content: center;
+}
+
+.experience > .points > span {
+  margin: 0 .5rem;
+}
+
+.experience > .levels {
+  align-items: center;
+}
+
+.experience > .levels > .progress {
+  flex-grow: 1;
+  border: 1px solid $ink-color;
+  margin: 0 1rem;
+  height: .84rem;
+  border-radius: (.84rem / 2);
+}
+
 /* NARRATIVE */
 .narrative {
   justify-content: space-between;
@@ -168,41 +202,6 @@ a, a:visited {
 
 .bag .value {
   margin-right: .5rem;
-}
-
-/* PLAYER */
-
-.experience {
-  justify-content: flex-end;
-  flex-grow: 1;
-  margin: 0 .5rem 0 1rem;
-}
-
-.experience > .points {
-  justify-content: center;
-}
-
-.experience > .points > span {
-  margin: 0 .5rem;
-}
-
-.experience > .levels {
-  align-items: center;
-}
-
-.experience > .levels > .progress {
-  flex-grow: 1;
-  border: 1px solid $ink-color;
-  margin: 0 1rem;
-  height: .84rem;
-  border-radius: (.84rem / 2);
-}
-
-#xp-progress {
-  width: 0%;
-  display: inline-block;
-  background: $progress-color;
-  border-radius: (1rem / 2);
 }
 
 /* ITEMS */
