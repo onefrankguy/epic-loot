@@ -2,7 +2,11 @@
 
 Epic Loot is a mobile and desktop game for the [js13kGames][] 2017 competition.
 
-## Graphics ##
+## Credits ##
+
+Epic Loot is based on Mike Richey's [Decktet][] game [Tinker, Sailor, Soldier, Spy][tsss].
+
+### Graphics ###
 
 The sprites are edits and recolors of [Jerom's 32x32 fantasy tileset][sprites].
 They're under the same [CC BY-SA 3.0][ccas] license as the originals. All the
@@ -12,23 +16,25 @@ gems come from [Paul Underwood's randomized photographs][offset]. The gems
 themselves are based on [F. Stephen Kirschbaum's CSS LED lights][led], but
 without the glow effect. The dice are my own design.
 
-## Colors ##
+### Colors ###
 
 Colors for the gems were chosen from [Martin Krzywinski's notes on palettes for
 color blindness][color].
 
 ## Compatibility ##
 
+Epic Loot works in the following browsers:
+
 ### Mobile ###
 
-TBD
+* TBD
 
 ### Desktop ###
 
-Chrome 61.0.3163.79
-Safari 10.1.2
-Firefox 55.0.3
-Opera 47.0
+* Chrome 61.0.3163.79
+* Safari 10.1.2
+* Firefox 55.0.3
+* Opera 47.0
 
 ## License ##
 
@@ -47,3 +53,4 @@ under the same [CC BY-NC-SA 3.0][ccans] license as the [Decktet][].
 [color]: http://mkweb.bcgsc.ca/colorblind/ "Martin Krzywinski (Genome Sciences Center): Color Palettes for Color Blindness"
 [ccans]: https://creativecommons.org/licenses/by-nc-sa/3.0/ "Creative Commons - Attribution-NonCommercial-ShareAlike 3.0 Unported"
 [Decktet]: http://www.decktet.com/ "P.D. Magnus (The Decktet): A unique deck of cards"
+[tsss]: http://wiki.decktet.com/game:tinker-sailor-soldier-spy "Mike Richey (The Decktet Wiki): Tinker, Sailor, Soldier, Spy"
