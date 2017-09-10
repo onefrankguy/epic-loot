@@ -1,5 +1,5 @@
 index.html
-js/game.js
-css/game.css
-css/screen.css
-img/sprites.png
+game.js
+game.css
+screen.css
+sprites.png
