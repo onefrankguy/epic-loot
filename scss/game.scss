@@ -45,7 +45,7 @@ a, a:visited {
 .world {
   /* Usable area on an iPhone 4 is 320x372 pixels */
   width: 32rem;
-  margin: 0 auto 1.6rem auto;
+  margin: 0 auto $base-font-size auto;
 }
 
 .quest {
@@ -61,7 +61,7 @@ a, a:visited {
 /* PLAYER */
 .player {
   font-size: 1.4rem;
-  line-height: 1.6rem;
+  line-height: $base-font-size;
   font-variant: small-caps;
   text-transform: capitalize;
   padding: .5rem .5rem 1rem .5rem;
@@ -84,11 +84,6 @@ a, a:visited {
 
 .diamond.filled {
   background: $progress-color;
-}
-
-.celestial {
-  font-size: 1.6rem;
-  line-height: 1.6rem;
 }
 
 .day .celestial:before {
@@ -521,7 +516,7 @@ $chr-color: rgb(0, 144, 178);
 
 /* COLOPHON */
 .colophon {
-  margin: 1.6rem .5rem .8rem .5rem;
+  margin: $base-font-size .5rem ($base-font-size / 2) .5rem;
   font-size: 1rem;
   line-height: 1rem;
   color: rgba(0,0,0,.55);
