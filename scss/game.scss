@@ -11,9 +11,6 @@ $bld-color: rgb(0, 158, 115);
 $chr-color: rgb(0, 144, 178);
 $int-color: rgb(204, 121, 167);
 $base-font-size: 1.6rem;
-$sprite-width: 100% * 27;
-$sprite-cols: 100% / (27 - 1);
-$sprite-rows: 100% / (2 - 1);
 $touch-size: 4.8rem;
 
 /* RESET */
@@ -62,43 +59,6 @@ a, a:visited {
   text-overflow: ellipsis;
   margin-left: .5rem;
 }
-
-.icon {
-  display: inline-block;
-  width: $touch-size;
-  height: $touch-size;
-  background: url(../img/sprites.png);
-  background-size: $sprite-width;
-}
-
-/* ICONS */
-.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 0); }
-.rabbit    { background-position: ($sprite-cols * 1) ($sprite-rows * 0); }
-.arachnid  { background-position: ($sprite-cols * 2) ($sprite-rows * 0); }
-.bat       { background-position: ($sprite-cols * 3) ($sprite-rows * 0); }
-.snake     { background-position: ($sprite-cols * 4) ($sprite-rows * 0); }
-.boar      { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
-.scorpion  { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
-.octo      { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
-.ghost     { background-position: ($sprite-cols * 8) ($sprite-rows * 0); }
-.eye       { background-position: ($sprite-cols * 9) ($sprite-rows * 0); }
-.skeleton { background-position: ($sprite-cols * 10) ($sprite-rows * 0); }
-.gold     { background-position: ($sprite-cols * 11) ($sprite-rows * 0); }
-.helmet0  { background-position: ($sprite-cols * 12) ($sprite-rows * 0); }
-.helmet1  { background-position: ($sprite-cols * 13) ($sprite-rows * 0); }
-.helmet2  { background-position: ($sprite-cols * 14) ($sprite-rows * 0); }
-.armour0  { background-position: ($sprite-cols * 15) ($sprite-rows * 0); }
-.armour1  { background-position: ($sprite-cols * 16) ($sprite-rows * 0); }
-.armour2  { background-position: ($sprite-cols * 17) ($sprite-rows * 0); }
-.sword0   { background-position: ($sprite-cols * 18) ($sprite-rows * 0); }
-.sword1   { background-position: ($sprite-cols * 19) ($sprite-rows * 0); }
-.sword2   { background-position: ($sprite-cols * 20) ($sprite-rows * 0); }
-.bow0     { background-position: ($sprite-cols * 21) ($sprite-rows * 0); }
-.bow1     { background-position: ($sprite-cols * 22) ($sprite-rows * 0); }
-.staff0   { background-position: ($sprite-cols * 23) ($sprite-rows * 0); }
-.staff1   { background-position: ($sprite-cols * 24) ($sprite-rows * 0); }
-.staff2   { background-position: ($sprite-cols * 25) ($sprite-rows * 0); }
-.bottle0  { background-position: ($sprite-cols * 26) ($sprite-rows * 0); }
 
 .stats .col  {
   justify-content: flex-end;
@@ -604,8 +564,22 @@ abbr[title="and"] {
 .hidden {
   display: none !important;
 }
+
 .invisible {
   visibility: hidden !important;
+}
+
+/* ICONS */
+$sprite-width: 100% * 27;
+$sprite-cols: 100% / (27 - 1);
+$sprite-rows: 100% / (2 - 1);
+
+.icon {
+  display: inline-block;
+  width: $touch-size;
+  height: $touch-size;
+  background: url(../img/sprites.png);
+  background-size: $sprite-width;
 }
 
 .pixelated {
@@ -615,3 +589,31 @@ abbr[title="and"] {
   image-rendering: optimize-contrast;
   image-rendering: pixelated;
 }
+
+.mushrooms { background-position: ($sprite-cols * 0) ($sprite-rows * 0); }
+.rabbit    { background-position: ($sprite-cols * 1) ($sprite-rows * 0); }
+.arachnid  { background-position: ($sprite-cols * 2) ($sprite-rows * 0); }
+.bat       { background-position: ($sprite-cols * 3) ($sprite-rows * 0); }
+.snake     { background-position: ($sprite-cols * 4) ($sprite-rows * 0); }
+.boar      { background-position: ($sprite-cols * 5) ($sprite-rows * 0); }
+.scorpion  { background-position: ($sprite-cols * 6) ($sprite-rows * 0); }
+.octo      { background-position: ($sprite-cols * 7) ($sprite-rows * 0); }
+.ghost     { background-position: ($sprite-cols * 8) ($sprite-rows * 0); }
+.eye       { background-position: ($sprite-cols * 9) ($sprite-rows * 0); }
+.skeleton { background-position: ($sprite-cols * 10) ($sprite-rows * 0); }
+.gold     { background-position: ($sprite-cols * 11) ($sprite-rows * 0); }
+.helmet0  { background-position: ($sprite-cols * 12) ($sprite-rows * 0); }
+.helmet1  { background-position: ($sprite-cols * 13) ($sprite-rows * 0); }
+.helmet2  { background-position: ($sprite-cols * 14) ($sprite-rows * 0); }
+.armour0  { background-position: ($sprite-cols * 15) ($sprite-rows * 0); }
+.armour1  { background-position: ($sprite-cols * 16) ($sprite-rows * 0); }
+.armour2  { background-position: ($sprite-cols * 17) ($sprite-rows * 0); }
+.sword0   { background-position: ($sprite-cols * 18) ($sprite-rows * 0); }
+.sword1   { background-position: ($sprite-cols * 19) ($sprite-rows * 0); }
+.sword2   { background-position: ($sprite-cols * 20) ($sprite-rows * 0); }
+.bow0     { background-position: ($sprite-cols * 21) ($sprite-rows * 0); }
+.bow1     { background-position: ($sprite-cols * 22) ($sprite-rows * 0); }
+.staff0   { background-position: ($sprite-cols * 23) ($sprite-rows * 0); }
+.staff1   { background-position: ($sprite-cols * 24) ($sprite-rows * 0); }
+.staff2   { background-position: ($sprite-cols * 25) ($sprite-rows * 0); }
+.bottle0  { background-position: ($sprite-cols * 26) ($sprite-rows * 0); }
