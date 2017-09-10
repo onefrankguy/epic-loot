@@ -4,12 +4,6 @@ $shaded-map-color: rgb(222, 213, 191);
 $ink-color: rgb(29, 0, 41);
 $progress-color: rgb(116, 86, 23);
 $metal-color: rgb(117, 113, 97);
-$wil-color: rgb(213, 94, 0);
-$str-color: rgb(230, 159, 0);
-$qck-color: rgb(240, 228, 66);
-$bld-color: rgb(0, 158, 115);
-$chr-color: rgb(0, 144, 178);
-$int-color: rgb(204, 121, 167);
 $base-font-size: 1.6rem;
 $touch-size: 4.8rem;
 
@@ -261,6 +255,14 @@ a, a:visited {
   color: $ink-color;
 }
 
+/* GEMS */
+$str-color: rgb(230, 159, 0);
+$bld-color: rgb(0, 158, 115);
+$qck-color: rgb(240, 228, 66);
+$int-color: rgb(204, 121, 167);
+$wil-color: rgb(213, 94, 0);
+$chr-color: rgb(0, 144, 178);
+
 .gem {
   display: inline-block;
   height: 1.2rem;
@@ -271,40 +273,18 @@ a, a:visited {
   box-shadow: inset rgba(0,0,0,.5) 0 -1px 3px;
 }
 
-/* GAME */
-.bag {
-  padding: .5rem;
-}
+.str { color: $str-color; }
+.bld { color: $bld-color; }
+.qck { color: $qck-color; }
+.int { color: $int-color; }
+.wil { color: $wil-color; }
+.chr { color: $chr-color; }
 
-.bag .icon {
-  width: $base-font-size * 1.5;
-  height: $base-font-size * 1.5;
-  max-width: 32px;
-  max-height: 32px;
-  margin-right: .5rem;
-}
-
-.bag .name {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bag .info {
-  align-self: flex-end;
-}
-
-.bag .value {
-  margin-right: .5rem;
-}
-
-/* GEMS */
 #gems {
   justify-content: space-between;
 }
 
-#gems .set {
+.set {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -347,29 +327,32 @@ a, a:visited {
   left: 0;
 }
 
-/* SUITS */
-.wil {
-  color: $wil-color;
+/* BAG */
+.bag {
+  padding: .5rem;
 }
 
-.str {
-  color: $str-color;
+.bag .icon {
+  width: $base-font-size * 1.5;
+  height: $base-font-size * 1.5;
+  max-width: 32px;
+  max-height: 32px;
+  margin-right: .5rem;
 }
 
-.qck {
-  color: $qck-color;
+.bag .name {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.bld {
-  color: $bld-color;
+.bag .info {
+  align-self: flex-end;
 }
 
-.chr {
-  color: $chr-color;
-}
-
-.int {
-  color: $int-color;
+.bag .value {
+  margin-right: .5rem;
 }
 
 /* CONTROLS */
