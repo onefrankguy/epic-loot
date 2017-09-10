@@ -8,6 +8,10 @@ a Greater Leather Coif of Smiting with +6 Strength and +6 Charm.
 
 Also, if you're left handed, make sure you pick up the Dual Wielding skill.
 
+There's a rambling soft of "why things are the way they are" comemntary in
+[the documentation][docs]. It's full of design decision points and is worth
+worth reading if you like developer diaries.
+
 ## Credits ##
 
 Epic Loot is based on Mike Richey's [Decktet][] game [Tinker, Sailor, Soldier, Spy][tsss].
@@ -77,6 +81,7 @@ under the same [CC BY-NC-SA 3.0][ccans] license as the [Decktet][].
 
 
 [js13k]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
+[docs]: https://onefrankguy.github.io/epic-loot/ "Frank Mitchell (GitHub): Documentation for Epic Loot"
 [fys]: https://bost.ocks.org/mike/shuffle/ "Mike Bostock: Fisher-Yates Shuffle"
 [sprites]: https://opengameart.org/content/32x32-fantasy-tileset "Jerom (OpenGameArt): 32x32 Fantasy Tileset"
 [ccas]: http://creativecommons.org/licenses/by-sa/3.0/ "Creative Commons - Attribution-ShareAlike 3.0 Unported"
