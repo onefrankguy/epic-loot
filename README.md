@@ -6,6 +6,12 @@ Epic Loot is a mobile and desktop game for the [js13kGames][] 2017 competition.
 
 Epic Loot is based on Mike Richey's [Decktet][] game [Tinker, Sailor, Soldier, Spy][tsss].
 
+### Technology ###
+
+Epic Loot uses a pseudo random number generator based on the one described in the paper,
+_A New Class of Invertible Mappings_, by Alexander Klimov and Adi Shamer. The `shuffle()`
+function is the same Fisher-Yates shuffle that [Mike Bostock delightfully animates][fys].
+
 ### Graphics ###
 
 The sprites are edits and recolors of [Jerom's 32x32 fantasy tileset][sprites].
@@ -48,6 +54,7 @@ under the same [CC BY-NC-SA 3.0][ccans] license as the [Decktet][].
 
 
 [js13kGames]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
+[fys]: https://bost.ocks.org/mike/shuffle/ "Mike Bostock: Fisher-Yates Shuffle"
 [sprites]: https://opengameart.org/content/32x32-fantasy-tileset "Jerom (OpenGameArt): 32x32 Fantasy Tileset"
 [ccas]: http://creativecommons.org/licenses/by-sa/3.0/ "Creative Commons - Attribution-ShareAlike 3.0 Unported"
 [paper]: https://www.sitepoint.com/pure-css3-paper-curls/ "Craig Butler (SitePoint): How to Create CSS3 Paper Curls Without Images"

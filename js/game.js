@@ -1,8 +1,8 @@
 // **Epic Loot** is a game about wondering through a forest, picking mushrooms,
 // and scaring away wild animals by throwing loot at them. But not that boring
 // junk loot you usually find in a RPG. This is epic loot. The kind of loot
-// where your helmet is a _Greater Leather Coif of Smiting with +6 Strength and
-// +6 Charm_.
+// where your helmet is a Greater Leather Coif of Smiting with +6 Strength and
+// +6 Charm.
 //
 // The way you do all this mushroom picking, animal finding, and loot chucking
 // is through deck-building. The deck you use is a [Decktet][], which is usually
@@ -13,7 +13,7 @@
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
 //
 // Because you are reading developer notes for a RPG called **Epic Loot**, where
-// a _Greater Leather Coif of Smiting with +6 Strength and +6 Charm_ is a
+// a Greater Leather Coif of Smiting with +6 Strength and +6 Charm is a
 // perfectly reasonable staring item, you can probably imagine such a thing.
 const Decktet = (function decktet() {
   const has = Object.prototype.hasOwnProperty;
@@ -132,7 +132,8 @@ const Decktet = (function decktet() {
 
 // Random number generators lie at the heart of good RPGs. Dice and decks of
 // cards are common in a pen-and-paper world. But the digital world of **Epic
-// Loot** uses a mathematical function.
+// Loot** uses a mathematical function. It's the one described in the paper,
+// _A New Class of Invertible Mappings_, by Alexander Klimov and Adi Shamer.
 const PRNG = (function prng() {
   const max = 2 ** 32;
   let state = Math.floor(Math.random() * max);
@@ -142,7 +143,10 @@ const PRNG = (function prng() {
     return (state >>> 32) / max;
   }
 
-  // https://bost.ocks.org/mike/shuffle/
+  // The PRNG provides an in-place shuffle for use with arrays. It's based on
+  // the [Fisher-Yates shuffle describe by Mike Bostock][fys].
+  //
+  // [fys]: https://bost.ocks.org/mike/shuffle/ "Mike Bostock: Fisher-Yates Shuffle"
   function shuffle(array) {
     let m = array.length;
     let t;
@@ -157,6 +161,9 @@ const PRNG = (function prng() {
     }
   }
 
+  // Randomly picking items out of arrays is usefull too, so the PRNG provies a
+  // function to do that. `Math.floor()` is used instead of `Math.round()` to
+  // avoid a non-uniform distribution of random numbers.
   function pick(array) {
     const index = Math.floor(random() * array.length);
     return array[index];
@@ -169,6 +176,12 @@ const PRNG = (function prng() {
   };
 }());
 
+
+// Loot is what this game is all about. The `Loot` object handles mapping
+// cards from the Decktet onto epic loot. So the Merchant becomes a Metal Sword
+// of // Shocking with +9 Boldness and +9 Intellect. The `Loot` object also
+// handles grammatical bits like making sure serial commas aren't included in
+// descriptions.
 const Loot = (function loot() {
   const has = Object.prototype.hasOwnProperty;
   let places = [];
@@ -181,14 +194,41 @@ const Loot = (function loot() {
 
   function getVariation(name) {
     const card = Decktet.get(name);
+    // Any card that's not found in the Decktet (spelling mistakes happen!) is
+    // assumed to be a mushroom. The Excuse is also a mushroom because it has
+    // no suits and no value. Mushrooms are delicious.
     if (!card || card.suits.length <= 0 || card.value <= 0) {
-      return { type: 'mushrooms', variety: '', title: 'mushrooms', article: 'some', pronoun: 'them' };
+      return {
+        type: 'mushrooms',
+        variety: '',
+        title: 'mushrooms',
+        article: 'some',
+        pronoun: 'them'
+      };
     }
 
+    // Monsters in **Epic Loot** drop gold. Gold is useless and the amount you
+    // collect isn't tracked. So you always have some gold in your bag.
+    //
+    // This was a design decision to account for the transition from day, when
+    // animals drop loot, to night when there are monsters. I wanted to keep the
+    // "end combat, loot critter, take loot" user experience the same for both
+    // animals and monsters. So I needed to have the monsters drop something.
+    // Gold seemed like a reasonable RPG element.
     if (Decktet.locations().indexOf(name) > -1) {
-      return { type: 'gold', variety: '', title: 'some gold', article: '', pronoun: '' };
+      return {
+        type: 'gold',
+        variety: '', 
+        title: 'some gold',
+        article: '',
+        pronoun: ''
+      };
     }
 
+    // Anything that's not a mushroom or gold is loot. The attribute to loot
+    // type distribution was chosen to provide a mostly even range of loot
+    // types. The second suit on cards with two and three suits was used,
+    // becuase that had the most even distribution.
     let type = card.suits[1];
     if (!type) {
       type = card.suits[0];
@@ -203,11 +243,17 @@ const Loot = (function loot() {
       chr: 'helmet',
     };
 
+    // All the aces are bottles, because drinking a potion or tonic is a nice
+    // metaphor for leveling up.
     type = loots[type];
     if (!type || card.value <= 1) {
       type = 'bottle';
     }
 
+    // I originally had eight different types of swords and six different models
+    // for bottles, but ended up having to cut things to fit the 13kB limit.
+    // Incrementing through the variations ensures all the models are shown, so
+    // I get maximum variety from a small set of graphics.
     const max = { helmet: 3, armour: 3, sword: 3, bow: 2, staff: 3, bottle: 1 };
     if (!has.call(variations, type)) {
       variations[type] = 0;
@@ -219,6 +265,9 @@ const Loot = (function loot() {
     return { type, variety: variations[type], article: 'a', pronoun: 'it' };
   }
 
+  // I wanted to create the feel of wondering through a forest, so the narrative
+  // text changes based on the animal or monster you encounter. You get to see
+  // all the text options before they're reused, which keeps it feeling fresh.
   function getWhere() {
     if (places.length <= 0) {
       places = [
@@ -233,6 +282,9 @@ const Loot = (function loot() {
     return places.pop();
   }
 
+  // Animals and monsters can make lots of different noises. I didn't bother to
+  // map animal names onto noise types, because I found having rabbits that hiss
+  // was amusing.
   function getWhat() {
     if (actions.length <= 0) {
       actions = [
@@ -244,6 +296,11 @@ const Loot = (function loot() {
     return actions.pop();
   }
 
+  // I didn't have enough bytes for lots of help text, but I wanted to hint that
+  // using gems that match card suits is useful. Saying "The rabbit hisses at
+  // you. If you are strong, bold and charming, you might be able to scare it
+  // away" is my attempt at that. There are probably more bytes spent here on
+  // not including serial commas than is reasonable.
   function getHow(name) {
     const card = Decktet.get(name);
     if (card) {
@@ -278,6 +335,10 @@ const Loot = (function loot() {
     return undefined;
   }
 
+  // Helmets, armour, weapons, and bottles come in a variety of styles. And
+  // they all have an optional material or attribute. The randomization cycles
+  // through all the styles before repeating any, so there's a lot of variety
+  // in the names.
   function getHelmet() {
     if (helmets.length <= 0) {
       helmets = ['coif', 'helmet', 'helm'];
@@ -377,6 +438,9 @@ const Loot = (function loot() {
     return item;
   }
 
+  // Loot names are generated as needed, and aren't regenerated if they already
+  // exist. That way the Sailor card always maps to a Lesser Glass Staff of
+  // Healing.
   function get(name) {
     if (!has.call(items, name)) {
       items[name] = generate(name);
@@ -408,10 +472,6 @@ const Personalities = (function personalities() {
     return cards.pop();
   }
 
-  function size() {
-    return cards.length;
-  }
-
   function remove(name) {
     const index = cards.indexOf(name);
     if (index > -1) {
@@ -426,7 +486,6 @@ const Personalities = (function personalities() {
 
   return {
     deal,
-    size,
     remove,
     reset,
   };
