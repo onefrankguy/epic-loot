@@ -64,6 +64,47 @@ a, a:visited {
   padding: 1rem .5rem;
 }
 
+/* PLAYER */
+.player {
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-variant: small-caps;
+  text-transform: capitalize;
+  padding: .5rem .5rem 1rem .5rem;
+}
+
+/* PLAYER - PROGRESS */
+#game-progress {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.diamond {
+  display: block;
+  width: .6rem;
+  height: .6rem;
+  border: 1px solid $ink-color;
+  transform: rotate(45deg);
+}
+
+.diamond.filled {
+  background: $progress-color;
+}
+
+.celestial {
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+}
+
+.day .celestial:before {
+  content: '\00263c';
+}
+
+.night .celestial:before {
+  content: '\00263e';
+}
+
 /* NARRATIVE */
 .narrative {
   justify-content: space-between;
@@ -133,44 +174,6 @@ a, a:visited {
 }
 
 /* PLAYER */
-.player {
-  font-size: 1.4rem;
-  line-height: 1.6rem;
-  font-variant: small-caps;
-  text-transform: capitalize;
-  padding: .5rem .5rem 1rem .5rem;
-}
-
-#game-progress {
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: .5rem;
-}
-
-.diamond {
-  display: block;
-  width: .6rem;
-  height: .6rem;
-  border: 1px solid $ink-color;
-  transform: rotate(45deg);
-}
-
-.diamond.filled {
-  background: $progress-color;
-}
-
-.celestial {
-  font-size: 1.6rem;
-  line-height: 1.6rem;
-}
-
-.day .celestial:before {
-  content: '\00263c';
-}
-
-.night .celestial:before {
-  content: '\00263e';
-}
 
 .experience {
   justify-content: flex-end;
