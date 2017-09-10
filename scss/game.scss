@@ -182,45 +182,7 @@ a, a:visited {
   justify-content: space-around;
 }
 
-.gem {
-  display: inline-block;
-  height: 1.2rem;
-  width: 1.2rem;
-  border: 1px solid $ink-color;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: inset rgba(0,0,0,.5) 0 -1px 3px;
-}
-
-/* GAME */
-.bag {
-  padding: .5rem;
-}
-
-.bag .icon {
-  width: $base-font-size * 1.5;
-  height: $base-font-size * 1.5;
-  max-width: 32px;
-  max-height: 32px;
-  margin-right: .5rem;
-}
-
-.bag .name {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bag .info {
-  align-self: flex-end;
-}
-
-.bag .value {
-  margin-right: .5rem;
-}
-
-/* SIGNS */
+/* OBSTACLES */
 #signpost {
   justify-content: space-around;
 }
@@ -297,6 +259,44 @@ a, a:visited {
 .sign.loot .value {
   background: white;
   color: $ink-color;
+}
+
+.gem {
+  display: inline-block;
+  height: 1.2rem;
+  width: 1.2rem;
+  border: 1px solid $ink-color;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: inset rgba(0,0,0,.5) 0 -1px 3px;
+}
+
+/* GAME */
+.bag {
+  padding: .5rem;
+}
+
+.bag .icon {
+  width: $base-font-size * 1.5;
+  height: $base-font-size * 1.5;
+  max-width: 32px;
+  max-height: 32px;
+  margin-right: .5rem;
+}
+
+.bag .name {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bag .info {
+  align-self: flex-end;
+}
+
+.bag .value {
+  margin-right: .5rem;
 }
 
 /* GEMS */
