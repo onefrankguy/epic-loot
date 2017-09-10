@@ -76,7 +76,7 @@ Most graphics are licensed under some form of Creative Commons license. See the
 under the same [CC BY-NC-SA 3.0][ccans] license as the [Decktet][].
 
 
-[js13kGames]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
+[js13k]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
 [fys]: https://bost.ocks.org/mike/shuffle/ "Mike Bostock: Fisher-Yates Shuffle"
 [sprites]: https://opengameart.org/content/32x32-fantasy-tileset "Jerom (OpenGameArt): 32x32 Fantasy Tileset"
 [ccas]: http://creativecommons.org/licenses/by-sa/3.0/ "Creative Commons - Attribution-ShareAlike 3.0 Unported"
