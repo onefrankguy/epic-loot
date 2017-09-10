@@ -188,11 +188,6 @@ a, a:visited {
   padding: .5rem .5rem 1rem .5rem;
 }
 
-.tracker {
-  flex-grow: 1;
-  margin-left: 1rem;
-}
-
 #game-progress {
   justify-content: space-between;
   align-items: center;
@@ -227,6 +222,7 @@ a, a:visited {
 .experience {
   justify-content: flex-end;
   flex-grow: 1;
+  margin: 0 .5rem 0 1rem;
 }
 
 .experience > .points {
@@ -523,7 +519,6 @@ a, a:visited {
 /* DICE */
 .dice {
   align-items: flex-start;
-  margin-left: .5rem;
 }
 .d1, .d2, .d3, .d4 {
   position: relative;
