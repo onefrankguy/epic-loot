@@ -1,0 +1,56 @@
+html {
+  font-size: 50%;
+}
+
+#world {
+  width: 160px;
+  height: 160px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.stats .gem,
+.stats .col + .col {
+  margin-left: .75rem;
+}
+
+.dice {
+  flex-direction: column;
+  align-items: center;
+}
+
+.ui {
+  align-items: center;
+}
+
+#used-items {
+  width: (4.8rem * 3);
+  overflow: hidden;
+}
+
+.sign.mini.loot .value {
+  top: 0;
+}
+
+#gems {
+  visibility: visible !important;
+}
+
+#gems:after {
+  content: 'Epic Loot';
+  font-size: 3.2rem;
+  font-variant: small-caps;
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+#game-progress,
+#signpost,
+.set,
+.experience,
+.row.hr,
+.colophon,
+.narrative,
+.bag {
+  display: none !important;
+}
