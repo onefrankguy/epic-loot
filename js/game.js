@@ -1,14 +1,20 @@
-// Are we dungeon crawling yet? No! Because before you can crawl into a dungeon,
-// you have to find a dungeon to crawl into, and findng a dungeon is not an easy
-// thing. After all, if it was easy, they wouldn't need a hero to do it.
+// **Epic Loot** is a game about wondering through a forest, picking mushrooms,
+// and scaring away wild animals by throwing loot at them. But not that boring
+// junk loot you usually find in a RPG. This is epic loot. The kind of loot
+// where your helmet is a _Greater Leather Coif of Smiting with +6 Strength and
+// +6 Charm_.
 //
-// **Darcey's Dungeon** is a game about finding a dungeon, and the way you do
-// that is through deck-building. The deck you use is a [Decktet][], which is
-// usually described as
+// The way you do all this mushroom picking, animal finding, and loot chucking
+// is through deck-building. The deck you use is a [Decktet][], which is usually
+// described as
 //
 // > It is the kind of tarot deck they use in the alternate universe where Charlemange was a badger, if you can imagine such a thing.
 //
 // [Decktet]: http://www.decktet.com/ "P.D. Magnus: The Decktet"
+//
+// Because you are reading developer notes for a RPG called **Epic Loot**, where
+// a _Greater Leather Coif of Smiting with +6 Strength and +6 Charm_ is a
+// perfectly reasonable staring item, you can probably imagine such a thing.
 const Decktet = (function decktet() {
   const has = Object.prototype.hasOwnProperty;
   const cards = {};
@@ -21,7 +27,15 @@ const Decktet = (function decktet() {
     return undefined;
   }
 
-  // **GAME** is a RPG at heart.
+  // The Decktet has six suits: suns, leaves, waves, knots, moons, and wyrms.
+  // **Epic Loot** replaces those with more traditional RPG attributes:
+  // strength, boldness, quickness, intellect, will, and charm. They're then
+  // shortened to three letter abbreviations, becuase this is the kind of game
+  // where bytes matter.
+  //
+  // As an aside, "boldness" was originally "body", because I'm overly fond of
+  // _Shadowrun_ as a RPG. But I couldn't come up with a verb to describe "body"
+  // as an attribute, so I settled on "boldness".
   function attributes() {
     return [
       'str', 'bld', 'qck', 'int', 'wil', 'chr',
@@ -35,6 +49,10 @@ const Decktet = (function decktet() {
   cards.wil = { value: 1, suits: ['wil'] };
   cards.chr = { value: 1, suits: ['chr'] };
 
+  // Like the attributes, the personalities of the Decktet all use abbreviated
+  // names. So the Bard is "bar", the Lunatic is "lun", and the Excuse is "exc".
+  // Yes, the Excuse is a personality in **Epic Loot**. Actually, the Excuse is
+  // mushrooms, but that comes later.
   function personalities() {
     return [
       'exc', 'aut', 'pai', 'sav', 'sai', 'sol', 'lun',
@@ -59,7 +77,8 @@ const Decktet = (function decktet() {
   cards.bar = { value: 12, suits: ['str'] };
   cards.hun = { value: 12, suits: ['wil'] };
 
-  // If you don't persuade the personality you encouter...
+  // Events are abbreviated too, and the Market counts as an event, instead of a
+  // location.
   function events() {
     return [
       'jou', 'bat', 'dis', 'mar', 'cha', 'bet',
@@ -79,9 +98,8 @@ const Decktet = (function decktet() {
   cards.cal = { value: 12, suits: ['chr'] };
   cards.win = { value: 12, suits: ['int'] };
 
-  // Any personality you choose not to persuade or event you choose not to
-  // assist is consumed by the ???. It mixes with the locations to become an
-  // obstacle you must face in the second half of the game.
+  // Locations are abbreviated likewise, and both the Origin and the End count
+  // as locatios, instead of events.
   function locations() {
     return [
       'ori', 'des', 'mou', 'for', 'cas', 'cav', 'mil',
@@ -112,6 +130,9 @@ const Decktet = (function decktet() {
   };
 }());
 
+// Random number generators lie at the heart of good RPGs. Dice and decks of
+// cards are common in a pen-and-paper world. But the digital world of **Epic
+// Loot** uses a mathematical function.
 const PRNG = (function prng() {
   const max = 2 ** 32;
   let state = Math.floor(Math.random() * max);
@@ -1322,7 +1343,7 @@ const Renderer = (function renderer() {
 
     switch (Stage.get()) {
       case 'encumbered':
-        html = 'You are encumbered! You empty your bag on the ground and dig through the items you&rsquo;ve collected, looking for <span class="iconic">epic loot</span>.';
+        html = 'You are encumbered! You empty your bag on the ground and pick through the items you&rsquo;ve collected, looking for <span class="iconic">epic loot</span>.';
         break;
 
       case 'choice':
@@ -1680,7 +1701,7 @@ const Game = (function game() {
 Game.play();
 
 // Design & dev by Frank Mitchell for [Js13kGames 2017][js13k].
-// **Darcy's Dungeon** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], by
+// **Epic Loot** is based on [_Tinker, Sailor, Soldier, Spy_][tsss], by
 // Mike Richey.
 //
 // [js13k]: http://2017.js13kgames.com/ "Andrzej (js13kGames): HTML5 and JavaScript Game Development Competition in just 13 kilobytes"
