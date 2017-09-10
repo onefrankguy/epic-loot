@@ -426,14 +426,13 @@ $chr-color: rgb(0, 144, 178);
 
 /* PATTERNS */
 .paper {
-  /* https://www.sitepoint.com/pure-css3-paper-curls/ */
   background: $map-color;
   border: 1px solid $ink-color;
   position: relative;
   box-shadow: 0 0 5px rgba(0,0,0,.4), inset 0 0 50px rgba(0,0,0,.3);
 }
+
 .paper:before, .paper:after {
-  /* https://www.sitepoint.com/pure-css3-paper-curls/ */
   position: absolute;
   width: 40%;
   height: 10px;
@@ -445,6 +444,7 @@ $chr-color: rgb(0, 144, 178);
   box-shadow: 0 6px 12px rgba(0,0,0,.5);
   z-index: -1;
 }
+
 .paper:after {
   left: auto;
   right: 10px;
@@ -455,6 +455,7 @@ $chr-color: rgb(0, 144, 178);
 .dice {
   align-items: flex-start;
 }
+
 .d1, .d2, .d3, .d4 {
   position: relative;
   display: inline-block;
@@ -465,6 +466,7 @@ $chr-color: rgb(0, 144, 178);
   border: 1px solid currentColor;
   opacity: .8;
 }
+
 .d1:before,
 .d2:before,
 .d2:after,
@@ -480,31 +482,38 @@ $chr-color: rgb(0, 144, 178);
   background: currentColor;
   border-radius: 50%;
 }
+
 .d1:before {
   top: 1rem;
   left: 1rem;
 }
+
 .d2:before,
 .d3:before,
 .d4:before {
   top: .375rem;
   right: .375rem;
 }
+
 .d2:after,
 .d3:after,
 .d4:after {
   bottom: .375rem;
   left: .375rem;
 }
+
 .d3:after {
   box-shadow: .55rem -.55rem 0 currentColor;
 }
+
 .d4:before {
   box-shadow: -1.1rem 0 0 currentColor;
 }
+
 .d4:after {
   box-shadow: 1.1rem 0 0 currentColor;
 }
+
 .d1 { transform: rotate(7deg); }
 .d2 { transform: rotate(-14deg); }
 .d3 { transform: rotate(14deg); }
