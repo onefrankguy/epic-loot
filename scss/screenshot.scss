@@ -1,0 +1,19 @@
+html {
+  font-size: 62.5%;
+}
+
+#world {
+  width: 400px;
+  height: 250px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+#level-up,
+#signpost,
+#gems,
+.colophon,
+.hr.row,
+.bag {
+  display: none !important;
+}
