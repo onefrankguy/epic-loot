@@ -37,12 +37,31 @@ a, a:visited {
   text-decoration: none;
 }
 
-.unselectable {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -khtml-user-select: none;
-  -webkit-touch-callout: none;
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* WORLD */
+.world {
+  /* Usable area on an iPhone 4 is 320x372 pixels */
+  width: 32rem;
+  margin: 0 auto 1.6rem auto;
+}
+
+.quest {
+  height: 37.2rem;
+}
+
+.ui {
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 1rem .5rem;
 }
 
 /* NARRATIVE */
@@ -86,32 +105,6 @@ a, a:visited {
 }
 
 /* GAME */
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-}
-
-.world {
-  /* Usable area on an iPhone 4 is 320x372 pixels */
-  width: 32rem;
-  margin: 0 auto 1.6rem auto;
-}
-
-.quest {
-  height: 37.2rem;
-}
-
-.ui {
-  justify-content: space-between;
-  flex-grow: 1;
-  padding: 1rem .5rem;
-}
-
 .bag {
   padding: .5rem;
 }
@@ -567,6 +560,14 @@ abbr[title="and"] {
 
 .invisible {
   visibility: hidden !important;
+}
+
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* ICONS */
