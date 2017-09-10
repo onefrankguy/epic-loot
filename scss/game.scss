@@ -105,6 +105,18 @@ a, a:visited {
   content: '\00263e';
 }
 
+/* PLAYER - STATS */
+.stats .gem,
+.stats .col + .col {
+  margin-left: 1rem;
+}
+
+.stats .stat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* NARRATIVE */
 .narrative {
   justify-content: space-between;
@@ -118,21 +130,6 @@ a, a:visited {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: .5rem;
-}
-
-.stats .col  {
-  justify-content: flex-end;
-}
-
-.stats .gem,
-.stats .col + .col {
-  margin-left: 1rem;
-}
-
-.stats .stat {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .gem {
