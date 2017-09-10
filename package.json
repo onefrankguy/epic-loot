@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "watch": "npm-run-all --parallel watch:*",
-    "prebuild": "rm -f game.zip && rm -rf public/* && npm run build:html && npm run build:css && npm run build:js && npm run build:gfx",
-    "build": "cd public && advzip -a -4 ../game.zip $(cat ../manifest.txt)",
+    "prebuild": "rm -f epic-loot.zip && rm -rf public/* && npm run build:html && npm run build:css && npm run build:js && npm run build:gfx",
+    "build": "cd public && advzip -a -4 ../epic-loot.zip $(cat ../manifest.txt)",
     "postbuild": "node test.js; exit 0",
     "watch:html": "onchange *.html -- npm run build:html",
     "build:html": "mkdir -p public && html-minifier --html5 --collapse-whitespace -o public/index.html index.html",

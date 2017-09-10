@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const max = 13 * 1024;
 
-fs.stat('game.zip', (err, stats) => {
+fs.stat('epic-loot.zip', (err, stats) => {
   if (err) {
     console.error(err);
     process.exit(1);

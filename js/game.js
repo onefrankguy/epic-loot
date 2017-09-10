@@ -203,7 +203,7 @@ const Loot = (function loot() {
         variety: '',
         title: 'mushrooms',
         article: 'some',
-        pronoun: 'them'
+        pronoun: 'them',
       };
     }
 
@@ -218,10 +218,10 @@ const Loot = (function loot() {
     if (Decktet.locations().indexOf(name) > -1) {
       return {
         type: 'gold',
-        variety: '', 
+        variety: '',
         title: 'some gold',
         article: '',
-        pronoun: ''
+        pronoun: '',
       };
     }
 
