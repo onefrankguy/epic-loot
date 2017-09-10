@@ -25,9 +25,12 @@ color blindness][color].
 
 Epic Loot works in the following browsers:
 
-### Mobile ###
+### Mobile (iOS)  ###
 
-* TBD
+* Chrome 61.0.3163.73
+* Safari 10.0
+* Firefox 8.3
+* Opera 16.0.1
 
 ### Desktop ###
 
