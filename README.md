@@ -10,7 +10,7 @@ Also, if you're left handed, make sure you pick up the Dual Wielding skill.
 
 There's a rambling soft of "why things are the way they are" comemntary in
 [the documentation][docs]. It's full of design decision points and is worth
-worth reading if you like developer diaries.
+reading if you like developer diaries.
 
 ## Credits ##
 
@@ -32,6 +32,11 @@ Here's the salient bits that changed:
 * Unencountered Locations are shuffled back into the Locations pile once it's exhausted.
 * You can look at the cards in your deck at any time.
 * You must shuffle your deck after looking at the cards in it.
+
+These changes where driven by several design goals:
+
+* Available choices should be consistent through the life of the game.
+* Losses should feel like "I made the wrong choice" not "I drew bad cards".
 
 ### Technology ###
 
